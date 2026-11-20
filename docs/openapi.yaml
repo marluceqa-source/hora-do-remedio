@@ -1,0 +1,2448 @@
+openapi: 3.1.0
+info:
+  title: Hora do Remédio API
+  description: 'API REST do **Hora do Remédio**: cadastro de medicamentos, agendamentos,
+    lembretes, histórico e relatórios de adesão declarada.
+
+
+    O bot não prescreve nem recomenda alterações de dosagem (RN13), e a confirmação
+    de administração representa uma informação declarada pelo usuário, não uma comprovação
+    clínica real (RF07, RN12).'
+  contact:
+    name: Hora do Remédio
+  version: 1.0.0
+servers:
+- url: http://localhost:8000
+  description: Desenvolvimento local
+paths:
+  /api/v1/auth/token:
+    post:
+      tags:
+      - Autenticação
+      summary: Emite um token de acesso para o usuário do Telegram
+      description: Autenticação da API é independente do token do bot Telegram (seção
+        8 do prompt master). O bot troca o telegram_user_id por um token JWT escopado
+        ao usuário para chamar a API em seu nome.
+      operationId: issue_token_api_v1_auth_token_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/medications:
+    get:
+      tags:
+      - Medicamentos
+      summary: Lista os medicamentos do usuário autenticado (RN09)
+      operationId: list_medications_api_v1_medications_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: active
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Active
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MedicationOut'
+                title: Response List Medications Api V1 Medications Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - Medicamentos
+      summary: Cadastra um novo medicamento com seus horários (RF02)
+      operationId: create_medication_api_v1_medications_post
+      security:
+      - HTTPBearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MedicationCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicationOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/medications/{medication_id}:
+    get:
+      tags:
+      - Medicamentos
+      summary: Consulta um medicamento
+      operationId: get_medication_api_v1_medications__medication_id__get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: medication_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Medication Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicationOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - Medicamentos
+      summary: Atualiza um medicamento (CT10)
+      operationId: update_medication_api_v1_medications__medication_id__patch
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: medication_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Medication Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MedicationUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicationOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Medicamentos
+      summary: 'Exclui um medicamento (RN16: requer confirmação explícita)'
+      operationId: delete_medication_api_v1_medications__medication_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: medication_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Medication Id
+      - name: confirm
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Confirm
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/schedules:
+    get:
+      tags:
+      - Agendamentos
+      summary: Consulta os agendamentos do usuário autenticado
+      operationId: list_schedules_api_v1_schedules_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: medication_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          description: Filtra por medicamento
+          title: Medication Id
+        description: Filtra por medicamento
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScheduleOut'
+                title: Response List Schedules Api V1 Schedules Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/reminders/today:
+    get:
+      tags:
+      - Lembretes
+      summary: Consulta os lembretes de hoje (RF09)
+      operationId: reminders_today_api_v1_reminders_today_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ReminderEventOut'
+                type: array
+                title: Response Reminders Today Api V1 Reminders Today Get
+      security:
+      - HTTPBearer: []
+  /api/v1/reminders/{reminder_id}/confirm:
+    post:
+      tags:
+      - Lembretes
+      summary: Confirma a administração de uma dose (RF07, RN04)
+      operationId: confirm_reminder_api_v1_reminders__reminder_id__confirm_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: reminder_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Reminder Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReminderEventOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/reminders/{reminder_id}/snooze:
+    post:
+      tags:
+      - Lembretes
+      summary: Adia um lembrete sem alterar o horário original (RF08, RN06)
+      operationId: snooze_reminder_api_v1_reminders__reminder_id__snooze_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: reminder_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Reminder Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReminderSnoozeRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReminderEventOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/history:
+    get:
+      tags:
+      - Histórico
+      summary: Consulta o histórico de doses com filtros por dia, semana ou mês (RF09)
+      operationId: get_history_api_v1_history_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: period
+        in: query
+        required: false
+        schema:
+          enum:
+          - day
+          - week
+          - month
+          type: string
+          default: day
+          title: Period
+      - name: reference_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Reference Date
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReminderEventOut'
+                title: Response Get History Api V1 History Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/reports:
+    get:
+      tags:
+      - Relatórios
+      summary: Consulta relatórios de adesão declarada (RF10)
+      description: Retorna um resumo em JSON por padrão. Use ?format=csv para obter
+        o relatório como arquivo CSV. Os números refletem confirmações declaradas
+        pelo usuário, não comprovação clínica real (RN12).
+      operationId: get_report_api_v1_reports_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: format
+        in: query
+        required: false
+        schema:
+          type: string
+          default: json
+          title: Format
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+            text/csv: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/caregivers:
+    get:
+      tags:
+      - Cuidadores
+      summary: Lista os cuidadores autorizados pelo usuário
+      operationId: list_caregiver_access_api_v1_caregivers_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/CaregiverAccessOut'
+                type: array
+                title: Response List Caregiver Access Api V1 Caregivers Get
+      security:
+      - HTTPBearer: []
+    post:
+      tags:
+      - Cuidadores
+      summary: Autoriza um cuidador a acompanhar o usuário autenticado (RF12)
+      operationId: grant_caregiver_access_api_v1_caregivers_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CaregiverGrantRequest'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaregiverAccessOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /api/v1/caregivers/{access_id}:
+    delete:
+      tags:
+      - Cuidadores
+      summary: Revoga o acesso de um cuidador (RF12)
+      operationId: revoke_caregiver_access_api_v1_caregivers__access_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: access_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Access Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/caregivers/patients/{patient_user_id}/medications:
+    get:
+      tags:
+      - Cuidadores
+      summary: Consulta os medicamentos de um paciente autorizado (acesso de cuidador,
+        RF12)
+      operationId: list_patient_medications_as_caregiver_api_v1_caregivers_patients__patient_user_id__medications_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: patient_user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Patient User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MedicationOut'
+                title: Response List Patient Medications As Caregiver Api V1 Caregivers
+                  Patients  Patient User Id  Medications Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/professionals:
+    post:
+      tags:
+      - Portal — Autenticação
+      summary: Solicita cadastro de profissional (RF01) — não concede permissões clínicas
+        automaticamente
+      operationId: signup_professional_api_v1_professionals_post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfessionalSignupRequest'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfessionalOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - Portal — Administração
+      summary: Lista profissionais, com filtro por status de verificação (admin)
+      operationId: list_professionals_api_v1_professionals_get
+      security:
+      - APIKeyCookie: []
+      parameters:
+      - name: verification_status
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Verification Status
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProfessionalOut'
+                title: Response List Professionals Api V1 Professionals Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/professionals/me:
+    get:
+      tags:
+      - Portal — Autenticação
+      summary: Consulta o perfil do profissional autenticado
+      operationId: get_my_profile_api_v1_professionals_me_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfessionalOut'
+      security:
+      - APIKeyCookie: []
+  /api/v1/auth/professional/login:
+    post:
+      tags:
+      - Portal — Autenticação
+      summary: '1ª etapa do login: valida e-mail/senha e devolve o desafio de MFA
+        (RF01)'
+      operationId: login_step1_api_v1_auth_professional_login_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginChallengeOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/auth/professional/mfa/setup:
+    post:
+      tags:
+      - Portal — Autenticação
+      summary: Inicia a configuração do MFA (1º login) — renderize provisioning_uri
+        como QR Code
+      operationId: start_mfa_setup_api_v1_auth_professional_mfa_setup_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreAuthTokenRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MfaSetupStartResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/auth/professional/mfa/confirm:
+    post:
+      tags:
+      - Portal — Autenticação
+      summary: Confirma o código TOTP e ativa o MFA, iniciando a sessão (RF01)
+      operationId: confirm_mfa_setup_api_v1_auth_professional_mfa_confirm_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MfaCodeRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfessionalOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/auth/professional/mfa/verify:
+    post:
+      tags:
+      - Portal — Autenticação
+      summary: '2ª etapa do login (profissionais com MFA já ativo): envia o código
+        e recebe a sessão'
+      operationId: verify_mfa_api_v1_auth_professional_mfa_verify_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MfaCodeRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfessionalOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/auth/professional/logout:
+    post:
+      tags:
+      - Portal — Autenticação
+      summary: Encerra a sessão atual (RF01)
+      operationId: logout_api_v1_auth_professional_logout_post
+      responses:
+        '204':
+          description: Successful Response
+      security:
+      - APIKeyCookie: []
+  /api/v1/auth/professional/password-reset/request:
+    post:
+      tags:
+      - Portal — Autenticação
+      summary: Solicita recuperação de acesso (RF01) — não revela se o e-mail existe
+      operationId: request_password_reset_api_v1_auth_professional_password_reset_request_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetRequest'
+        required: true
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Response Request Password Reset Api V1 Auth Professional Password
+                  Reset Request Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/auth/professional/password-reset/confirm:
+    post:
+      tags:
+      - Portal — Autenticação
+      summary: Confirma a nova senha a partir do token de recuperação (RF01)
+      operationId: confirm_password_reset_api_v1_auth_professional_password_reset_confirm_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirmRequest'
+        required: true
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/patients:
+    get:
+      tags:
+      - Portal — Pacientes
+      summary: Lista os pacientes autorizados do profissional (RN22)
+      operationId: list_patients_api_v1_patients_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/PatientOut'
+                type: array
+                title: Response List Patients Api V1 Patients Get
+      security:
+      - APIKeyCookie: []
+    post:
+      tags:
+      - Portal — Pacientes
+      summary: Cadastra um paciente (RF03) — quem cadastra fica automaticamente vinculado
+      operationId: create_patient_api_v1_patients_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientCreateRequest'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyCookie: []
+  /api/v1/patients/{patient_id}:
+    get:
+      tags:
+      - Portal — Pacientes
+      summary: Consulta um paciente autorizado (RN22)
+      operationId: get_patient_api_v1_patients__patient_id__get
+      security:
+      - APIKeyCookie: []
+      parameters:
+      - name: patient_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Patient Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/patients/{patient_id}/invites:
+    post:
+      tags:
+      - Portal — Pacientes
+      summary: Gera um convite único e temporário para vincular o paciente ao Telegram
+        (RF04)
+      operationId: create_patient_invite_api_v1_patients__patient_id__invites_post
+      security:
+      - APIKeyCookie: []
+      parameters:
+      - name: patient_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Patient Id
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientInviteOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/patients/{patient_id}/medications:
+    get:
+      tags:
+      - Portal — Pacientes
+      summary: Lista os medicamentos/tratamentos cadastrados para o paciente (RF05)
+      operationId: list_patient_treatment_medications_api_v1_patients__patient_id__medications_get
+      security:
+      - APIKeyCookie: []
+      parameters:
+      - name: patient_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Patient Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TreatmentMedicationOut'
+                title: Response List Patient Treatment Medications Api V1 Patients  Patient
+                  Id  Medications Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - Portal — Pacientes
+      summary: Cadastra um medicamento/esquema terapêutico como rascunho (RF05, RN25)
+      operationId: create_patient_treatment_medication_api_v1_patients__patient_id__medications_post
+      security:
+      - APIKeyCookie: []
+      parameters:
+      - name: patient_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Patient Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TreatmentMedicationCreateRequest'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TreatmentMedicationOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/patients/{patient_id}/history:
+    get:
+      tags:
+      - Portal — Pacientes
+      summary: 'Consulta o histórico de doses do paciente (RF08) — RN12: ausência
+        de resposta não prova que não tomou'
+      operationId: get_patient_history_api_v1_patients__patient_id__history_get
+      security:
+      - APIKeyCookie: []
+      parameters:
+      - name: patient_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Patient Id
+      - name: period
+        in: query
+        required: false
+        schema:
+          enum:
+          - day
+          - week
+          - month
+          type: string
+          default: week
+          title: Period
+      - name: reference_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Reference Date
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReminderEventOut'
+                title: Response Get Patient History Api V1 Patients  Patient Id  History
+                  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/treatment-medications/{treatment_medication_id}:
+    patch:
+      tags:
+      - Portal — Tratamentos
+      summary: Atualiza um medicamento/esquema; cria nova versão se já estiver ativo
+        (RF07, RN27)
+      operationId: update_treatment_medication_api_v1_treatment_medications__treatment_medication_id__patch
+      security:
+      - APIKeyCookie: []
+      parameters:
+      - name: treatment_medication_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Treatment Medication Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TreatmentMedicationUpdateRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TreatmentMedicationOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/treatment-medications/{treatment_medication_id}/activate:
+    post:
+      tags:
+      - Portal — Tratamentos
+      summary: Ativa um plano validado (RF06, RN20, RN26) — requer paciente já vinculado
+        ao Telegram
+      operationId: activate_treatment_medication_api_v1_treatment_medications__treatment_medication_id__activate_post
+      security:
+      - APIKeyCookie: []
+      parameters:
+      - name: treatment_medication_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Treatment Medication Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TreatmentMedicationOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/treatment-medications/{treatment_medication_id}/suspend:
+    post:
+      tags:
+      - Portal — Tratamentos
+      summary: Suspende um tratamento ativo (RF07, RN28)
+      operationId: suspend_treatment_medication_api_v1_treatment_medications__treatment_medication_id__suspend_post
+      security:
+      - APIKeyCookie: []
+      parameters:
+      - name: treatment_medication_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Treatment Medication Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TreatmentMedicationOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/treatment-medications/{treatment_medication_id}/versions:
+    get:
+      tags:
+      - Portal — Tratamentos
+      summary: Consulta as versões anteriores de um medicamento/esquema (RF07)
+      operationId: get_treatment_medication_versions_api_v1_treatment_medications__treatment_medication_id__versions_get
+      security:
+      - APIKeyCookie: []
+      parameters:
+      - name: treatment_medication_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Treatment Medication Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TreatmentMedicationOut'
+                title: Response Get Treatment Medication Versions Api V1 Treatment
+                  Medications  Treatment Medication Id  Versions Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/dashboard:
+    get:
+      tags:
+      - Portal — Dashboard
+      summary: Painel operacional do profissional (RF02) — pacientes, tratamentos
+        e confirmações declaradas
+      operationId: get_dashboard_api_v1_dashboard_get
+      security:
+      - APIKeyCookie: []
+      parameters:
+      - name: patient_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Patient Id
+      - name: status
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Filtra tratamentos por status (draft/active/suspended/closed)
+          title: Status
+        description: Filtra tratamentos por status (draft/active/suspended/closed)
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Start Date
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: End Date
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/professionals/{professional_id}/verify:
+    post:
+      tags:
+      - Portal — Administração
+      summary: Aprova, rejeita ou reabre a verificação de um profissional (admin,
+        RF01)
+      operationId: verify_professional_api_v1_professionals__professional_id__verify_post
+      security:
+      - APIKeyCookie: []
+      parameters:
+      - name: professional_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Professional Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfessionalVerifyRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfessionalOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/audit-logs:
+    get:
+      tags:
+      - Portal — Administração
+      summary: Consulta a trilha de auditoria (RN32) — restrito a administradores
+      operationId: list_audit_logs_api_v1_audit_logs_get
+      security:
+      - APIKeyCookie: []
+      parameters:
+      - name: resource_type
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Resource Type
+      - name: action
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Action
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 500
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuditLogOut'
+                title: Response List Audit Logs Api V1 Audit Logs Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /health:
+    get:
+      tags:
+      - Saúde
+      summary: Verifica o estado do serviço
+      operationId: health_health_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties:
+                  type: string
+                type: object
+                title: Response Health Health Get
+components:
+  schemas:
+    AuditLogOut:
+      properties:
+        id:
+          type: integer
+          title: Id
+        actor_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Actor Id
+        actor_role:
+          type: string
+          title: Actor Role
+        action:
+          type: string
+          title: Action
+        resource_type:
+          type: string
+          title: Resource Type
+        resource_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Resource Id
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        correlation_id:
+          type: string
+          title: Correlation Id
+      type: object
+      required:
+      - id
+      - actor_id
+      - actor_role
+      - action
+      - resource_type
+      - resource_id
+      - timestamp
+      - correlation_id
+      title: AuditLogOut
+    CaregiverAccessOut:
+      properties:
+        id:
+          type: integer
+          title: Id
+        user_id:
+          type: integer
+          title: User Id
+        caregiver_id:
+          type: integer
+          title: Caregiver Id
+        permission:
+          type: string
+          title: Permission
+        authorized_at:
+          type: string
+          format: date-time
+          title: Authorized At
+        revoked_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Revoked At
+      type: object
+      required:
+      - id
+      - user_id
+      - caregiver_id
+      - permission
+      - authorized_at
+      - revoked_at
+      title: CaregiverAccessOut
+    CaregiverGrantRequest:
+      properties:
+        caregiver_telegram_user_id:
+          type: integer
+          title: Caregiver Telegram User Id
+        permission:
+          type: string
+          enum:
+          - view
+          - manage
+          title: Permission
+          default: view
+      type: object
+      required:
+      - caregiver_telegram_user_id
+      title: CaregiverGrantRequest
+    DashboardOut:
+      properties:
+        total_patients:
+          type: integer
+          title: Total Patients
+        active_treatments:
+          type: integer
+          title: Active Treatments
+        treatments_ending_soon:
+          type: integer
+          title: Treatments Ending Soon
+          description: Tratamentos ativos com término nos próximos 7 dias
+        reminders_sent:
+          type: integer
+          title: Reminders Sent
+        doses_confirmed:
+          type: integer
+          title: Doses Confirmed
+        doses_not_taken:
+          type: integer
+          title: Doses Not Taken
+          description: Declarado explicitamente pelo paciente, não inferido
+        doses_unconfirmed:
+          type: integer
+          title: Doses Unconfirmed
+          description: 'Sem resposta — RN12: não significa que o medicamento não foi
+            tomado'
+      type: object
+      required:
+      - total_patients
+      - active_treatments
+      - treatments_ending_soon
+      - reminders_sent
+      - doses_confirmed
+      - doses_not_taken
+      - doses_unconfirmed
+      title: DashboardOut
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    LoginChallengeOut:
+      properties:
+        pre_auth_token:
+          type: string
+          title: Pre Auth Token
+        purpose:
+          type: string
+          enum:
+          - mfa_setup
+          - mfa_verify
+          title: Purpose
+          description: 'mfa_setup: 1º login, precisa configurar o MFA. mfa_verify:
+            já tem MFA, envie o código.'
+      type: object
+      required:
+      - pre_auth_token
+      - purpose
+      title: LoginChallengeOut
+    LoginRequest:
+      properties:
+        email:
+          type: string
+          format: email
+          title: Email
+        password:
+          type: string
+          minLength: 1
+          title: Password
+      type: object
+      required:
+      - email
+      - password
+      title: LoginRequest
+    MedicationCreate:
+      properties:
+        name:
+          type: string
+          maxLength: 200
+          minLength: 1
+          title: Name
+        dosage:
+          type: string
+          maxLength: 100
+          minLength: 1
+          title: Dosage
+        quantity:
+          type: string
+          maxLength: 100
+          minLength: 1
+          title: Quantity
+        instructions:
+          anyOf:
+          - type: string
+            maxLength: 500
+          - type: 'null'
+          title: Instructions
+        audio_text:
+          anyOf:
+          - type: string
+            maxLength: 500
+          - type: 'null'
+          title: Audio Text
+          description: Descrição opcional falada (TTS) no lembrete (RF02)
+        photo_path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Photo Path
+          description: Caminho local da fotografia da embalagem (RF03)
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: End Date
+        schedules:
+          items:
+            $ref: '#/components/schemas/ScheduleCreate'
+          type: array
+          minItems: 1
+          title: Schedules
+          description: Ao menos um horário é obrigatório (RN02)
+      type: object
+      required:
+      - name
+      - dosage
+      - quantity
+      - start_date
+      - schedules
+      title: MedicationCreate
+    MedicationOut:
+      properties:
+        id:
+          type: integer
+          title: Id
+        user_id:
+          type: integer
+          title: User Id
+        name:
+          type: string
+          title: Name
+        dosage:
+          type: string
+          title: Dosage
+        quantity:
+          type: string
+          title: Quantity
+        instructions:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instructions
+        audio_text:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Audio Text
+        photo_path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Photo Path
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: End Date
+        active:
+          type: boolean
+          title: Active
+        schedules:
+          items:
+            $ref: '#/components/schemas/ScheduleOut'
+          type: array
+          title: Schedules
+          default: []
+      type: object
+      required:
+      - id
+      - user_id
+      - name
+      - dosage
+      - quantity
+      - instructions
+      - audio_text
+      - photo_path
+      - start_date
+      - end_date
+      - active
+      title: MedicationOut
+    MedicationUpdate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            maxLength: 200
+            minLength: 1
+          - type: 'null'
+          title: Name
+        dosage:
+          anyOf:
+          - type: string
+            maxLength: 100
+            minLength: 1
+          - type: 'null'
+          title: Dosage
+        quantity:
+          anyOf:
+          - type: string
+            maxLength: 100
+            minLength: 1
+          - type: 'null'
+          title: Quantity
+        instructions:
+          anyOf:
+          - type: string
+            maxLength: 500
+          - type: 'null'
+          title: Instructions
+        audio_text:
+          anyOf:
+          - type: string
+            maxLength: 500
+          - type: 'null'
+          title: Audio Text
+        start_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Start Date
+        end_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: End Date
+        active:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Active
+        photo_path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Photo Path
+        schedules:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ScheduleCreate'
+            type: array
+          - type: 'null'
+          title: Schedules
+          description: Quando enviado, substitui todos os horários existentes (CT10)
+      type: object
+      title: MedicationUpdate
+    MfaCodeRequest:
+      properties:
+        pre_auth_token:
+          type: string
+          title: Pre Auth Token
+        code:
+          type: string
+          maxLength: 6
+          minLength: 6
+          title: Code
+      type: object
+      required:
+      - pre_auth_token
+      - code
+      title: MfaCodeRequest
+    MfaSetupStartResponse:
+      properties:
+        provisioning_uri:
+          type: string
+          title: Provisioning Uri
+          description: otpauth:// URI — renderize como QR Code no frontend
+        pre_auth_token:
+          type: string
+          title: Pre Auth Token
+      type: object
+      required:
+      - provisioning_uri
+      - pre_auth_token
+      title: MfaSetupStartResponse
+    PasswordResetConfirmRequest:
+      properties:
+        token:
+          type: string
+          title: Token
+        new_password:
+          type: string
+          maxLength: 128
+          minLength: 8
+          title: New Password
+      type: object
+      required:
+      - token
+      - new_password
+      title: PasswordResetConfirmRequest
+    PasswordResetRequest:
+      properties:
+        email:
+          type: string
+          format: email
+          title: Email
+      type: object
+      required:
+      - email
+      title: PasswordResetRequest
+    PatientCreateRequest:
+      properties:
+        full_name:
+          type: string
+          maxLength: 200
+          minLength: 1
+          title: Full Name
+        internal_identifier:
+          type: string
+          maxLength: 100
+          minLength: 1
+          title: Internal Identifier
+          description: Identificador interno único (não usar CPF)
+        birth_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Birth Date
+        contact:
+          anyOf:
+          - type: string
+            maxLength: 100
+          - type: 'null'
+          title: Contact
+          description: Só preencher quando autorizado (RF03)
+      type: object
+      required:
+      - full_name
+      - internal_identifier
+      title: PatientCreateRequest
+    PatientInviteOut:
+      properties:
+        invite_id:
+          type: integer
+          title: Invite Id
+        token:
+          type: string
+          title: Token
+          description: Só aparece nesta resposta — guarde/entregue ao paciente agora
+        telegram_deep_link:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Telegram Deep Link
+          description: Link clicável (abre o bot direto); None se TELEGRAM_BOT_USERNAME
+            não configurado
+        instructions:
+          type: string
+          title: Instructions
+        expires_at:
+          type: string
+          format: date-time
+          title: Expires At
+      type: object
+      required:
+      - invite_id
+      - token
+      - instructions
+      - expires_at
+      title: PatientInviteOut
+    PatientOut:
+      properties:
+        id:
+          type: integer
+          title: Id
+        full_name:
+          type: string
+          title: Full Name
+        internal_identifier:
+          type: string
+          title: Internal Identifier
+        birth_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Birth Date
+        contact:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Contact
+        telegram_link_status:
+          type: string
+          title: Telegram Link Status
+        created_by_professional_id:
+          type: integer
+          title: Created By Professional Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - full_name
+      - internal_identifier
+      - birth_date
+      - contact
+      - telegram_link_status
+      - created_by_professional_id
+      - created_at
+      title: PatientOut
+    PreAuthTokenRequest:
+      properties:
+        pre_auth_token:
+          type: string
+          title: Pre Auth Token
+      type: object
+      required:
+      - pre_auth_token
+      title: PreAuthTokenRequest
+    ProfessionalOut:
+      properties:
+        id:
+          type: integer
+          title: Id
+        full_name:
+          type: string
+          title: Full Name
+        email:
+          type: string
+          title: Email
+        role:
+          type: string
+          title: Role
+        profession:
+          type: string
+          title: Profession
+        council_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Council Type
+        council_number:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Council Number
+        council_state:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Council State
+        institution:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Institution
+        verification_status:
+          type: string
+          title: Verification Status
+        active:
+          type: boolean
+          title: Active
+        mfa_enabled:
+          type: boolean
+          title: Mfa Enabled
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - full_name
+      - email
+      - role
+      - profession
+      - council_type
+      - council_number
+      - council_state
+      - institution
+      - verification_status
+      - active
+      - mfa_enabled
+      - created_at
+      title: ProfessionalOut
+    ProfessionalSignupRequest:
+      properties:
+        full_name:
+          type: string
+          maxLength: 200
+          minLength: 1
+          title: Full Name
+        email:
+          type: string
+          format: email
+          title: Email
+        password:
+          type: string
+          maxLength: 128
+          minLength: 8
+          title: Password
+        role:
+          type: string
+          enum:
+          - admin
+          - medico
+          - enfermeiro
+          - outro_profissional
+          title: Role
+        profession:
+          type: string
+          maxLength: 100
+          minLength: 1
+          title: Profession
+        council_type:
+          anyOf:
+          - type: string
+            maxLength: 20
+          - type: 'null'
+          title: Council Type
+        council_number:
+          anyOf:
+          - type: string
+            maxLength: 50
+          - type: 'null'
+          title: Council Number
+        council_state:
+          anyOf:
+          - type: string
+            maxLength: 2
+          - type: 'null'
+          title: Council State
+        institution:
+          anyOf:
+          - type: string
+            maxLength: 200
+          - type: 'null'
+          title: Institution
+      type: object
+      required:
+      - full_name
+      - email
+      - password
+      - role
+      - profession
+      title: ProfessionalSignupRequest
+    ProfessionalVerifyRequest:
+      properties:
+        verification_status:
+          type: string
+          enum:
+          - verified
+          - rejected
+          - pending
+          title: Verification Status
+      type: object
+      required:
+      - verification_status
+      title: ProfessionalVerifyRequest
+    ReminderEventOut:
+      properties:
+        id:
+          type: integer
+          title: Id
+        medication_id:
+          type: integer
+          title: Medication Id
+        scheduled_datetime:
+          type: string
+          format: date-time
+          title: Scheduled Datetime
+        delivery_datetime:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Delivery Datetime
+        confirmed_datetime:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Confirmed Datetime
+        status:
+          type: string
+          title: Status
+        snooze_count:
+          type: integer
+          title: Snooze Count
+      type: object
+      required:
+      - id
+      - medication_id
+      - scheduled_datetime
+      - delivery_datetime
+      - confirmed_datetime
+      - status
+      - snooze_count
+      title: ReminderEventOut
+    ReminderSnoozeRequest:
+      properties:
+        minutes:
+          type: integer
+          enum:
+          - 5
+          - 10
+          - 15
+          - 30
+          title: Minutes
+          description: Opções de adiamento permitidas (RF08)
+      type: object
+      required:
+      - minutes
+      title: ReminderSnoozeRequest
+    ScheduleCreate:
+      properties:
+        recurrence_type:
+          type: string
+          enum:
+          - daily
+          - weekly
+          - interval
+          title: Recurrence Type
+        schedule_time:
+          anyOf:
+          - type: string
+            format: time
+          - type: 'null'
+          title: Schedule Time
+          description: Horário fixo (obrigatório para daily/weekly)
+        interval_hours:
+          anyOf:
+          - type: integer
+            maximum: 24.0
+            minimum: 1.0
+          - type: 'null'
+          title: Interval Hours
+          description: Intervalo em horas (obrigatório para interval)
+        weekdays:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Weekdays
+          description: 'Dias da semana separados por vírgula, ex.: ''mon,wed,fri''
+            (obrigatório para weekly)'
+        timezone:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Timezone
+          description: Fuso horário; se omitido, usa o fuso do usuário
+      type: object
+      required:
+      - recurrence_type
+      title: ScheduleCreate
+    ScheduleOut:
+      properties:
+        id:
+          type: integer
+          title: Id
+        medication_id:
+          type: integer
+          title: Medication Id
+        recurrence_type:
+          type: string
+          title: Recurrence Type
+        schedule_time:
+          anyOf:
+          - type: string
+            format: time
+          - type: 'null'
+          title: Schedule Time
+        interval_hours:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Interval Hours
+        weekdays:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Weekdays
+        timezone:
+          type: string
+          title: Timezone
+      type: object
+      required:
+      - id
+      - medication_id
+      - recurrence_type
+      - schedule_time
+      - interval_hours
+      - weekdays
+      - timezone
+      title: ScheduleOut
+    TokenRequest:
+      properties:
+        telegram_user_id:
+          type: integer
+          title: Telegram User Id
+          description: Identificador numérico do usuário no Telegram
+        timezone:
+          type: string
+          title: Timezone
+          description: Fuso horário do usuário
+          default: America/Sao_Paulo
+      type: object
+      required:
+      - telegram_user_id
+      title: TokenRequest
+    TokenResponse:
+      properties:
+        access_token:
+          type: string
+          title: Access Token
+        token_type:
+          type: string
+          title: Token Type
+          default: bearer
+        expires_in:
+          type: integer
+          title: Expires In
+          description: Tempo de expiração do token em segundos
+      type: object
+      required:
+      - access_token
+      - expires_in
+      title: TokenResponse
+    TreatmentMedicationCreateRequest:
+      properties:
+        medication_name:
+          type: string
+          maxLength: 200
+          minLength: 1
+          title: Medication Name
+        active_ingredient:
+          anyOf:
+          - type: string
+            maxLength: 200
+          - type: 'null'
+          title: Active Ingredient
+        presentation:
+          anyOf:
+          - type: string
+            maxLength: 100
+          - type: 'null'
+          title: Presentation
+        route:
+          anyOf:
+          - type: string
+            maxLength: 100
+          - type: 'null'
+          title: Route
+        dosage:
+          type: string
+          maxLength: 100
+          minLength: 1
+          title: Dosage
+        dosage_unit:
+          anyOf:
+          - type: string
+            maxLength: 50
+          - type: 'null'
+          title: Dosage Unit
+        quantity_per_administration:
+          type: string
+          maxLength: 100
+          minLength: 1
+          title: Quantity Per Administration
+        frequency_description:
+          anyOf:
+          - type: string
+            maxLength: 200
+          - type: 'null'
+          title: Frequency Description
+        instructions:
+          anyOf:
+          - type: string
+            maxLength: 500
+          - type: 'null'
+          title: Instructions
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: End Date
+        photo_path:
+          anyOf:
+          - type: string
+            maxLength: 300
+          - type: 'null'
+          title: Photo Path
+        schedules:
+          items:
+            $ref: '#/components/schemas/ScheduleCreate'
+          type: array
+          minItems: 1
+          title: Schedules
+          description: Ao menos um horário é obrigatório
+      type: object
+      required:
+      - medication_name
+      - dosage
+      - quantity_per_administration
+      - start_date
+      - schedules
+      title: TreatmentMedicationCreateRequest
+    TreatmentMedicationOut:
+      properties:
+        id:
+          type: integer
+          title: Id
+        treatment_plan_id:
+          type: integer
+          title: Treatment Plan Id
+        medication_name:
+          type: string
+          title: Medication Name
+        active_ingredient:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Active Ingredient
+        presentation:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Presentation
+        route:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Route
+        dosage:
+          type: string
+          title: Dosage
+        dosage_unit:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Dosage Unit
+        quantity_per_administration:
+          type: string
+          title: Quantity Per Administration
+        frequency_description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Frequency Description
+        instructions:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instructions
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: End Date
+        status:
+          type: string
+          title: Status
+        photo_path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Photo Path
+        linked_medication_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Linked Medication Id
+        previous_version_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Previous Version Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        schedules:
+          items:
+            $ref: '#/components/schemas/TreatmentScheduleOut'
+          type: array
+          title: Schedules
+          default: []
+      type: object
+      required:
+      - id
+      - treatment_plan_id
+      - medication_name
+      - active_ingredient
+      - presentation
+      - route
+      - dosage
+      - dosage_unit
+      - quantity_per_administration
+      - frequency_description
+      - instructions
+      - start_date
+      - end_date
+      - status
+      - photo_path
+      - linked_medication_id
+      - previous_version_id
+      - created_at
+      - updated_at
+      title: TreatmentMedicationOut
+    TreatmentMedicationUpdateRequest:
+      properties:
+        medication_name:
+          anyOf:
+          - type: string
+            maxLength: 200
+            minLength: 1
+          - type: 'null'
+          title: Medication Name
+        active_ingredient:
+          anyOf:
+          - type: string
+            maxLength: 200
+          - type: 'null'
+          title: Active Ingredient
+        presentation:
+          anyOf:
+          - type: string
+            maxLength: 100
+          - type: 'null'
+          title: Presentation
+        route:
+          anyOf:
+          - type: string
+            maxLength: 100
+          - type: 'null'
+          title: Route
+        dosage:
+          anyOf:
+          - type: string
+            maxLength: 100
+            minLength: 1
+          - type: 'null'
+          title: Dosage
+        dosage_unit:
+          anyOf:
+          - type: string
+            maxLength: 50
+          - type: 'null'
+          title: Dosage Unit
+        quantity_per_administration:
+          anyOf:
+          - type: string
+            maxLength: 100
+            minLength: 1
+          - type: 'null'
+          title: Quantity Per Administration
+        frequency_description:
+          anyOf:
+          - type: string
+            maxLength: 200
+          - type: 'null'
+          title: Frequency Description
+        instructions:
+          anyOf:
+          - type: string
+            maxLength: 500
+          - type: 'null'
+          title: Instructions
+        start_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Start Date
+        end_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: End Date
+        photo_path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Photo Path
+        schedules:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ScheduleCreate'
+            type: array
+          - type: 'null'
+          title: Schedules
+          description: Quando enviado, substitui todos os horários (RF07)
+      type: object
+      title: TreatmentMedicationUpdateRequest
+    TreatmentScheduleOut:
+      properties:
+        id:
+          type: integer
+          title: Id
+        treatment_medication_id:
+          type: integer
+          title: Treatment Medication Id
+        recurrence_type:
+          type: string
+          title: Recurrence Type
+        schedule_time:
+          anyOf:
+          - type: string
+            format: time
+          - type: 'null'
+          title: Schedule Time
+        interval_hours:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Interval Hours
+        weekdays:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Weekdays
+        timezone:
+          type: string
+          title: Timezone
+      type: object
+      required:
+      - id
+      - treatment_medication_id
+      - recurrence_type
+      - schedule_time
+      - interval_hours
+      - weekdays
+      - timezone
+      title: TreatmentScheduleOut
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      description: Token JWT emitido por POST /api/v1/auth/token (independente do
+        token do bot Telegram).
+      scheme: bearer
+    APIKeyCookie:
+      type: apiKey
+      description: Cookie httpOnly de sessão, emitido após login + MFA do profissional.
+      in: cookie
+      name: hdr_professional_session
+tags:
+- name: Saúde
+  description: Verificação do estado do serviço.
+- name: Autenticação
+  description: Emissão de tokens de acesso à API, independentes do token do bot.
+- name: Medicamentos
+  description: Cadastro, consulta, atualização e exclusão de medicamentos.
+- name: Agendamentos
+  description: Consulta dos horários configurados para cada medicamento.
+- name: Lembretes
+  description: Lembretes do dia, confirmação de administração e adiamento.
+- name: Histórico
+  description: Consulta de doses programadas, confirmadas e não confirmadas.
+- name: Relatórios
+  description: Relatórios de adesão declarada, em JSON ou CSV.
+- name: Cuidadores
+  description: Autorização, listagem e revogação de acesso de cuidadores.
+- name: Portal — Autenticação
+  description: Cadastro, login em duas etapas (senha + MFA), sessão por cookie e recuperação
+    de acesso para profissionais de saúde.
+- name: Portal — Pacientes
+  description: Cadastro de pacientes e geração de convites para vincular o paciente
+    ao bot do Telegram.
+- name: Portal — Tratamentos
+  description: Edição, ativação, suspensão e histórico de versões de esquemas terapêuticos.
+- name: Portal — Dashboard
+  description: 'Painel operacional: pacientes, tratamentos e confirmações declaradas.'
+- name: Portal — Administração
+  description: Verificação de profissionais e consulta à trilha de auditoria (admin).
