@@ -1,5 +1,10 @@
 # Acessibilidade
 
+> ⚠️ **Estas decisões não foram validadas com usuários.** Nenhuma pessoa do público-alvo foi
+> consultada: as escolhas abaixo são hipóteses bem fundamentadas, não achados de pesquisa. O plano
+> para mudar isso está em [Roteiro de Validação com Usuários](Roteiro-de-Validacao-com-Usuarios)
+> (card [#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40)).
+
 O público-alvo do bot são **pessoas idosas, não alfabetizadas ou com dificuldade de leitura e
 visão**. Isso não é um detalhe de interface: condiciona decisões de arquitetura.
 

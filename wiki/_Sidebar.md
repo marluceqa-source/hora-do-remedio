@@ -17,6 +17,7 @@
 - [Gerenciamento](Gerenciamento-de-Requisitos)
 - [Priorização e backlog](Priorizacao-e-Backlog)
 - [Validação e verificação](Validacao-e-Verificacao)
+- [Roteiro de validação com usuários](Roteiro-de-Validacao-com-Usuarios)
 - [Glossário](Glossario)
 
 **Regras de negócio**
