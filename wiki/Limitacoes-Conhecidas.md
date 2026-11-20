@@ -44,7 +44,7 @@ A suíte de backend está verde: **160 testes passando**, 86% de cobertura.
 | Lacuna | Situação |
 |---|---|
 | **Docker não cobre o portal** | `Dockerfile` e `docker-compose.yml` não têm nenhuma referência a Node, npm ou `frontend/`. O portal web **não é empacotado nem servido** pela infraestrutura Docker atual. |
-| **README não menciona o portal** | Zero ocorrências de "portal" ou "profissional" no `README.md`. A documentação principal descreve apenas o bot e a API — alguém que clone o repositório não descobre que o portal existe. |
+| **Seed não cobre o portal** | `scripts/seed_test_data.py` cria apenas dados do lado do paciente — **não cria profissionais, pacientes do portal nem planos de tratamento**. Para experimentar o portal é preciso criar a conta pelo `/signup` e passar pelo MFA. |
 
 ---
 
