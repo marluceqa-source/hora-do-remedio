@@ -34,7 +34,7 @@ gerenciamento de requisitos (Definição 1-2, p. 16). No Hora do Remédio, esse 
 
 | Produto de trabalho | Onde está | Papel |
 |---|---|---|
-| **Prompt master** | [`Criacao/# PROMPT MASTER — HORA DO REMÉDIO 💊.md`](../blob/main/Criacao/%23%20PROMPT%20MASTER%20%E2%80%94%20HORA%20DO%20REM%C3%89DIO%20%F0%9F%92%8A.md) | Especificação de requisitos do cliente: RF01–RF14, RN01–RN18, CT01–CT42 e critérios de aceite do bot/API. |
+| **Prompt master** | **Não versionado** — pasta local `Criacao/` | Especificação de requisitos do cliente: RF01–RF14, RN01–RN18, CT01–CT42 e critérios de aceite do bot/API. Citado nesta wiki por seção (ex.: "prompt §7"). |
 | **Especificação do portal** | **Não está no repositório** | Origem declarada de RF01–RF08 e RN19–RN32 do portal. Ver [limitação](#5-pontos-de-atenção-e-riscos). |
 | **Requisitos funcionais** | [Requisitos Funcionais](Requisitos-Funcionais) | RF do bot/API e RF do portal, com apontamento para o código. |
 | **Requisitos de qualidade e restrições** | [Requisitos Não Funcionais](Requisitos-Nao-Funcionais) | RNF01–RNF16, especificados nesta documentação a partir do prompt master e do código. |
@@ -103,6 +103,7 @@ pelos RF e pelos testes. Essa é uma convenção deste projeto, herdada do promp
 |---|---|
 | **Nenhuma elicitação direta com usuários reais** ([#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40)) | O público-alvo declarado é composto por pessoas idosas, não alfabetizadas ou com baixa visão. Nenhuma entrevista, observação de campo ou investigação contextual foi realizada — são exatamente as técnicas que o Handbook de Elicitação indica para esse perfil (§3.1.1 e §3.1.2, p. 68 e p. 79). As decisões de acessibilidade são, hoje, **hipóteses bem fundamentadas, não achados validados**. |
 | **A especificação do portal não está no repositório** ([#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23)) | RN29 e RN31 não têm correspondência no código e não há documento-fonte para conferir. Sem a fonte, a lacuna não pode ser fechada — só registrada. |
+| **As duas fontes primárias ficam fora do repositório** | O prompt master é mantido apenas localmente e a especificação do portal não existe aqui. Quem clonar o projeto **não alcança** as fontes dos requisitos: depende desta wiki, que por isso cita prompt e seção em cada afirmação em vez de só apontar o arquivo. É uma escolha deliberada de quem mantém o projeto, e o custo dela é este. |
 | **Dois cenários de teste sem cobertura rastreável** ([#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35), [#36](https://github.com/marluceqa-source/hora-do-remedio/issues/36)) | Dos 42 cenários CT do prompt master, **40 estão anotados** nos testes. Faltam CT17 e CT28 — e o estado `expired` de um lembrete **nunca é atribuído por nenhum código**. Ver [Matriz de Rastreabilidade](Matriz-de-Rastreabilidade#4-análise-de-cobertura). |
 | **Requisitos de qualidade eram implícitos** ([#43](https://github.com/marluceqa-source/hora-do-remedio/issues/43)) | Antes desta documentação, os requisitos não funcionais existiam espalhados pelo prompt master (seções 8, 11, 12 e 13) e pelo `core/config.py`, sem identificador. Sem ID não há priorização nem rastreabilidade — é a motivação do Handbook de Gerenciamento de Requisitos para o esquema de atributos (§3.1, p. 41). |
 
