@@ -80,7 +80,7 @@ inteiramente ao último grupo.
 | **Workshop de requisitos** (§3.1.3, p. 90) | Alinhar médico, enfermeiro e paciente sobre quem pode ativar um tratamento. | RN20 foi decidida sem contraditório clínico. |
 | **Protótipos** (§3.2.3, p. 111) | Testar a compreensão dos ícones e dos áudios antes de implementar. | Os símbolos (💊 📷 🔊 🎤 ✅ ❌ ⏰) vieram do prompt master, sem teste de compreensão. |
 
-Essas lacunas estão registradas como cards — ver [Priorização e Backlog](Priorizacao-e-Backlog).
+Essas lacunas estão registradas no card [#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40) — ver também [Priorização e Backlog](Priorizacao-e-Backlog).
 
 ---
 

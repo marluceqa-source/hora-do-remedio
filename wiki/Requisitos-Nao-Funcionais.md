@@ -68,9 +68,9 @@ requisito de qualidade **ou** uma restrição" (p. 27) — ou seja, o guarda-chu
 | **RNF18** | Toda operação sensível do portal deve ser **auditável** (ator, papel, ação, momento). | Especificação do portal; RN32 | `services/audit_service.py`, tabela `AuditLog` | garantido |
 
 > **RNF13 é parcial** porque `PROFESSIONAL_SESSION_SECRET_KEY` tem valor padrão
-> (`change-me-professional-session`) e **precisa ser trocado** antes de qualquer uso real.
-> **RNF17 é parcial** porque o parâmetro existe mas nenhum job apaga registros antigos. Os dois
-> estão em [Limitações Conhecidas](Limitacoes-Conhecidas) e têm card aberto.
+> (`change-me-professional-session`) e **precisa ser trocado** antes de qualquer uso real (card [#30](https://github.com/marluceqa-source/hora-do-remedio/issues/30)).
+> **RNF17 é parcial** porque o parâmetro existe mas nenhum job apaga registros antigos (card [#22](https://github.com/marluceqa-source/hora-do-remedio/issues/22)).
+> Os dois estão em [Limitações Conhecidas](Limitacoes-Conhecidas).
 
 ---
 
@@ -85,7 +85,7 @@ requisito de qualidade **ou** uma restrição" (p. 27) — ou seja, o guarda-chu
 | **RNF23** | Os serviços devem reiniciar sozinhos e encerrar de forma graciosa; o agendador roda em **instância única**. | Prompt master §13 | `docker-compose.yml` (`restart: unless-stopped`, `replicas: 1` no serviço `bot`) | parcial |
 
 > **RNF23 é parcial**: o Compose documenta e fixa uma réplica, mas **não há coordenação
-> (lock distribuído)** que impeça duplicação se alguém subir uma segunda instância do bot.
+> (lock distribuído)** que impeça duplicação se alguém subir uma segunda instância do bot (card [#33](https://github.com/marluceqa-source/hora-do-remedio/issues/33)).
 
 ---
 
@@ -102,7 +102,7 @@ requisito de qualidade **ou** uma restrição" (p. 27) — ou seja, o guarda-chu
 | **RES07** | O sistema **não prescreve** e não recomenda alteração de dose (RN13); reconhecimento automático nunca autoriza mudança de prescrição. | Prompt master §7 e §8 |
 
 > **RES06 está apenas declarada.** Não existe hoje rota de exportação nem de exclusão de dados
-> do titular — ver [Limitações Conhecidas](Limitacoes-Conhecidas) e o card correspondente.
+> do titular — card [#42](https://github.com/marluceqa-source/hora-do-remedio/issues/42).
 
 ---
 
@@ -123,7 +123,7 @@ RNF19 não define tempo de resposta aceitável do `/health`.
 > verificados objetivamente. Essa recomendação **não** vem dos documentos do IREB listados
 > nesta wiki.
 
-Fechar isso é um item de backlog, não uma afirmação de conformidade.
+Fechar isso é um item de backlog (card [#43](https://github.com/marluceqa-source/hora-do-remedio/issues/43)), não uma afirmação de conformidade.
 
 ---
 

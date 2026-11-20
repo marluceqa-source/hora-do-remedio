@@ -69,7 +69,7 @@ orientação de só adotar o que alguém realmente usa (§3.4.1, p. 47), este pr
 | Atributo do handbook | Por que não |
 |---|---|
 | **Esforço** (Tabela 3) | Não há estimativa por requisito; o projeto não trabalha com orçamento de horas. |
-| **Estabilidade** e **Criticidade** (Tabela 2) | Seriam úteis, mas não há dado histórico para preenchê-los sem inventar. **Candidatos a adoção** — criticidade ajudaria a priorizar RN13 e RN17. |
+| **Estabilidade** e **Criticidade** (Tabela 2) | Seriam úteis, mas não há dado histórico para preenchê-los sem inventar. **Candidatos a adoção** — criticidade ajudaria a priorizar RN13 ([#34](https://github.com/marluceqa-source/hora-do-remedio/issues/34)) e RN17 ([#22](https://github.com/marluceqa-source/hora-do-remedio/issues/22)). |
 | **Liberação** (Tabela 3) | Não existem releases nem marcos no repositório (ver [§4](#4-versionamento)). |
 | **Proprietária** (Tabela 3) | Projeto de uma pessoa; o atributo seria constante. |
 | **Responsabilidade legal** (Tabela 3) | Relevante para LGPD, mas exigiria análise jurídica que não foi feita. |
@@ -124,7 +124,7 @@ marcação de versão. O handbook aponta que baselines servem ao planejamento e 
 releases (Glossário, p. 3; §5.1, p. 85) — sem elas, não é possível dizer "esta é a especificação
 da versão X" com precisão.
 
-> **Recomendação registrada como card:** criar uma tag no repositório e uma seção de versão na
+> **Recomendação registrada no card [#38](https://github.com/marluceqa-source/hora-do-remedio/issues/38):** criar uma tag no repositório e uma seção de versão na
 > [Home](Home) da wiki, formando a primeira baseline — a especificação como ela está no
 > encerramento do projeto final.
 
@@ -185,7 +185,7 @@ O que existe hoje:
 | Divergência entre OpenAPI e rotas | `tests/contract/test_openapi_contract.py` | A cada execução da suíte |
 | Suíte na CI | [`.github/workflows/tests.yml`](../blob/main/.github/workflows/tests.yml) | A cada push |
 
-**O que falta:** nenhum relatório mostra *o estado dos requisitos* (quantos garantidos, parciais,
+**O que falta** (card [#44](https://github.com/marluceqa-source/hora-do-remedio/issues/44)): nenhum relatório mostra *o estado dos requisitos* (quantos garantidos, parciais,
 declarados) de forma automática — hoje isso é contado à mão nas páginas desta wiki, e por isso
 pode envelhecer. O handbook alerta justamente contra relatórios que dão falsa confiança
 (§8.3, p. 185).

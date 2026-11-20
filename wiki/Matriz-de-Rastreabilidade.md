@@ -129,8 +129,8 @@ Os 42 cenários CT do prompt master (§11) rastreados até o arquivo de teste. A
 
 | Cenário | Situação |
 |---|---|
-| **CT17** — "Botões antigos ou expirados" | **Sem teste e sem implementação.** O status `expired` existe na `CheckConstraint` de `ReminderEvent`, é tratado como "sem confirmação" nos relatórios e tem rótulo no bot, mas **nenhum código atribui esse status**. Ver [Modelagem de Requisitos](Modelagem-de-Requisitos#52-evento-de-lembrete-reminderevent-status). |
-| **CT28** — "Acesso autorizado de cuidador" | **Comportamento coberto, rastreabilidade não.** `tests/api/test_caregivers.py` e `tests/unit/test_caregiver_service.py` exercitam exatamente isso, mas sem o identificador `ct28` no nome — então o cenário não aparece em uma busca por cobertura. |
+| **CT17** — "Botões antigos ou expirados" ([#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35)) | **Sem teste e sem implementação.** O status `expired` existe na `CheckConstraint` de `ReminderEvent`, é tratado como "sem confirmação" nos relatórios e tem rótulo no bot, mas **nenhum código atribui esse status**. Ver [Modelagem de Requisitos](Modelagem-de-Requisitos#52-evento-de-lembrete-reminderevent-status). |
+| **CT28** — "Acesso autorizado de cuidador" ([#36](https://github.com/marluceqa-source/hora-do-remedio/issues/36)) | **Comportamento coberto, rastreabilidade não.** `tests/api/test_caregivers.py` e `tests/unit/test_caregiver_service.py` exercitam exatamente isso, mas sem o identificador `ct28` no nome — então o cenário não aparece em uma busca por cobertura. |
 
 > **Cobertura rastreável: 40 de 42 cenários (95%).** A suíte tem 160 testes e 86% de cobertura
 > de linhas — número que vem da execução registrada no card
@@ -176,7 +176,7 @@ Os 42 cenários CT do prompt master (§11) rastreados até o arquivo de teste. A
 
 A verificação de cada RNF está na própria página
 [Requisitos Não Funcionais](Requisitos-Nao-Funcionais), coluna "Verificação". Os que **não têm**
-verificação automatizada hoje: RNF05, RNF15, RNF17, RES06.
+verificação automatizada hoje: RNF05, RNF15, RNF17 ([#22](https://github.com/marluceqa-source/hora-do-remedio/issues/22)) e RES06 ([#42](https://github.com/marluceqa-source/hora-do-remedio/issues/42)).
 
 ---
 
@@ -205,10 +205,10 @@ sensível do sistema do ponto de vista clínico.
 
 | Lacuna | Efeito |
 |---|---|
-| **RN01, RN08, RN14 sem marcação no código** | Quem alterar esses arquivos não vê que há regra documentada ali. |
-| **Sem atributo de versão por requisito** | A dimensão "entre versões de requisitos" (§6.2) é coberta só pelo histórico do Git. |
+| **RN01, RN08, RN14 sem marcação no código** ([#37](https://github.com/marluceqa-source/hora-do-remedio/issues/37)) | Quem alterar esses arquivos não vê que há regra documentada ali. |
+| **Sem atributo de versão por requisito** ([#38](https://github.com/marluceqa-source/hora-do-remedio/issues/38)) | A dimensão "entre versões de requisitos" (§6.2) é coberta só pelo histórico do Git. |
 | **RNF sem marcação no código** | Os RNF foram criados nesta documentação e ainda não têm referência nos arquivos. |
-| **Rastreabilidade mantida à mão** | Nenhuma ferramenta de ER é usada (§11 do handbook de gerenciamento, p. 219): a matriz pode envelhecer sem aviso. |
+| **Rastreabilidade mantida à mão** ([#44](https://github.com/marluceqa-source/hora-do-remedio/issues/44)) | Nenhuma ferramenta de ER é usada (§11 do handbook de gerenciamento, p. 219): a matriz pode envelhecer sem aviso. |
 
 ---
 

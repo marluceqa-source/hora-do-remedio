@@ -71,20 +71,21 @@ ordenar.
 | Item | Card | Ben. | Dano | Custo | Risco | Pontuação |
 |---|---|---|---|---|---|---|
 | Trocar os segredos padrão | [#30](https://github.com/marluceqa-source/hora-do-remedio/issues/30) | 7 | 9 | 1 | 1 | **15,3** |
-| Criar a primeira baseline da especificação | novo | 5 | 4 | 1 | 1 | **9,3** |
-| Marcar RN01, RN08 e RN14 no código | novo | 4 | 3 | 1 | 1 | **7,3** |
-| Conferir os 19 critérios de aceite do prompt master | novo | 6 | 6 | 2 | 1 | **7,2** |
+| Criar a primeira baseline da especificação | [#38](https://github.com/marluceqa-source/hora-do-remedio/issues/38) | 5 | 4 | 1 | 1 | **9,3** |
+| Marcar RN01, RN08 e RN14 no código | [#37](https://github.com/marluceqa-source/hora-do-remedio/issues/37) | 4 | 3 | 1 | 1 | **7,3** |
+| Conferir os 19 critérios de aceite do prompt master | [#39](https://github.com/marluceqa-source/hora-do-remedio/issues/39) | 6 | 6 | 2 | 1 | **7,2** |
 | RN29 e RN31: documentar ou descartar | [#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23) | 5 | 4 | 2 | 1 | **5,6** |
-| Anotar CT28 nos testes de cuidador | novo | 3 | 2 | 1 | 1 | **5,3** |
+| Anotar CT28 nos testes de cuidador | [#36](https://github.com/marluceqa-source/hora-do-remedio/issues/36) | 3 | 2 | 1 | 1 | **5,3** |
 | Validar ao vivo os dois formulários | [#32](https://github.com/marluceqa-source/hora-do-remedio/issues/32) | 4 | 4 | 2 | 1 | **4,8** |
-| Status `expired` nunca atribuído (CT17) | novo | 6 | 6 | 3 | 2 | **4,5** |
+| Status `expired` nunca atribuído (CT17) | [#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35) | 6 | 6 | 3 | 2 | **4,5** |
+| Diretório `tests/accessibility/` vazio | [#41](https://github.com/marluceqa-source/hora-do-remedio/issues/41) | 4 | 3 | 2 | 1 | **4,4** |
 | Testes de acessibilidade com axe-core | [#25](https://github.com/marluceqa-source/hora-do-remedio/issues/25) | 7 | 6 | 4 | 2 | **4,0** |
 | RN17: expurgo automático | [#22](https://github.com/marluceqa-source/hora-do-remedio/issues/22) | 6 | 7 | 4 | 3 | **3,5** |
-| Exportação e exclusão de dados (LGPD) | novo | 7 | 8 | 6 | 3 | **2,9** |
-| Quantificar os requisitos não funcionais | novo | 5 | 4 | 4 | 2 | **2,8** |
-| Relatório do estado dos requisitos | novo | 4 | 3 | 3 | 2 | **2,8** |
-| **Elicitação com o público-alvo real** | novo | 9 | 9 | 8 | 4 | **2,7** |
-| Especificar os casos de uso em texto | novo | 4 | 3 | 4 | 1 | **2,4** |
+| Exportação e exclusão de dados (LGPD) | [#42](https://github.com/marluceqa-source/hora-do-remedio/issues/42) | 7 | 8 | 6 | 3 | **2,9** |
+| Quantificar os requisitos não funcionais | [#43](https://github.com/marluceqa-source/hora-do-remedio/issues/43) | 5 | 4 | 4 | 2 | **2,8** |
+| Relatório do estado dos requisitos | [#44](https://github.com/marluceqa-source/hora-do-remedio/issues/44) | 4 | 3 | 3 | 2 | **2,8** |
+| **Elicitação com o público-alvo real** | [#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40) | 9 | 9 | 8 | 4 | **2,7** |
+| Especificar os casos de uso em texto | [#45](https://github.com/marluceqa-source/hora-do-remedio/issues/45) | 4 | 3 | 4 | 1 | **2,4** |
 | Docker: empacotar o portal | [#26](https://github.com/marluceqa-source/hora-do-remedio/issues/26) | 5 | 4 | 5 | 3 | **2,2** |
 | Agendador: evitar lembretes duplicados | [#33](https://github.com/marluceqa-source/hora-do-remedio/issues/33) | 5 | 8 | 6 | 5 | **2,1** |
 | Testes E2E do portal com Playwright | [#24](https://github.com/marluceqa-source/hora-do-remedio/issues/24) | 6 | 5 | 7 | 3 | **2,0** |
@@ -121,10 +122,10 @@ promovidos acima da ordem numérica. A pontuação organiza; ela não decide.
 | # | Item | Justificativa da posição |
 |---|---|---|
 | 1 | **Trocar os segredos padrão** ([#30](https://github.com/marluceqa-source/hora-do-remedio/issues/30)) | Maior pontuação e risco de segurança real. Custo 1. |
-| 2 | **Corrigir o status `expired`** (novo) | O sistema **declara** um estado que nunca atribui — relatórios tratam `expired`, o bot tem rótulo, nada o produz. É o único caso de comportamento documentado e inexistente. |
-| 3 | **Planejar a elicitação com o público-alvo** (novo) | Promovido pela matriz de risco. "Planejar" porque executar depende de pessoas e tempo; o que entra no P1 é o **plano** e o roteiro de observação. |
-| 4 | **Dívidas de rastreabilidade** (baseline, marcar RN01/RN08/RN14, anotar CT28) | Custo 1 cada, e são o que mantém esta wiki confiável. |
-| 5 | **Conferir os critérios de aceite do prompt master** (novo) | São 19 critérios na seção 15 do prompt master e **nenhum deles tem registro de conferência item a item** — nem no README, nem na wiki. Custo 2. |
+| 2 | **Corrigir o status `expired`** ([#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35)) | O sistema **declara** um estado que nunca atribui — relatórios tratam `expired`, o bot tem rótulo, nada o produz. É o único caso de comportamento documentado e inexistente. |
+| 3 | **Planejar a elicitação com o público-alvo** ([#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40)) | Promovido pela matriz de risco. "Planejar" porque executar depende de pessoas e tempo; o que entra no P1 é o **plano** e o roteiro de observação. |
+| 4 | **Dívidas de rastreabilidade** ([#38](https://github.com/marluceqa-source/hora-do-remedio/issues/38), [#37](https://github.com/marluceqa-source/hora-do-remedio/issues/37), [#36](https://github.com/marluceqa-source/hora-do-remedio/issues/36)) | Custo 1 cada, e são o que mantém esta wiki confiável. |
+| 5 | **Conferir os critérios de aceite do prompt master** ([#39](https://github.com/marluceqa-source/hora-do-remedio/issues/39)) | São 19 critérios na seção 15 do prompt master e **nenhum deles tem registro de conferência item a item** — nem no README, nem na wiki. Custo 2. |
 | 6 | **RN29 e RN31** ([#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23)) | Duas regras sem origem localizável: ou existem e faltam, ou não existem e poluem a numeração. |
 
 ### P2 — próxima rodada
@@ -133,17 +134,18 @@ promovidos acima da ordem numérica. A pontuação organiza; ela não decide.
 |---|---|---|
 | 7 | Testes de acessibilidade com axe-core ([#25](https://github.com/marluceqa-source/hora-do-remedio/issues/25)) | Acessibilidade é o propósito do produto e hoje nenhuma verificação automática a cobre. |
 | 8 | RN17 — expurgo automático ([#22](https://github.com/marluceqa-source/hora-do-remedio/issues/22)) | Regra declarada e não vigente, com implicação legal. |
-| 9 | Exportação e exclusão de dados do titular (novo) | RES06/LGPD está apenas declarada; não há rota alguma. |
+| 9 | Exportação e exclusão de dados do titular ([#42](https://github.com/marluceqa-source/hora-do-remedio/issues/42)) | RES06/LGPD está apenas declarada; não há rota alguma. |
 | 10 | Agendador: lembretes duplicados ([#33](https://github.com/marluceqa-source/hora-do-remedio/issues/33)) | Dano 8: duplicar lembrete de remédio é dano ao paciente. Custo e risco altos, por isso não é P1. |
-| 11 | Validar os formulários ao vivo ([#32](https://github.com/marluceqa-source/hora-do-remedio/issues/32)) | Custo baixo; fecha uma lacuna conhecida de verificação. |
+| 11 | Diretório `tests/accessibility/` vazio ([#41](https://github.com/marluceqa-source/hora-do-remedio/issues/41)) | Estrutura prometida no prompt master (§11) e nunca preenchida. Custo 2. |
+| 12 | Validar os formulários ao vivo ([#32](https://github.com/marluceqa-source/hora-do-remedio/issues/32)) | Custo baixo; fecha uma lacuna conhecida de verificação. |
 
 ### P3 — quando houver folga
 
 | Item | Justificativa |
 |---|---|
-| Quantificar os RNF (novo) | Melhora a especificação; nenhum risco imediato. |
-| Especificar os casos de uso em texto (novo) | Completa a modelagem; conteúdo já existe disperso. |
-| Relatório do estado dos requisitos (novo) | Automatiza o que hoje é contado à mão. |
+| Quantificar os RNF ([#43](https://github.com/marluceqa-source/hora-do-remedio/issues/43)) | Melhora a especificação; nenhum risco imediato. |
+| Especificar os casos de uso em texto ([#45](https://github.com/marluceqa-source/hora-do-remedio/issues/45)) | Completa a modelagem; conteúdo já existe disperso. |
+| Relatório do estado dos requisitos ([#44](https://github.com/marluceqa-source/hora-do-remedio/issues/44)) | Automatiza o que hoje é contado à mão. |
 | Testes E2E do portal ([#24](https://github.com/marluceqa-source/hora-do-remedio/issues/24)) | Custo 7; a suíte de backend já cobre as regras. |
 | Docker para o portal ([#26](https://github.com/marluceqa-source/hora-do-remedio/issues/26)) | Empacotamento, não funcionalidade. |
 | E-mail real na recuperação ([#29](https://github.com/marluceqa-source/hora-do-remedio/issues/29)) | Contornável pelo administrador hoje. |
