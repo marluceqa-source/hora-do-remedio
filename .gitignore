@@ -1,0 +1,44 @@
+# Ambiente Python
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+
+# Variáveis de ambiente e segredos
+.env
+.env.local
+frontend/.env
+frontend/.env.local
+
+# Node / frontend
+node_modules/
+frontend/dist/
+frontend/node_modules/
+frontend/.vite/
+*.tsbuildinfo
+
+# Permissões locais do Claude Code (específicas da máquina)
+.claude/settings.local.json
+
+# Banco de dados local
+database/*.db
+database/*.sqlite3
+
+# Logs
+logs/
+*.log
+
+# Áudio/imagens geradas em runtime (não versionar mídia de usuários)
+assets/audio/tmp/
+assets/uploads/
+
+# Cobertura e relatórios de teste
+.coverage
+htmlcov/
+.pytest_cache/
+reports/
+
+# Editor / SO
+.DS_Store
+.idea/
+.vscode/
