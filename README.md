@@ -1,7 +1,16 @@
 # Hora do Remédio 💊
 
-Aplicação integrada ao Telegram para ajudar pessoas a lembrar de tomar seus medicamentos,
-com uma API REST documentada e foco forte em acessibilidade.
+Sistema de lembretes de medicamentos com foco forte em acessibilidade, composto por **três
+entregas integradas**:
+
+| Entrega | O que é | Para quem |
+|---|---|---|
+| **Bot do Telegram** | Interface de uso diário, navegável só por botões, com áudio, OCR e voz. | Pacientes e cuidadores |
+| **API REST** | Camada documentada em OpenAPI, compartilhada pelo bot, pelo portal e por integrações externas. | Desenvolvedores |
+| **Portal web** | Painel onde profissionais de saúde cadastram pacientes e prescrevem tratamentos. | Profissionais de saúde |
+
+📖 **As regras de negócio completas (RN01–RN32), os requisitos funcionais e as decisões de
+arquitetura estão na [Wiki do projeto](https://github.com/marluceqa-source/hora-do-remedio/wiki).**
 
 O prompt master completo que originou este projeto está em
 [`Criacao/# PROMPT MASTER — HORA DO REMÉDIO 💊.md`](Criacao/%23%20PROMPT%20MASTER%20%E2%80%94%20HORA%20DO%20REM%C3%89DIO%20%F0%9F%92%8A.md).
@@ -16,10 +25,20 @@ Ajudar pessoas a cadastrar seus medicamentos, receber lembretes automáticos no 
 confirmar (ou não) que tomaram a dose, e consultar o histórico — tudo pelo Telegram, com uma
 API REST por trás para integrações (ex.: um app de cuidador).
 
+O **portal web** estende isso para o outro lado da relação: o profissional de saúde prescreve
+o tratamento, e o paciente recebe os lembretes no Telegram sem precisar cadastrar nada.
+
 ### Público-alvo
 
-Pessoas idosas, não alfabetizadas ou com dificuldade de leitura/visão, e seus
-familiares/cuidadores autorizados.
+- **Pacientes:** pessoas idosas, não alfabetizadas ou com dificuldade de leitura/visão.
+- **Cuidadores:** familiares autorizados pelo próprio paciente.
+- **Profissionais de saúde:** médicos, enfermeiros e outros profissionais, no portal web.
+
+### O que o sistema **não** é
+
+- **Não é um prescritor.** Não sugere medicamento, dose ou horário (RN13).
+- **Não mede adesão real.** Mede **adesão declarada**: só o que o paciente confirmou (RN12).
+  Silêncio nunca é registrado como "não tomou".
 
 ### Recursos de acessibilidade
 
@@ -33,10 +52,15 @@ familiares/cuidadores autorizados.
 
 ### Funcionalidades
 
-Cadastro de medicamentos (nome, dosagem, quantidade, horários, datas, observações, foto),
-lembretes automáticos recorrentes (diário, por dias da semana ou por intervalo de horas),
-confirmação/adiamento/"não tomei", histórico filtrável por dia/semana/mês, relatórios de
-adesão declarada (JSON ou CSV), e gestão de acesso de cuidadores.
+**No bot (paciente):** cadastro de medicamentos (nome, dosagem, quantidade, horários, datas,
+observações, foto), lembretes automáticos recorrentes (diário, por dias da semana ou por
+intervalo de horas), confirmação/adiamento/"não tomei", histórico filtrável por
+dia/semana/mês, relatórios de adesão declarada (JSON ou CSV), e gestão de acesso de
+cuidadores.
+
+**No portal (profissional):** autenticação com MFA obrigatório, cadastro de pacientes, vínculo
+do paciente ao Telegram por convite de uso único (QR Code), planos de tratamento versionados
+com ciclo rascunho → ativo → suspenso, painel de adesão declarada e trilha de auditoria.
 
 ### Arquitetura
 
@@ -44,11 +68,19 @@ Dois processos (API e bot) compartilham a mesma camada `services/` — nenhuma r
 é duplicada entre eles. Detalhes completos, incluindo por que só o bot roda o agendador, em
 [`docs/architecture.md`](docs/architecture.md).
 
+O portal **não reimplementou o agendador**: ativar um tratamento *materializa* as entidades
+`Medication`/`Schedule` que o agendador já consumia. Por isso bot, lembretes e histórico
+continuaram funcionando sem alteração — ver
+[Ciclo de Vida do Tratamento](https://github.com/marluceqa-source/hora-do-remedio/wiki/Ciclo-de-Vida-do-Tratamento).
+
 ### Tecnologias
 
-Python 3.12, FastAPI, python-telegram-bot, SQLAlchemy + Alembic, APScheduler, Tesseract OCR,
-faster-whisper (STT), pyttsx3 (TTS), pytest. Lista completa e versões em
-[`requirements.txt`](requirements.txt).
+**Backend:** Python 3.12, FastAPI, python-telegram-bot, SQLAlchemy + Alembic, APScheduler,
+pyotp (TOTP), passlib + bcrypt, Tesseract OCR, faster-whisper (STT), pyttsx3 (TTS), pytest.
+Lista completa e versões em [`requirements.txt`](requirements.txt).
+
+**Portal:** Vite, React 19, TypeScript, MUI v9, React Router, Axios, React Hook Form + Zod,
+`qrcode.react`. Versões em [`frontend/package.json`](frontend/package.json).
 
 ### Limitações
 
@@ -63,6 +95,7 @@ Ver a seção [Limitações conhecidas](#10-limitações-conhecidas) ao final de
 - Python 3.12+
 - Git
 - Tesseract OCR com o pacote de idioma português (`por`)
+- **Node.js 20+ e npm** — só se for rodar o portal web
 - (Opcional, só se for usar Docker) Docker e Docker Compose
 
 ### Clonar o repositório
@@ -95,6 +128,14 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
+### Instalar as dependências do portal web
+
+Só se for usar o portal:
+
+```bash
+cd frontend && npm ci && cd ..
+```
+
 ### Instalar o Tesseract OCR (fora do pip)
 
 - **macOS:** `brew install tesseract tesseract-lang`
@@ -110,6 +151,9 @@ cp .env.example .env
 
 Edite o `.env` e preencha ao menos `TELEGRAM_BOT_TOKEN` e `API_SECRET_KEY` (veja a seção
 [Variáveis de ambiente](#variáveis-de-ambiente) abaixo).
+
+> ⚠️ Se for usar o portal, **troque também `PROFESSIONAL_SESSION_SECRET_KEY`**, que vem com o
+> valor padrão `change-me-professional-session`.
 
 ### Criar o bot pelo BotFather
 
@@ -146,6 +190,47 @@ python -m bot.main
 > O agendador de lembretes (APScheduler) roda dentro deste processo — rode só **uma**
 > instância do bot por vez (ver [`docs/architecture.md`](docs/architecture.md)).
 
+### Inicializar o portal web
+
+Em um terceiro terminal:
+
+```bash
+cd frontend && npm run dev
+```
+
+O portal sobe em http://localhost:5173 e fala com a API em http://localhost:8000.
+
+> A sessão do profissional é um cookie `httpOnly`, então a API precisa autorizar a origem do
+> portal: mantenha `CORS_ORIGINS` no `.env` incluindo `http://localhost:5173`. Para apontar o
+> portal a outra API, use `VITE_API_BASE_URL`.
+
+### Primeiro acesso ao portal (MFA obrigatório)
+
+O MFA não é opcional — sem ele não há sessão. O fluxo completo na primeira vez:
+
+1. Abra http://localhost:5173/signup e crie a conta do profissional.
+   O cadastro é uma **solicitação**: a conta nasce com `verification_status = pending`.
+2. Faça login com e-mail e senha. A senha **não** devolve sessão, e sim um desafio de MFA.
+3. O portal exibe um **QR Code** — escaneie com um aplicativo autenticador (Google
+   Authenticator, Authy etc.). Quem não puder escanear pode copiar o código exibido abaixo.
+4. Digite o código de 6 dígitos. **Só agora** a sessão é criada.
+
+Nos acessos seguintes, o passo 3 desaparece: senha → código de 6 dígitos.
+
+> Para ativar tratamentos é preciso o papel `medico` (RN20) — veja
+> [Papéis e Permissões](https://github.com/marluceqa-source/hora-do-remedio/wiki/Papeis-e-Permissoes).
+> Para liberar a verificação de um profissional ou ler a auditoria, é preciso o papel `admin`.
+
+### Vincular um paciente ao Telegram
+
+1. No portal, cadastre o paciente (identificador interno — **nunca** CPF ou documento).
+2. Na tela do paciente, gere o convite. O portal mostra um **QR Code** e um link
+   `https://t.me/<seu_bot>?start=<token>`.
+3. O paciente aponta a câmera ou toca no link — **sem digitar nada** — e confirma no bot.
+
+O convite é de **uso único** e expira em 30 minutos (RN23/RN24). Ajuste
+`TELEGRAM_BOT_USERNAME` no `.env` para que o link aponte para o seu bot.
+
 ### Executar com Docker Compose
 
 ```bash
@@ -155,6 +240,11 @@ docker compose up --build
 Isso sobe três serviços: `migrate` (roda as migrações e encerra), `api` (porta 8000) e `bot`
 (polling do Telegram). Dados do SQLite, uploads e logs ficam em volumes nomeados, então
 sobrevivem a `docker compose down` (sem `-v`).
+
+> ⚠️ **O Docker ainda não cobre o portal web.** `Dockerfile` e `docker-compose.yml` não têm
+> nenhuma referência a Node ou `frontend/` — para usar o portal, rode-o localmente com
+> `npm run dev` (ou `npm run build` e sirva os estáticos). Acompanhado em
+> [#26](https://github.com/marluceqa-source/hora-do-remedio/issues/26).
 
 **Reiniciar os serviços:**
 
@@ -212,6 +302,10 @@ python scripts/seed_test_data.py
 O script é idempotente — rodar de novo substitui os dados do mesmo usuário fictício, sem
 duplicar (coberto pelo teste `test_ct40_seed_script_runs_and_is_idempotent`).
 
+> O seed cobre apenas o lado do paciente: **não cria profissionais, pacientes do portal nem
+> planos de tratamento**. Para experimentar o portal, crie a conta pelo `/signup` e siga o
+> [primeiro acesso](#primeiro-acesso-ao-portal-mfa-obrigatório).
+
 ### Exemplo de resposta da API usando esses dados
 
 ```bash
@@ -232,8 +326,24 @@ curl -X POST http://localhost:8000/api/v1/auth/token \
 
 ## 5. Quais são as regras de negócio?
 
-RN01 a RN18, com onde cada uma é implementada e qual teste a cobre, estão documentadas em
-[`docs/business_rules.md`](docs/business_rules.md).
+| Escopo | Regras | Onde |
+|---|---|---|
+| Bot e API (paciente) | **RN01–RN18** | [`docs/business_rules.md`](docs/business_rules.md) · [Wiki](https://github.com/marluceqa-source/hora-do-remedio/wiki/Regras-de-Negocio-Bot-e-API) |
+| Portal (profissional) | **RN19–RN32** | [Wiki](https://github.com/marluceqa-source/hora-do-remedio/wiki/Regras-de-Negocio-Portal) |
+
+Cada regra aponta **onde está implementada e qual teste a cobre** — a documentação não promete
+mais do que o código entrega.
+
+As duas que mais condicionam o produto:
+
+- **RN12** — ausência de resposta **não** significa que o medicamento não foi tomado. Todo
+  relatório é de adesão **declarada**, nunca real.
+- **RN20** — só um profissional com papel `medico` pode **ativar** um tratamento. A API
+  responde 403 e o portal desabilita o botão explicando o motivo em texto.
+
+> **RN29 e RN31 não têm marcação em nenhum arquivo do repositório.** A numeração do portal
+> salta, e a documentação registra a lacuna em vez de inventar o conteúdo delas — acompanhado
+> em [#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23).
 
 ---
 
@@ -241,6 +351,7 @@ RN01 a RN18, com onde cada uma é implementada e qual teste a cobre, estão docu
 
 | Recurso | URL |
 |---|---|
+| **Portal web** | http://localhost:5173 |
 | API | http://localhost:8000 |
 | Swagger | http://localhost:8000/docs |
 | ReDoc | http://localhost:8000/redoc |
@@ -248,6 +359,8 @@ RN01 a RN18, com onde cada uma é implementada e qual teste a cobre, estão docu
 | OpenAPI JSON | http://localhost:8000/openapi.json |
 | Health Check | http://localhost:8000/health |
 | BotFather | https://t.me/BotFather |
+| **Wiki** | https://github.com/marluceqa-source/hora-do-remedio/wiki |
+| **Pendências** | [issues com rótulo `pendência`](https://github.com/marluceqa-source/hora-do-remedio/issues?q=is%3Aissue+is%3Aopen+label%3Apend%C3%AAncia) |
 
 O endereço real do seu bot (`https://t.me/<nome_do_seu_bot>`) depende do nome escolhido ao
 criá-lo pelo BotFather — não há uma URL fixa de produção para documentar aqui.
@@ -260,12 +373,15 @@ criá-lo pelo BotFather — não há uma URL fixa de produção para documentar 
 hora-do-remedio/
 ├── api/            # FastAPI: rotas, schemas Pydantic, dependências
 ├── bot/            # python-telegram-bot: handlers, teclados, main.py
-├── core/           # configuração, segurança (JWT), logging
+├── core/           # configuração, logging, segurança (JWT do paciente e sessão do portal)
 ├── services/       # regras de negócio compartilhadas entre api/ e bot/
 ├── database/       # modelos SQLAlchemy e conexão
-├── alembic/         # migrações do banco
+├── frontend/       # portal web: React + TypeScript + MUI (Vite)
+│   └── src/        #   api/ (cliente e tipos), pages/, components/, context/
+├── alembic/        # migrações do banco
 ├── docs/           # openapi.yaml, architecture.md, business_rules.md
-├── scripts/        # export_openapi.py, seed_test_data.py
+├── wiki/           # páginas publicadas na Wiki do GitHub (fonte versionada)
+├── scripts/        # export_openapi.py, seed_test_data.py, criar_cards_github.sh
 ├── tests/          # unit/, integration/, api/, contract/, accessibility/
 ├── assets/         # illustrations/ (ilustrações de acessibilidade), uploads/ (fotos, não versionado)
 ├── Dockerfile
@@ -279,6 +395,23 @@ Todas documentadas com valores de exemplo em [`.env.example`](.env.example): nom
 da app, `TELEGRAM_BOT_TOKEN`, `DATABASE_URL`, segredo e algoritmo do JWT da API, limite de
 requisições, política de retenção, configuração de OCR/STT/TTS, nível de log e host/porta da
 API.
+
+As específicas do portal:
+
+| Variável | Padrão | O que faz |
+|---|---|---|
+| `PROFESSIONAL_SESSION_SECRET_KEY` | `change-me-...` | **Troque.** Segredo da sessão do profissional, independente do JWT do paciente (RN19). |
+| `PROFESSIONAL_SESSION_COOKIE_NAME` | `hdr_professional_session` | Nome do cookie `httpOnly`. |
+| `PROFESSIONAL_SESSION_EXPIRE_MINUTES` | `480` | Validade da sessão (8 h). |
+| `PROFESSIONAL_MFA_PRE_AUTH_EXPIRE_MINUTES` | `5` | Janela para concluir o MFA depois da senha. |
+| `PROFESSIONAL_MAX_FAILED_LOGINS` | `5` | Tentativas antes do bloqueio (RN30). |
+| `PROFESSIONAL_LOCKOUT_MINUTES` | `15` | Duração do bloqueio. |
+| `PROFESSIONAL_PASSWORD_RESET_EXPIRE_MINUTES` | `30` | Validade do token de recuperação. |
+| `PATIENT_INVITE_EXPIRE_MINUTES` | `30` | Validade do convite de vínculo (RN23). |
+| `TELEGRAM_BOT_USERNAME` | — | Usado para montar o deep link do convite. |
+| `CORS_ORIGINS` | `http://localhost:5173,...` | Origens autorizadas a enviar o cookie de sessão. |
+
+No frontend, `VITE_API_BASE_URL` (padrão `http://localhost:8000`) aponta o portal à API.
 
 ## Exemplos de requisições
 
@@ -335,6 +468,17 @@ Todas as integrações externas (Telegram, OCR, STT, TTS) são mockadas nos test
 — nada chama de verdade a API do Telegram, o binário do Tesseract ou os modelos de
 voz/transcrição durante `pytest`.
 
+Estado atual: **160 testes passando, 86% de cobertura.**
+
+No portal, a verificação hoje é só de tipos:
+
+```bash
+cd frontend && npx tsc -b      # type-check
+cd frontend && npm run build   # build de produção
+```
+
+**Não há testes automatizados no `frontend/`** — ver [limitações](#10-limitações-conhecidas).
+
 ## Como validar o contrato OpenAPI
 
 ```bash
@@ -356,6 +500,25 @@ pytest tests/contract               # falha se docs/openapi.yaml divergir do que
   usuário, não uma comprovação clínica (RN04, RN12).
 - Ver também [Limitações conhecidas](#10-limitações-conhecidas) sobre retenção de dados.
 
+No portal (detalhes em
+[Segurança e Privacidade](https://github.com/marluceqa-source/hora-do-remedio/wiki/Seguranca-e-Privacidade)):
+
+- **Autenticação separada da do paciente** (RN19), com segredo próprio: vazar uma não
+  compromete a outra.
+- **MFA TOTP obrigatório** — a senha sozinha nunca cria sessão.
+- Token de sessão **opaco**, persistido **só como hash**: quem leia o banco não reconstrói uma
+  sessão, e o logout é revogação real no servidor (RN30).
+- Convites de vínculo também guardados só como hash, de **uso único** e temporários
+  (RN23/RN24).
+- Recuperação de acesso **não revela se o e-mail existe**; ao ser consumida, encerra todas as
+  sessões anteriores.
+- Paciente identificado por **identificador interno**, nunca CPF ou documento. Campo de
+  contato é opcional e só deve ser preenchido se autorizado.
+- Operações sensíveis são **auditáveis** (RN32); a trilha é restrita a `admin` e expõe
+  auditoria, nunca dados clínicos.
+- Nenhuma mensagem crua de framework chega ao usuário: erros do Pydantic são traduzidos com o
+  rótulo do campo, e os do Axios substituídos por texto em português.
+
 ## Solução de problemas
 
 | Sintoma | Causa provável | O que fazer |
@@ -366,6 +529,13 @@ pytest tests/contract               # falha se docs/openapi.yaml divergir do que
 | TTS não produz áudio no Linux | Falta o `espeak` (driver usado pelo `pyttsx3` fora do macOS/Windows) | `sudo apt-get install espeak` (já incluso no `Dockerfile`) |
 | `alembic upgrade head` falha dizendo que a tabela já existe | Banco criado fora do fluxo de migração | Apague `database/hora_do_remedio.db` (ambiente de desenvolvimento) e rode a migração de novo |
 | Testes de contrato falham após mexer em rotas/schemas | `docs/openapi.yaml` ficou desatualizado | Rode `python scripts/export_openapi.py` antes de testar de novo |
+| Portal faz login mas a sessão "não cola" (volta para o login) | A API não está autorizando a origem do portal, então o cookie `httpOnly` não é aceito | Inclua `http://localhost:5173` em `CORS_ORIGINS` no `.env` e reinicie a API |
+| Portal não consegue falar com a API | `VITE_API_BASE_URL` apontando para outro endereço | Ajuste a variável e reinicie o `npm run dev` (Vite só lê `VITE_*` no start) |
+| Botão "Ativar tratamento" desabilitado | O profissional não tem papel `medico` (RN20) | Use uma conta com `role = medico`; o próprio portal explica isso em texto sob o botão |
+| Não é possível ativar: pede paciente vinculado | O paciente ainda não concluiu o vínculo com o Telegram | Gere o convite na tela do paciente e peça que ele toque no link / leia o QR Code |
+| Convite de vínculo "não funciona" | Convite é de uso único e expira em 30 min (RN23/RN24) | Gere um novo convite |
+| Link do convite aponta para o bot errado | `TELEGRAM_BOT_USERNAME` não configurado ou desatualizado | Ajuste no `.env` e reinicie a API |
+| Erro de login no portal: `AttributeError: __about__` | `bcrypt` incompatível com o `passlib` | Use `bcrypt==4.0.1`, como fixado em `requirements.txt` |
 
 ## 10. Limitações conhecidas
 
@@ -380,6 +550,21 @@ pytest tests/contract               # falha se docs/openapi.yaml divergir do que
 - **Docker:** `Dockerfile`/`docker-compose.yml` foram escritos e validados apenas
   sintaticamente — o build/execução real não foi testado neste ambiente (sem Docker
   instalado). Rode `docker compose up --build` e confira os logs antes de usar em produção.
+  **Além disso, o Docker não cobre o portal web** ([#26](https://github.com/marluceqa-source/hora-do-remedio/issues/26)).
+- **Portal sem testes automatizados:** não há nenhum teste em `frontend/`. Playwright (E2E) e
+  axe-core (acessibilidade) não foram configurados, então as decisões de acessibilidade do
+  portal **não foram auditadas automaticamente**
+  ([#24](https://github.com/marluceqa-source/hora-do-remedio/issues/24),
+  [#25](https://github.com/marluceqa-source/hora-do-remedio/issues/25)).
+- **Recuperação de acesso do portal:** o token é gerado corretamente, mas **o ambiente não
+  envia e-mails reais** — a própria tela avisa que o token deve ser obtido com o administrador
+  ([#29](https://github.com/marluceqa-source/hora-do-remedio/issues/29)).
+- **Segredo padrão do portal:** `PROFESSIONAL_SESSION_SECRET_KEY` vem como
+  `change-me-professional-session` e **precisa ser trocado** antes de qualquer uso real
+  ([#30](https://github.com/marluceqa-source/hora-do-remedio/issues/30)).
+- **RN29 e RN31:** sem correspondência no código; é preciso conferir a especificação do portal
+  e então documentar ou descartar
+  ([#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23)).
 - **Sem testes de carga:** a aplicação não foi avaliada sob concorrência real de múltiplos
   usuários; SQLite é adequado para desenvolvimento/demonstração, não para produção em escala
   (ver recomendação de PostgreSQL em [`docs/architecture.md`](docs/architecture.md)).
