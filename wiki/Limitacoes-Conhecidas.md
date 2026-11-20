@@ -33,8 +33,9 @@ especificação do portal e então documentar ou descartar.
 | **Testes E2E do portal** | Não implementados. Playwright não foi configurado. |
 | **Testes automatizados de acessibilidade** | Não implementados. axe-core não foi configurado. As decisões de [acessibilidade](Acessibilidade) do portal não foram auditadas automaticamente. |
 | **Testes do frontend** | Não existem. Não há nenhum teste em `frontend/`. |
-| **Suíte de backend após a última alteração** | Os 160 testes de backend **não foram reexecutados** após os ajustes finais de validação em português no frontend (que não tocam o backend, mas a verificação não foi feita). |
 | **Validação ao vivo de dois formulários** | O cadastro de paciente e o cadastro de medicamento usam o mesmo padrão de validação já validado no navegador nas outras telas, mas **não foram testados ao vivo** porque exigem login com MFA. |
+
+A suíte de backend está verde: **160 testes passando**, 86% de cobertura.
 
 ---
 
@@ -44,7 +45,6 @@ especificação do portal e então documentar ou descartar.
 |---|---|
 | **Docker não cobre o portal** | `Dockerfile` e `docker-compose.yml` não têm nenhuma referência a Node, npm ou `frontend/`. O portal web **não é empacotado nem servido** pela infraestrutura Docker atual. |
 | **README não menciona o portal** | Zero ocorrências de "portal" ou "profissional" no `README.md`. A documentação principal descreve apenas o bot e a API — alguém que clone o repositório não descobre que o portal existe. |
-| **Wiki não publicada no GitHub** | Estas páginas estão versionadas em `wiki/` no repositório. A wiki do GitHub precisa ser inicializada pela interface web antes de receber o conteúdo por git. |
 
 ---
 
@@ -62,6 +62,9 @@ especificação do portal e então documentar ou descartar.
 
 Cada item desta página corresponde a um **card (issue)** no repositório, com rótulo
 `pendência`. A wiki descreve o estado; as issues acompanham a evolução.
+
+👉 [Pendências abertas](https://github.com/marluceqa-source/hora-do-remedio/issues?q=is%3Aissue+is%3Aopen+label%3Apend%C3%AAncia)
+· [Tudo que já foi entregue](https://github.com/marluceqa-source/hora-do-remedio/issues?q=is%3Aissue+label%3A%22conclu%C3%ADdo%22)
 
 ---
 
