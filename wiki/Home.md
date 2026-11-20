@@ -32,6 +32,7 @@ cada definição indicada.
 - **[Gerenciamento de Requisitos](Gerenciamento-de-Requisitos)** — atributos, versionamento, mudanças e relatórios.
 - **[Priorização e Backlog](Priorizacao-e-Backlog)** — qual técnica foi usada e em que ordem fazer.
 - **[Validação e Verificação](Validacao-e-Verificacao)** — o que está verificado, o que **não** está validado e os 10 achados da revisão.
+- **[Roteiro de Validação com Usuários](Roteiro-de-Validacao-com-Usuarios)** — plano de elicitação direta com o público-alvo: hipóteses, técnicas e sessões.
 - **[Glossário](Glossario)** — termos do domínio, homônimos e vocabulário de ER.
 
 ### Regras de negócio

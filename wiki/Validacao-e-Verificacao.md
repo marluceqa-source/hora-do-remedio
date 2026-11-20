@@ -96,7 +96,10 @@ Técnicas de verificação que o prompt master exigiu e que estão em uso:
 ## 4. O que falta para haver validação
 
 A validação exige confirmar com os stakeholders que os requisitos correspondem às suas
-necessidades. O caminho mínimo, usando as técnicas do Handbook de Elicitação:
+necessidades. O plano completo — hipóteses sob teste, participantes, roteiro de sessão, ética e
+processamento dos resultados — está em
+**[Roteiro de Validação com Usuários](Roteiro-de-Validacao-com-Usuarios)**. Em resumo, usando as
+técnicas do Handbook de Elicitação:
 
 | Passo | Técnica | O que produz |
 |---|---|---|
