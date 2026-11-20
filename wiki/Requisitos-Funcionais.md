@@ -1,5 +1,11 @@
 # Requisitos Funcionais
 
+> 📎 **Rastreabilidade.** Cada RF abaixo está ligado às regras de negócio, à história de usuário
+> e ao caso de uso correspondentes na
+> [Matriz de Rastreabilidade](Matriz-de-Rastreabilidade#5-matriz-requisito-funcional--regra--história--caso-de-uso).
+> Os requisitos de qualidade e as restrições estão em
+> [Requisitos Não Funcionais](Requisitos-Nao-Funcionais).
+
 > ⚠️ **Atenção à numeração.** O bot/API e o portal vieram de **duas especificações
 > independentes**, cada uma com sua própria numeração `RFxx`. Portanto **`RF02` do bot não é
 > `RF02` do portal.** As duas tabelas abaixo são espaços de numeração separados.
@@ -65,5 +71,8 @@ Na RF08, a resposta é explicitamente de **adesão declarada**
 
 ## Próximo
 
+- [Requisitos Não Funcionais](Requisitos-Nao-Funcionais)
+- [Histórias de Usuário](Historias-de-Usuario)
+- [Matriz de Rastreabilidade](Matriz-de-Rastreabilidade)
 - [Regras de Negócio — Bot e API](Regras-de-Negocio-Bot-e-API)
 - [Regras de Negócio — Portal](Regras-de-Negocio-Portal)
