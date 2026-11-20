@@ -96,8 +96,8 @@ garantia de compatibilidade; validar manualmente antes de depender disso em prod
 - Sem job de expurgo automático para `DATA_RETENTION_DAYS` (RN17) — a variável existe na
   configuração, mas nada apaga registros antigos sozinho hoje.
 - Ilustrações de acessibilidade (RF11): apenas 4 das 11 do símbolo-tabela têm imagem própria
-  (fornecidas pelo usuário em `Criacao/`); as demais usam o emoji Unicode do próprio símbolo
-  como equivalente funcional.
+  (fornecidas pelo usuário; os originais ficam na pasta local não versionada `Criacao/`); as
+  demais usam o emoji Unicode do próprio símbolo como equivalente funcional.
 - Nenhum teste de carga/concorrência foi realizado; o SQLite com `check_same_thread=False` é
   adequado para o volume de uso de desenvolvimento/demonstração, não para produção com muitos
   usuários simultâneos.

@@ -12,8 +12,11 @@ entregas integradas**:
 📖 **As regras de negócio completas (RN01–RN32), os requisitos funcionais e as decisões de
 arquitetura estão na [Wiki do projeto](https://github.com/marluceqa-source/hora-do-remedio/wiki).**
 
-O prompt master completo que originou este projeto está em
-[`Criacao/# PROMPT MASTER — HORA DO REMÉDIO 💊.md`](Criacao/%23%20PROMPT%20MASTER%20%E2%80%94%20HORA%20DO%20REM%C3%89DIO%20%F0%9F%92%8A.md).
+O **prompt master** que originou este projeto é a especificação de origem dos requisitos
+(RF01–RF14, RN01–RN18, CT01–CT42 e os critérios de aceite). Ele **não é versionado**: fica apenas
+na máquina de quem desenvolve, em `Criacao/`. O conteúdo dele está refletido na
+[Wiki do projeto](https://github.com/marluceqa-source/hora-do-remedio/wiki) — ver
+[Engenharia de Requisitos](https://github.com/marluceqa-source/hora-do-remedio/wiki/Engenharia-de-Requisitos).
 
 ---
 
