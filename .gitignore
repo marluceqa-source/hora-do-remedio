@@ -42,3 +42,6 @@ reports/
 .DS_Store
 .idea/
 .vscode/
+
+# Material de criação (mantido apenas localmente)
+Criacao/
