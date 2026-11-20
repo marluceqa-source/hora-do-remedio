@@ -282,7 +282,7 @@ Os estados vêm da `CheckConstraint` em `ReminderEvent`:
 > `services/dashboard_service.py`, e tem rótulo no bot (`⌛ expirado`) — mas **nenhum código
 > atribui esse status**. As únicas atribuições existentes são `pending`, `delivered`,
 > `confirmed`, `snoozed` e `not_taken`. Isso explica por que o cenário **CT17** ("botões antigos
-> ou expirados") é um dos dois cenários do prompt master sem teste. Registrado como card.
+> ou expirados") é um dos dois cenários do prompt master sem teste. Registrado no card [#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35).
 
 ---
 

@@ -65,14 +65,14 @@ completa está em [Validação e Verificação](Validacao-e-Verificacao#2-verifi
 
 | Achado | Situação |
 |---|---|
-| **Status `expired` inalcançável** | `ReminderEvent.status` admite `expired`, os relatórios o tratam como "sem confirmação" e o bot tem o rótulo `⌛ expirado` — mas **nenhum código atribui esse status**. Por isso o cenário **CT17** ("botões antigos ou expirados") não tem teste nem implementação. |
-| **`tests/accessibility/` está vazio** | O diretório existe com apenas `__init__.py`. A categoria de teste pedida no prompt master (§11) não foi preenchida; os testes de acessibilidade reais estão em `tests/unit/`. |
-| **CT28 sem identificador** | O comportamento (acesso autorizado de cuidador) é testado, mas sem o identificador `ct28` no nome — então não aparece em busca por cobertura. |
-| **RN01, RN08 e RN14 sem marcação no código** | Estão implementadas, mas sem o comentário `RNxx` que as outras 26 regras têm. |
-| **Critérios de aceite sem conferência registrada** | Os 19 critérios da seção 15 do prompt master não têm registro de verificação item a item em nenhum lugar do repositório. |
-| **Sem baseline da especificação** | Não há tags, releases nem versão declarada na wiki — não é possível dizer "esta é a especificação da versão X". |
-| **LGPD: exportação e exclusão de dados** | `RES06` está declarada, mas não existe rota de exportação nem de exclusão de dados do titular. |
-| **Validação com stakeholders: ausente** | Nenhum paciente, cuidador ou profissional de saúde foi consultado. As decisões de [acessibilidade](Acessibilidade) são hipóteses bem fundamentadas, não achados validados — e esse é o maior risco do projeto. |
+| **Status `expired` inalcançável** | `ReminderEvent.status` admite `expired`, os relatórios o tratam como "sem confirmação" e o bot tem o rótulo `⌛ expirado` — mas **nenhum código atribui esse status**. Por isso o cenário **CT17** ("botões antigos ou expirados") não tem teste nem implementação. Card: [#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35). |
+| **`tests/accessibility/` está vazio** | O diretório existe com apenas `__init__.py`. A categoria de teste pedida no prompt master (§11) não foi preenchida; os testes de acessibilidade reais estão em `tests/unit/`. Card: [#41](https://github.com/marluceqa-source/hora-do-remedio/issues/41). |
+| **CT28 sem identificador** | O comportamento (acesso autorizado de cuidador) é testado, mas sem o identificador `ct28` no nome — então não aparece em busca por cobertura. Card: [#36](https://github.com/marluceqa-source/hora-do-remedio/issues/36). |
+| **RN01, RN08 e RN14 sem marcação no código** | Estão implementadas, mas sem o comentário `RNxx` que as outras 26 regras têm. Card: [#37](https://github.com/marluceqa-source/hora-do-remedio/issues/37). |
+| **Critérios de aceite sem conferência registrada** | Os 19 critérios da seção 15 do prompt master não têm registro de verificação item a item em nenhum lugar do repositório. Card: [#39](https://github.com/marluceqa-source/hora-do-remedio/issues/39). |
+| **Sem baseline da especificação** | Não há tags, releases nem versão declarada na wiki — não é possível dizer "esta é a especificação da versão X". Card: [#38](https://github.com/marluceqa-source/hora-do-remedio/issues/38). |
+| **LGPD: exportação e exclusão de dados** | `RES06` está declarada, mas não existe rota de exportação nem de exclusão de dados do titular. Card: [#42](https://github.com/marluceqa-source/hora-do-remedio/issues/42). |
+| **Validação com stakeholders: ausente** | Nenhum paciente, cuidador ou profissional de saúde foi consultado. As decisões de [acessibilidade](Acessibilidade) são hipóteses bem fundamentadas, não achados validados — e esse é o maior risco do projeto. Card: [#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40). |
 
 A ordem recomendada para atacar esses itens está em
 [Priorização e Backlog](Priorizacao-e-Backlog#5-o-backlog-priorizado).
