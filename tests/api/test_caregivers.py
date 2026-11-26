@@ -35,7 +35,8 @@ def test_cannot_revoke_someone_elses_caregiver_access(client, auth_headers):
     assert response.status_code == 404
 
 
-def test_caregiver_can_view_authorized_patient_medications(client, auth_headers):
+def test_ct28_caregiver_can_view_authorized_patient_medications(client, auth_headers):
+    """CT28 — acesso autorizado de cuidador, do convite à leitura dos medicamentos."""
     patient_info = client.get("/api/v1/medications", headers=auth_headers)
     assert patient_info.status_code == 200
 

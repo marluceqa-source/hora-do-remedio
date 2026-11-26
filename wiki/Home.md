@@ -13,6 +13,48 @@ mesma camada `services/`.
 
 ---
 
+## Baseline da especificação
+
+> **Baseline:** "Uma configuração estável, com mudança controlada, de produtos de trabalho."
+> — Glossário, verbete *Baseline, linha de base*, p. 3
+
+| | |
+|---|---|
+| **Versão** | **1.0.0** |
+| **Tag** | [`v1.0.0`](https://github.com/marluceqa-source/hora-do-remedio/releases/tag/v1.0.0) |
+| **Data** | 25 de novembro de 2026 |
+| **Escopo** | Entrega do projeto final: bot do Telegram, API REST e portal web de profissionais, com a documentação de requisitos desta wiki. |
+
+### O que esta baseline cobre
+
+| Produto de trabalho | Estado em 1.0.0 |
+|---|---|
+| Requisitos funcionais | RF do bot/API e RF do portal — ver [Requisitos Funcionais](Requisitos-Funcionais) |
+| Requisitos não funcionais | RNF01–RNF23 e restrições RES01–RES07 |
+| Regras de negócio | **RN01–RN32**, com 29 marcadas no código |
+| Histórias de usuário | HU01–HU16 com critérios em Gherkin |
+| Cenários de teste | 41 dos 42 CT rastreáveis por busca nos testes |
+| Suíte automatizada | 185 testes, 86% de cobertura |
+
+### O que esta baseline **não** cobre
+
+As 20 pendências abertas, estimadas em **155,2 ± 15,7 h** — ver
+[Priorização e Backlog](Priorizacao-e-Backlog). Três lacunas conhecidas ficam explicitamente
+**fora** desta baseline, e não devem ser lidas como atendidas:
+
+- **RN17** — a política de retenção é configurável, mas não há expurgo automático ([#22](https://github.com/marluceqa-source/hora-do-remedio/issues/22)).
+- **RN29 e RN31** — sem origem localizável na especificação ([#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23)).
+- **CT17** — o status `expired` de um lembrete nunca é atribuído por nenhum código ([#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35)).
+
+A lista completa está em [Limitações Conhecidas](Limitacoes-Conhecidas).
+
+> **Como esta baseline muda.** Alteração de requisito depois de 1.0.0 segue o processo de
+> mudança de [Gerenciamento de Requisitos](Gerenciamento-de-Requisitos#5-processo-de-mudança) e
+> entra na próxima versão — a tag `v1.0.0` continua apontando para a especificação como ela
+> está nesta data.
+
+---
+
 ## Índice
 
 ### Produto e requisitos

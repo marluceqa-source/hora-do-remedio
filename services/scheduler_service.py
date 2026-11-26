@@ -67,7 +67,11 @@ class SchedulerService:
         logger.info("SchedulerService encerrado")
 
     def reload_jobs(self) -> None:
-        """Reconstrói todos os jobs a partir dos Schedules de medicamentos ativos (RF05, RN15).
+        """Reconstrói todos os jobs a partir dos Schedules de medicamentos ativos (RF05, RN08, RN15).
+
+        RN08: é esta reconstrução, chamada a cada início do processo, que faz os agendamentos
+        sobreviverem a uma reinicialização — o APScheduler aqui roda em memória e não persiste
+        job nenhum. O banco é a única fonte de verdade dos horários.
 
         Remove apenas os jobs recorrentes de medicamentos ("schedule-*"), preservando o job de
         ressincronização periódica e eventuais reenvios de adiamento ("snooze-*") já agendados.
