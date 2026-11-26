@@ -48,6 +48,12 @@ async def cancel_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 
 
 def _get_owned_treatment_medication(db, medication_id: int, telegram_user_id: int) -> Medication | None:
+    """Medicamento prescrito, para o paciente **ler** (RN30).
+
+    RN30: o bot não altera prescrições por conta própria. Os fluxos daqui são só de leitura —
+    ouvir em áudio e ver detalhes. Quem prescreve é o profissional, pelo portal. Acrescentar
+    aqui qualquer escrita em tratamento quebraria a regra.
+    """
     medication = db.get(Medication, medication_id)
     if medication is None or medication.user.telegram_user_id != telegram_user_id:
         return None

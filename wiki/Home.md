@@ -43,7 +43,6 @@ As 20 pendências abertas, estimadas em **155,2 ± 15,7 h** — ver
 **fora** desta baseline, e não devem ser lidas como atendidas:
 
 - **RN17** — a política de retenção é configurável, mas não há expurgo automático ([#22](https://github.com/marluceqa-source/hora-do-remedio/issues/22)).
-- **RN29 e RN31** — sem origem localizável na especificação ([#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23)).
 - **CT17** — o status `expired` de um lembrete nunca é atribuído por nenhum código ([#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35)).
 
 A lista completa está em [Limitações Conhecidas](Limitacoes-Conhecidas).

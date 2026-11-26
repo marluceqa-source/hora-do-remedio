@@ -18,11 +18,12 @@ A garantia é por **ausência de funcionalidade**: não existe código que sugir
 dosagem. **Não** há filtro ativo de conteúdo — nada impede que o próprio usuário digite esse
 tipo de informação no campo livre de observações.
 
-### RN29 e RN31 — Sem correspondência no código
-A numeração das regras do portal salta: **RN29 e RN31 não têm marcação em nenhum arquivo**.
-Elas podem existir na especificação original sem terem sido anotadas na implementação, ou
-podem não existir. **A wiki não inventou o conteúdo delas** — é preciso conferir a
-especificação do portal e então documentar ou descartar.
+### RN21, RN26 e RN27 — redação divergente da especificação
+As três estão **implementadas e corretas**, mas a wiki as enuncia com o texto da
+implementação, não com o da especificação — descreve a solução em vez da regra, o que impede
+verificar o cumprimento sem reler o código. RN27 é a mais sensível: a especificação exige
+preservar "registros anteriores **e trilhas de auditoria**", e só a primeira metade está
+verificada. Card: [#46](https://github.com/marluceqa-source/hora-do-remedio/issues/46).
 
 ---
 

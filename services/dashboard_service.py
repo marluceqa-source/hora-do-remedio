@@ -1,8 +1,13 @@
 """Painel operacional do profissional (RF02).
 
 Os números refletem confirmações declaradas e entregas registradas — nunca uma prova de que
-o paciente efetivamente tomou o medicamento (RN12); é por isso que "doses sem confirmação" é
-contado à parte de "doses não tomadas" (status explícito `not_taken`).
+o paciente efetivamente tomou o medicamento (RN12 / RN29); é por isso que "doses sem
+confirmação" é contado à parte de "doses não tomadas" (status explícito `not_taken`).
+
+RN12 e RN29 são a mesma garantia em duas numerações: RN12 vem da especificação do bot,
+RN29 da do portal ("a ausência de confirmação não deverá ser classificada automaticamente
+como ausência de administração"). Separar `_UNCONFIRMED_STATUSES` de `not_taken` é o que
+cumpre as duas — juntá-los transformaria silêncio em fato clínico.
 """
 
 from datetime import date, datetime, time, timedelta

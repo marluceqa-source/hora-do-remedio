@@ -157,7 +157,7 @@ def create_patient_treatment_medication(
 @router.get(
     "/{patient_id}/history",
     response_model=list[ReminderEventOut],
-    summary="Consulta o histórico de doses do paciente (RF08) — RN12: ausência de resposta não prova que não tomou",
+    summary="Consulta o histórico de doses do paciente (RF08) — RN12/RN29: ausência de resposta não prova que não tomou",
 )
 def get_patient_history(
     patient_id: int,

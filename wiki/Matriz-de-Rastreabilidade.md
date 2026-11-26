@@ -94,13 +94,15 @@ ausente, não "não implementado".
 | **RN26** | Espec. do portal | `api/routes/treatment_medications.py`, `database/models.py` | ✅ | `tests/unit/test_treatment_service.py` | [#15](https://github.com/marluceqa-source/hora-do-remedio/issues/15) |
 | **RN27** | Espec. do portal | `services/treatment_service.py` | ✅ | `tests/unit/test_treatment_service.py` | [#15](https://github.com/marluceqa-source/hora-do-remedio/issues/15) |
 | **RN28** | Espec. do portal | `services/treatment_service.py` | ✅ | `tests/unit/test_treatment_service.py` | [#15](https://github.com/marluceqa-source/hora-do-remedio/issues/15) |
-| **RN29** | ❓ desconhecida | — | — | — | [#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23) |
-| **RN30** | Espec. do portal | `services/professional_auth_service.py` | ✅ | `tests/api/test_professional_auth.py` | [#12](https://github.com/marluceqa-source/hora-do-remedio/issues/12) |
-| **RN31** | ❓ desconhecida | — | — | — | [#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23) |
+| **RN29** | Espec. do portal §16 | `services/dashboard_service.py` | ✅ | `tests/unit/test_dashboard_service.py` | [#16](https://github.com/marluceqa-source/hora-do-remedio/issues/16) |
+| **RN30** | Espec. do portal §16 | `bot/handlers/patients.py` (por ausência de escrita) | ✅ | — | [#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23) |
+| **RN31** | Espec. do portal §16 | `services/patient_service.py` | ✅ | `tests/unit/test_patient_service.py` | [#14](https://github.com/marluceqa-source/hora-do-remedio/issues/14) |
 | **RN32** | Espec. do portal | `api/routes/admin.py`, `services/audit_service.py` | ✅ | `tests/api/test_dashboard_and_admin.py` | [#17](https://github.com/marluceqa-source/hora-do-remedio/issues/17) |
 
-**Resumo:** 30 das 32 RN têm implementação identificada; **29** têm marcação `RNxx` no código;
-RN13 e RN17 não têm verificação automatizada; RN29 e RN31 não têm origem localizável.
+**Resumo:** 31 das 32 RN têm implementação identificada e marcação `RNxx` no código. RN17 é a
+única sem implementação ([#22](https://github.com/marluceqa-source/hora-do-remedio/issues/22)).
+RN13 e RN30 são garantidas por **ausência de funcionalidade**, então não têm teste dedicado —
+não há o que executar para provar que um código inexistente não roda.
 
 ---
 

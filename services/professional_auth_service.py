@@ -1,6 +1,13 @@
 """Autenticação de profissionais do portal (RF01): senha, bloqueio por tentativas, MFA (TOTP)
-e sessões revogáveis no servidor. Mantido separado da autenticação do bot/API (RN09 cobre o
-paciente; aqui as regras são RN19/RN30 e a seção 18 do prompt do portal)."""
+e sessões revogáveis no servidor.
+
+Mantido separado da autenticação do bot/API (RN09 cobre o paciente). A regra de negócio aqui
+é **RN19** — "apenas profissionais autorizados poderão registrar planos associados a
+pacientes" —; o resto (MFA, bloqueio, expiração de sessão) vem da seção 18 do prompt do
+portal, que trata de segurança, e não de uma RN própria.
+
+Este módulo já citou RN30 por engano. RN30 é "o bot não deverá alterar prescrições por conta
+própria", e está em `bot/handlers/patients.py` — nada a ver com sessão."""
 
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone

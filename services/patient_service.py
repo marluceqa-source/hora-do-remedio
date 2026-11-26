@@ -66,6 +66,13 @@ def create_patient(
 
 
 def list_authorized_patients(db: Session, professional: Professional) -> list[Patient]:
+    """Pacientes com vínculo ativo para aquele profissional (RN22, RN31).
+
+    RN31: o filtro por `authorization_status == "active"` é o que faz a revogação de um
+    vínculo bloquear o acesso **na consulta seguinte**, sem precisar de expurgo nem de
+    invalidação de sessão. Trocar por uma checagem feita só no momento do vínculo deixaria
+    um profissional revogado continuar lendo dados do paciente.
+    """
     return (
         db.query(Patient)
         .join(PatientProfessionalLink, PatientProfessionalLink.patient_id == Patient.id)
@@ -79,6 +86,7 @@ def list_authorized_patients(db: Session, professional: Professional) -> list[Pa
 
 
 def get_authorized_patient(db: Session, professional: Professional, patient_id: int) -> Patient | None:
+    """Um paciente, se houver vínculo ativo (RN22, RN31). Mesmo filtro de `list_authorized_patients`."""
     return (
         db.query(Patient)
         .join(PatientProfessionalLink, PatientProfessionalLink.patient_id == Patient.id)

@@ -891,7 +891,7 @@ paths:
     get:
       tags:
       - Portal — Pacientes
-      summary: 'Consulta o histórico de doses do paciente (RF08) — RN12: ausência
+      summary: 'Consulta o histórico de doses do paciente (RF08) — RN12/RN29: ausência
         de resposta não prova que não tomou'
       operationId: get_patient_history_api_v1_patients__patient_id__history_get
       security:
