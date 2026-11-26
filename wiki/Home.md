@@ -21,7 +21,7 @@ mesma camada `services/`.
 | | |
 |---|---|
 | **Versão** | **1.0.0** |
-| **Tag** | [`v1.0.0`](https://github.com/marluceqa-source/hora-do-remedio/releases/tag/v1.0.0) |
+| **Tag** | [`v1.0.0`](https://github.com/marluceqa-source/hora-do-remedio/tree/v1.0.0) |
 | **Data** | 25 de novembro de 2026 |
 | **Escopo** | Entrega do projeto final: bot do Telegram, API REST e portal web de profissionais, com a documentação de requisitos desta wiki. |
 

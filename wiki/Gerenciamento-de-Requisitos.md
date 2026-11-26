@@ -121,7 +121,7 @@ O handbook distingue o nível em que se versiona (§5.1.1, p. 88):
 
 **A primeira baseline existe desde o card [#38](https://github.com/marluceqa-source/hora-do-remedio/issues/38):**
 **1.0.0**, de 25 de novembro de 2026, marcada pela tag anotada
-[`v1.0.0`](https://github.com/marluceqa-source/hora-do-remedio/releases/tag/v1.0.0) no
+[`v1.0.0`](https://github.com/marluceqa-source/hora-do-remedio/tree/v1.0.0) no
 repositório e declarada na [Home](Home#baseline-da-especificação) da wiki, com o escopo coberto
 e — igualmente importante — o escopo **não** coberto.
 
