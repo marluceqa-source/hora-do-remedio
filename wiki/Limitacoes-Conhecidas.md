@@ -33,7 +33,7 @@ especificação do portal e então documentar ou descartar.
 | **Testes E2E do portal** | Não implementados. Playwright não foi configurado. |
 | **Testes automatizados de acessibilidade** | Não implementados. axe-core não foi configurado. As decisões de [acessibilidade](Acessibilidade) do portal não foram auditadas automaticamente. |
 | **Testes do frontend** | Não existem. Não há nenhum teste em `frontend/`. |
-| **Validação ao vivo de dois formulários** | O cadastro de paciente e o cadastro de medicamento usam o mesmo padrão de validação já validado no navegador nas outras telas, mas **não foram testados ao vivo** porque exigem login com MFA. |
+| **Validação de formulário sem teste automatizado** | Todos os formulários do portal foram verificados **ao vivo no navegador** ([#32](https://github.com/marluceqa-source/hora-do-remedio/issues/32)), mas essa verificação é **manual e não se repete sozinha**: uma regressão nas mensagens não quebraria nenhum teste. É o que [#24](https://github.com/marluceqa-source/hora-do-remedio/issues/24) (Playwright) cobriria. |
 
 A suíte de backend está verde: **185 testes passando**, 86% de cobertura.
 
