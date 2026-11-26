@@ -12,6 +12,10 @@ entregas integradas**:
 📖 **As regras de negócio completas (RN01–RN32), os requisitos funcionais e as decisões de
 arquitetura estão na [Wiki do projeto](https://github.com/marluceqa-source/hora-do-remedio/wiki).**
 
+Os **19 critérios de aceite** do prompt master (§15) foram conferidos item a item em 26/11/2026:
+**17 atendidos, 1 com ressalva e 1 não verificado** — ver
+[Conferência dos Critérios de Aceite](https://github.com/marluceqa-source/hora-do-remedio/wiki/Conferencia-dos-Criterios-de-Aceite).
+
 O **prompt master** que originou este projeto é a especificação de origem dos requisitos
 (RF01–RF14, RN01–RN18, CT01–CT42 e os critérios de aceite). Ele **não é versionado**: fica apenas
 na máquina de quem desenvolve, em `Criacao/`. O conteúdo dele está refletido na
@@ -87,7 +91,7 @@ Lista completa e versões em [`requirements.txt`](requirements.txt).
 
 ### Limitações
 
-Ver a seção [Limitações conhecidas](#10-limitações-conhecidas) ao final deste documento.
+Ver a seção [Limitações conhecidas](#limitações-conhecidas) ao final deste documento.
 
 ---
 
@@ -461,7 +465,7 @@ curl http://localhost:8000/api/v1/reminders/today -H "Authorization: Bearer $TOK
 - Toda a navegação principal usa o teclado fixo do Telegram (sem digitação).
 - Campos que precisam de texto (nome, dosagem, quantidade, datas, observações) aceitam
   digitação **ou** áudio, dependendo do campo (hoje, voz está implementada para o nome do
-  medicamento — ver [limitações](#10-limitações-conhecidas)).
+  medicamento — ver [limitações](#limitações-conhecidas)).
 - Cada ação importante (dose confirmada, cadastro salvo, dose não tomada) pode vir acompanhada
   de confirmação sonora — ligar/desligar em ⚙️ Configurações.
 - `/cancelar` interrompe e reinicia qualquer cadastro em andamento.
@@ -489,7 +493,7 @@ cd frontend && npx tsc -b      # type-check
 cd frontend && npm run build   # build de produção
 ```
 
-**Não há testes automatizados no `frontend/`** — ver [limitações](#10-limitações-conhecidas).
+**Não há testes automatizados no `frontend/`** — ver [limitações](#limitações-conhecidas).
 
 ## Como validar o contrato OpenAPI
 
@@ -510,7 +514,7 @@ pytest tests/contract               # falha se docs/openapi.yaml divergir do que
   enviado a serviços de terceiros.
 - O bot nunca sugere ou altera dosagens (RN13); a confirmação de dose é uma declaração do
   usuário, não uma comprovação clínica (RN04, RN12).
-- Ver também [Limitações conhecidas](#10-limitações-conhecidas) sobre retenção de dados.
+- Ver também [Limitações conhecidas](#limitações-conhecidas) sobre retenção de dados.
 
 No portal (detalhes em
 [Segurança e Privacidade](https://github.com/marluceqa-source/hora-do-remedio/wiki/Seguranca-e-Privacidade)):
@@ -549,7 +553,7 @@ No portal (detalhes em
 | Link do convite aponta para o bot errado | `TELEGRAM_BOT_USERNAME` não configurado ou desatualizado | Ajuste no `.env` e reinicie a API |
 | Erro de login no portal: `AttributeError: __about__` | `bcrypt` incompatível com o `passlib` | Use `bcrypt==4.0.1`, como fixado em `requirements.txt` |
 
-## 10. Limitações conhecidas
+## Limitações conhecidas
 
 - **Ilustrações de acessibilidade (RF11):** só 4 das 11 do símbolo-tabela têm imagem própria
   (fornecidas pelo usuário); as demais usam o emoji Unicode do símbolo como equivalente.
@@ -574,9 +578,10 @@ No portal (detalhes em
 - **Segredos em desenvolvimento:** os valores de exemplo continuam aceitos quando `APP_ENV` é
   um ambiente de desenvolvimento — é só fora dele que a aplicação recusa iniciar. Ou seja, a
   proteção **não** impede que alguém rode com segredo fraco marcando o ambiente como `dev`.
-- **RN29 e RN31:** sem correspondência no código; é preciso conferir a especificação do portal
-  e então documentar ou descartar
-  ([#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23)).
+- **Token do bot em texto claro no log:** o `httpx` registra a URL de cada chamada ao Telegram,
+  e o token vai na URL — hoje são **26.482 linhas** nos arquivos de `logs/`. Os logs **não**
+  estão no Git, mas o segredo fica em disco. É preciso mascarar o registro **e revogar o token
+  atual** pelo BotFather ([#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47)).
 - **Sem testes de carga:** a aplicação não foi avaliada sob concorrência real de múltiplos
   usuários; SQLite é adequado para desenvolvimento/demonstração, não para produção em escala
   (ver recomendação de PostgreSQL em [`docs/architecture.md`](docs/architecture.md)).

@@ -30,4 +30,5 @@
 - [Segurança e Privacidade](Seguranca-e-Privacidade)
 
 **Estado**
+- [Conferência dos Critérios de Aceite](Conferencia-dos-Criterios-de-Aceite)
 - [Limitações Conhecidas](Limitacoes-Conhecidas)

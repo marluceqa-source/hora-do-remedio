@@ -49,11 +49,19 @@ problemas encontrados, não suposições — estão abaixo, cada um com o card q
 | 3 | O diretório `tests/accessibility/` existe e contém **apenas `__init__.py`** — a categoria de teste pedida no prompt master (§11) está vazia. Os testes de acessibilidade reais vivem em `tests/unit/`. | Estrutura prometida e não preenchida | `tests/accessibility/` · [#41](https://github.com/marluceqa-source/hora-do-remedio/issues/41) |
 | 4 | ~~RN01, RN08 e RN14 sem marcação no código~~ — **resolvido** em [#37](https://github.com/marluceqa-source/hora-do-remedio/issues/37): 29 das 32 regras marcadas. Resta RN17, que não tem implementação a marcar. | Rastreabilidade implícita incompleta | [Matriz](Matriz-de-Rastreabilidade#3-matriz-principal--regras-de-negócio) · [#22](https://github.com/marluceqa-source/hora-do-remedio/issues/22) |
 | 5 | ~~RN29 e RN31 sem origem~~ — **resolvido** em [#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23): as duas existem na especificação e já estavam implementadas; RN30 estava com o texto trocado. Resta alinhar a redação de RN21, RN26 e RN27 ([#46](https://github.com/marluceqa-source/hora-do-remedio/issues/46)). | Requisito órfão | [Limitações](Limitacoes-Conhecidas) · [#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23) |
-| 6 | Os **19 critérios de aceite** do prompt master (§15) não têm registro de conferência item a item. | Verificação não documentada | [Priorização](Priorizacao-e-Backlog#5-o-backlog-priorizado) · [#39](https://github.com/marluceqa-source/hora-do-remedio/issues/39) |
+| 6 | ~~Os **19 critérios de aceite** do prompt master (§15) não têm registro de conferência item a item~~ — **resolvido** em [#39](https://github.com/marluceqa-source/hora-do-remedio/issues/39): 17 atendidos, 1 com ressalva, 1 não verificado. A conferência descobriu dois achados novos (11 e 12). | Verificação não documentada | [Conferência dos Critérios de Aceite](Conferencia-dos-Criterios-de-Aceite) |
 | 7 | Os requisitos não funcionais **não tinham identificador** antes desta documentação. | Especificação incompleta | [Requisitos Não Funcionais](Requisitos-Nao-Funcionais) · [#43](https://github.com/marluceqa-source/hora-do-remedio/issues/43) |
 | 8 | Duas numerações `RFxx` independentes coexistem (bot/API e portal), e `RF02` significa coisas diferentes em cada uma. | Ambiguidade de identificação | [Requisitos Funcionais](Requisitos-Funcionais) · mitigado, sem card |
 | 9 | Vários RNF são verificáveis mas **não quantificados** (sem valor-alvo nem forma de medição). | Qualidade do requisito | [Requisitos Não Funcionais](Requisitos-Nao-Funcionais#ponto-de-atenção-mensurabilidade) · [#43](https://github.com/marluceqa-source/hora-do-remedio/issues/43) |
 | 10 | Não existe **baseline** da especificação: sem tags, sem releases, sem versão na wiki. | Gerenciamento de requisitos | [Gerenciamento](Gerenciamento-de-Requisitos#baseline) · [#38](https://github.com/marluceqa-source/hora-do-remedio/issues/38) |
+
+| 11 | O **token do bot é gravado em texto claro no log** — 26.482 linhas. O `httpx` registra a URL de cada chamada ao Telegram e o token vai na URL. Fora do Git, mas em disco. | Segurança | [Conferência](Conferencia-dos-Criterios-de-Aceite#achado-a--o-token-do-bot-é-gravado-em-texto-claro-no-log) · [#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47) |
+| 12 | Os **16 critérios de aceite do portal** (§22 da especificação do portal) não têm registro de conferência — a mesma dívida que o achado 6 fechou para o bot/API, ainda aberta para o portal. | Verificação não documentada | [Conferência](Conferencia-dos-Criterios-de-Aceite#4-o-que-esta-conferência-não-cobre) · [#48](https://github.com/marluceqa-source/hora-do-remedio/issues/48) |
+
+> **Os achados 11 e 12 não vieram da revisão de 20/11.** Eles foram descobertos ao conferir os
+> critérios de aceite em 26/11 — o achado 11 ao verificar o critério nº 19 ("configurações
+> sensíveis protegidas"), que teria passado liso se a conferência se baseasse no que o README
+> afirma em vez de olhar o disco.
 
 > **Achado 8 não será corrigido renumerando.** Renumerar invalidaria as referências já presentes
 > no código, nos testes e nas issues. A mitigação adotada é o aviso explícito no topo da página de
@@ -144,7 +152,7 @@ Antes de considerar um requisito novo documentado, ele tem:
 ## Resumo
 
 - **Verificação forte, validação ausente** — e isso está registrado, não disfarçado.
-- A revisão que produziu esta documentação encontrou **10 achados**, todos com card.
+- A revisão que produziu esta documentação encontrou **10 achados**; a conferência dos critérios de aceite acrescentou outros **2** (achados 11 e 12). Todos os 12 têm card.
 - O achado mais relevante tecnicamente é o estado `expired` inalcançável; o mais relevante
   estrategicamente é a falta de contato com usuários reais.
 - Um checklist de revisão passa a existir para os próximos requisitos.

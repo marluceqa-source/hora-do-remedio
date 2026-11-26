@@ -35,14 +35,16 @@ mesma camada `services/`.
 | Histórias de usuário | HU01–HU16 com critérios em Gherkin |
 | Cenários de teste | **42 dos 42** CT rastreáveis por busca nos testes |
 | Suíte automatizada | 201 testes, 86% de cobertura |
+| Critérios de aceite (§15) | **17 de 19 atendidos**, 1 com ressalva, 1 não verificado — [conferência](Conferencia-dos-Criterios-de-Aceite) |
 
 ### O que esta baseline **não** cobre
 
-As 20 pendências abertas, estimadas em **155,2 ± 15,7 h** — ver
-[Priorização e Backlog](Priorizacao-e-Backlog). Três lacunas conhecidas ficam explicitamente
-**fora** desta baseline, e não devem ser lidas como atendidas:
+As **16 pendências abertas**, estimadas em **145,6 ± 15,5 h** — ver
+[Priorização e Backlog](Priorizacao-e-Backlog). Duas lacunas ficam explicitamente **fora** desta
+baseline, e não devem ser lidas como atendidas:
 
 - **RN17** — a política de retenção é configurável, mas não há expurgo automático ([#22](https://github.com/marluceqa-source/hora-do-remedio/issues/22)).
+- **Token do bot em texto claro no log** — descoberto na [conferência dos critérios de aceite](Conferencia-dos-Criterios-de-Aceite#achado-a--o-token-do-bot-é-gravado-em-texto-claro-no-log); exige mascarar o registro **e revogar o token atual** ([#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47)).
 
 A lista completa está em [Limitações Conhecidas](Limitacoes-Conhecidas).
 
@@ -71,7 +73,8 @@ cada definição indicada.
 - **[Matriz de Rastreabilidade](Matriz-de-Rastreabilidade)** — requisito → código → teste → card.
 - **[Gerenciamento de Requisitos](Gerenciamento-de-Requisitos)** — atributos, versionamento, mudanças e relatórios.
 - **[Priorização e Backlog](Priorizacao-e-Backlog)** — qual técnica foi usada e em que ordem fazer.
-- **[Validação e Verificação](Validacao-e-Verificacao)** — o que está verificado, o que **não** está validado e os 10 achados da revisão.
+- **[Conferência dos Critérios de Aceite](Conferencia-dos-Criterios-de-Aceite)** — os 19 critérios de §15 com verdito e evidência: 17 atendidos, 1 com ressalva, 1 não verificado.
+- **[Validação e Verificação](Validacao-e-Verificacao)** — o que está verificado, o que **não** está validado e os 12 achados da revisão.
 - **[Roteiro de Validação com Usuários](Roteiro-de-Validacao-com-Usuarios)** — plano de elicitação direta com o público-alvo: hipóteses, técnicas e sessões.
 - **[Glossário](Glossario)** — termos do domínio, homônimos e vocabulário de ER.
 
