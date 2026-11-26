@@ -228,7 +228,7 @@ Cenário: revogação
   Quando eu revogar o acesso
   Então qualquer nova consulta dele é recusada
 ```
-*Verificado em:* `tests/unit/test_caregiver_service.py` (CT28), `tests/api/test_caregivers.py`
+*Verificado em:* `tests/api/test_caregivers.py` (CT28), `tests/unit/test_caregiver_service.py`
 
 ---
 

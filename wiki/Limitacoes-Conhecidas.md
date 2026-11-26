@@ -35,7 +35,7 @@ especificação do portal e então documentar ou descartar.
 | **Testes do frontend** | Não existem. Não há nenhum teste em `frontend/`. |
 | **Validação ao vivo de dois formulários** | O cadastro de paciente e o cadastro de medicamento usam o mesmo padrão de validação já validado no navegador nas outras telas, mas **não foram testados ao vivo** porque exigem login com MFA. |
 
-A suíte de backend está verde: **160 testes passando**, 86% de cobertura.
+A suíte de backend está verde: **185 testes passando**, 86% de cobertura.
 
 ---
 
@@ -67,8 +67,7 @@ completa está em [Validação e Verificação](Validacao-e-Verificacao#2-verifi
 |---|---|
 | **Status `expired` inalcançável** | `ReminderEvent.status` admite `expired`, os relatórios o tratam como "sem confirmação" e o bot tem o rótulo `⌛ expirado` — mas **nenhum código atribui esse status**. Por isso o cenário **CT17** ("botões antigos ou expirados") não tem teste nem implementação. Card: [#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35). |
 | **`tests/accessibility/` está vazio** | O diretório existe com apenas `__init__.py`. A categoria de teste pedida no prompt master (§11) não foi preenchida; os testes de acessibilidade reais estão em `tests/unit/`. Card: [#41](https://github.com/marluceqa-source/hora-do-remedio/issues/41). |
-| **CT28 sem identificador** | O comportamento (acesso autorizado de cuidador) é testado, mas sem o identificador `ct28` no nome — então não aparece em busca por cobertura. Card: [#36](https://github.com/marluceqa-source/hora-do-remedio/issues/36). |
-| **RN01, RN08 e RN14 sem marcação no código** | Estão implementadas, mas sem o comentário `RNxx` que as outras 26 regras têm. Card: [#37](https://github.com/marluceqa-source/hora-do-remedio/issues/37). |
+| **RN17 sem marcação no código** | Única regra implementável sem o comentário `RNxx` — porque não há expurgo implementado para marcar. As outras 29 das 32 estão marcadas. Card: [#22](https://github.com/marluceqa-source/hora-do-remedio/issues/22). |
 | **Critérios de aceite sem conferência registrada** | Os 19 critérios da seção 15 do prompt master não têm registro de verificação item a item em nenhum lugar do repositório. Card: [#39](https://github.com/marluceqa-source/hora-do-remedio/issues/39). |
 | **Sem baseline da especificação** | Não há tags, releases nem versão declarada na wiki — não é possível dizer "esta é a especificação da versão X". Card: [#38](https://github.com/marluceqa-source/hora-do-remedio/issues/38). |
 | **LGPD: exportação e exclusão de dados** | `RES06` está declarada, mas não existe rota de exportação nem de exclusão de dados do titular. Card: [#42](https://github.com/marluceqa-source/hora-do-remedio/issues/42). |

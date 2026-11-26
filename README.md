@@ -480,7 +480,7 @@ Todas as integrações externas (Telegram, OCR, STT, TTS) são mockadas nos test
 — nada chama de verdade a API do Telegram, o binário do Tesseract ou os modelos de
 voz/transcrição durante `pytest`.
 
-Estado atual: **160 testes passando, 86% de cobertura.**
+Estado atual: **185 testes passando, 86% de cobertura.**
 
 No portal, a verificação hoje é só de tipos:
 

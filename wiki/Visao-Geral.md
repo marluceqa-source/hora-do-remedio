@@ -115,7 +115,7 @@ Docker e Docker Compose. Lista completa e versões em
 | API REST + OpenAPI | ✅ Completa |
 | Portal — backend | ✅ Completo |
 | Portal — frontend | ✅ Telas completas e validadas no navegador |
-| Testes de backend | ✅ 160 testes |
+| Testes de backend | ✅ 185 testes |
 | Testes E2E / acessibilidade | ❌ Não implementados |
 | Docker | ✅ Existe (não revalidado após o portal) |
 

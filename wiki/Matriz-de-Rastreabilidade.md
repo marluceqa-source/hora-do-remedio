@@ -66,20 +66,20 @@ ausente, não "não implementado".
 
 | RN | Origem | Implementação | Marcação | Verificação | Card |
 |---|---|---|---|---|---|
-| **RN01** | Prompt §7 | `services/medication_service.py` | — | `tests/api/test_medications.py` (CT01) | [#2](https://github.com/marluceqa-source/hora-do-remedio/issues/2) |
+| **RN01** | Prompt §7 | `services/medication_service.py` | ✅ | `tests/api/test_medications.py` (CT01) | [#2](https://github.com/marluceqa-source/hora-do-remedio/issues/2) |
 | **RN02** | Prompt §7 | `api/schemas/medication.py` | ✅ | CT04 | [#2](https://github.com/marluceqa-source/hora-do-remedio/issues/2) |
 | **RN03** | Prompt §7 | `services/scheduler_service.py` | ✅ | CT15 | [#5](https://github.com/marluceqa-source/hora-do-remedio/issues/5) |
 | **RN04** | Prompt §7 | `api/routes/reminders.py` | ✅ | CT06 | [#6](https://github.com/marluceqa-source/hora-do-remedio/issues/6) |
 | **RN05** | Prompt §7 | `api/routes/reminders.py`, `services/reminder_service.py` | ✅ | CT07 | [#6](https://github.com/marluceqa-source/hora-do-remedio/issues/6) |
 | **RN06** | Prompt §7 | `api/routes/reminders.py` | ✅ | CT08 | [#6](https://github.com/marluceqa-source/hora-do-remedio/issues/6) |
 | **RN07** | Prompt §7 | `database/models.py`, `services/scheduler_service.py` | ✅ | CT14 | [#5](https://github.com/marluceqa-source/hora-do-remedio/issues/5) |
-| **RN08** | Prompt §7 | `SchedulerService.reload_jobs()` | — | CT11, CT39 | [#5](https://github.com/marluceqa-source/hora-do-remedio/issues/5) |
+| **RN08** | Prompt §7 | `SchedulerService.reload_jobs()` | ✅ | CT11, CT39 | [#5](https://github.com/marluceqa-source/hora-do-remedio/issues/5) |
 | **RN09** | Prompt §7 | `api/routes/*`, `services/professional_auth_service.py` | ✅ | CT12, CT41 | [#11](https://github.com/marluceqa-source/hora-do-remedio/issues/11) |
 | **RN10** | Prompt §7 | `bot/handlers/medications.py` | ✅ | CT19, CT20 | [#3](https://github.com/marluceqa-source/hora-do-remedio/issues/3) |
 | **RN11** | Prompt §7 | `bot/handlers/medications.py` | ✅ | CT21, CT26 | [#4](https://github.com/marluceqa-source/hora-do-remedio/issues/4) |
 | **RN12** | Prompt §7 | `api/main.py`, `api/routes/reports.py`, `services/dashboard_service.py` | ✅ | `tests/unit/test_report_service.py` | [#7](https://github.com/marluceqa-source/hora-do-remedio/issues/7) |
 | **RN13** | Prompt §7 | `api/main.py`, `database/models.py` (declaração) | ✅ | **nenhum** — garantida por ausência de funcionalidade | [#34](https://github.com/marluceqa-source/hora-do-remedio/issues/34) |
-| **RN14** | Prompt §7 | `services/caregiver_service.py` | — | `tests/unit/test_caregiver_service.py`, `tests/api/test_caregivers.py` | [#8](https://github.com/marluceqa-source/hora-do-remedio/issues/8) |
+| **RN14** | Prompt §7 | `services/caregiver_service.py` | ✅ | `tests/unit/test_caregiver_service.py`, `tests/api/test_caregivers.py` | [#8](https://github.com/marluceqa-source/hora-do-remedio/issues/8) |
 | **RN15** | Prompt §7 | `services/scheduler_service.py` | ✅ | CT11 | [#5](https://github.com/marluceqa-source/hora-do-remedio/issues/5) |
 | **RN16** | Prompt §7 | `api/routes/medications.py` | ✅ | CT09 | — |
 | **RN17** | Prompt §7 | `core/config.py` (só o parâmetro) | — | **nenhum** | [#22](https://github.com/marluceqa-source/hora-do-remedio/issues/22) |
@@ -99,7 +99,7 @@ ausente, não "não implementado".
 | **RN31** | ❓ desconhecida | — | — | — | [#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23) |
 | **RN32** | Espec. do portal | `api/routes/admin.py`, `services/audit_service.py` | ✅ | `tests/api/test_dashboard_and_admin.py` | [#17](https://github.com/marluceqa-source/hora-do-remedio/issues/17) |
 
-**Resumo:** 30 das 32 RN têm implementação identificada; 26 têm marcação `RNxx` no código;
+**Resumo:** 30 das 32 RN têm implementação identificada; **29** têm marcação `RNxx` no código;
 RN13 e RN17 não têm verificação automatizada; RN29 e RN31 não têm origem localizável.
 
 ---
@@ -125,16 +125,23 @@ Os 42 cenários CT do prompt master (§11) rastreados até o arquivo de teste. A
 | `tests/integration/test_seed_and_persistence.py` | CT39, CT40 |
 | `tests/contract/test_openapi_contract.py` | CT31, CT32, CT33, CT34, CT35, CT36, CT37, CT38 |
 
-### Os dois buracos
+### O buraco que restou
 
 | Cenário | Situação |
 |---|---|
 | **CT17** — "Botões antigos ou expirados" ([#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35)) | **Sem teste e sem implementação.** O status `expired` existe na `CheckConstraint` de `ReminderEvent`, é tratado como "sem confirmação" nos relatórios e tem rótulo no bot, mas **nenhum código atribui esse status**. Ver [Modelagem de Requisitos](Modelagem-de-Requisitos#52-evento-de-lembrete-reminderevent-status). |
-| **CT28** — "Acesso autorizado de cuidador" ([#36](https://github.com/marluceqa-source/hora-do-remedio/issues/36)) | **Comportamento coberto, rastreabilidade não.** `tests/api/test_caregivers.py` e `tests/unit/test_caregiver_service.py` exercitam exatamente isso, mas sem o identificador `ct28` no nome — então o cenário não aparece em uma busca por cobertura. |
 
-> **Cobertura rastreável: 40 de 42 cenários (95%).** A suíte tem 160 testes e 86% de cobertura
+> ✅ **CT28** — "Acesso autorizado de cuidador" ([#36](https://github.com/marluceqa-source/hora-do-remedio/issues/36))
+> era o segundo buraco e foi fechado: `test_ct28_caregiver_can_view_authorized_patient_medications`
+> em `tests/api/test_caregivers.py` leva o identificador e cobre o caminho ponta a ponta, do
+> convite à leitura dos medicamentos.
+
+> **Cobertura rastreável: 41 de 42 cenários (98%).** A suíte tem 185 testes e 86% de cobertura
 > de linhas — número que vem da execução registrada no card
 > [#21](https://github.com/marluceqa-source/hora-do-remedio/issues/21), não desta página.
+>
+> O cenário que falta é **CT17**, e ele não é dívida de anotação: não há o que anotar enquanto
+> nenhum código atribuir o status `expired`. Os 41 rastreáveis são exatamente os 41 que existem.
 
 ---
 
@@ -205,7 +212,7 @@ sensível do sistema do ponto de vista clínico.
 
 | Lacuna | Efeito |
 |---|---|
-| **RN01, RN08, RN14 sem marcação no código** ([#37](https://github.com/marluceqa-source/hora-do-remedio/issues/37)) | Quem alterar esses arquivos não vê que há regra documentada ali. |
+| **RN17 sem marcação no código** ([#22](https://github.com/marluceqa-source/hora-do-remedio/issues/22)) | Única regra implementável ainda sem marcação — e por um motivo real: não há expurgo implementado para marcar. RN01, RN08 e RN14 foram marcadas em [#37](https://github.com/marluceqa-source/hora-do-remedio/issues/37). |
 | **Sem atributo de versão por requisito** ([#38](https://github.com/marluceqa-source/hora-do-remedio/issues/38)) | A dimensão "entre versões de requisitos" (§6.2) é coberta só pelo histórico do Git. |
 | **RNF sem marcação no código** | Os RNF foram criados nesta documentação e ainda não têm referência nos arquivos. |
 | **Rastreabilidade mantida à mão** ([#44](https://github.com/marluceqa-source/hora-do-remedio/issues/44)) | Nenhuma ferramenta de ER é usada (§11 do handbook de gerenciamento, p. 219): a matriz pode envelhecer sem aviso. |
