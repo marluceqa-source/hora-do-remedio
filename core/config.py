@@ -1,9 +1,31 @@
 from functools import lru_cache
 from pathlib import Path
 
+from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Ambientes em que segredo de exemplo é tolerável. Qualquer outro valor de APP_ENV
+# (production, staging, homologacao...) exige segredo real.
+DEV_ENVIRONMENTS = frozenset({"development", "dev", "local", "test", "testing"})
+
+MIN_SECRET_LENGTH = 32
+
+GENERATE_SECRET_HINT = 'python -c "import secrets; print(secrets.token_urlsafe(48))"'
+
+
+def is_weak_secret(value: str) -> bool:
+    """Segredo de exemplo, vazio, ou curto demais para assinar um HMAC.
+
+    Pega tanto os padrões deste arquivo quanto os placeholders do .env.example — copiar
+    o exemplo e esquecer de editar é justamente o descuido que esta checagem existe para
+    interromper.
+    """
+    normalized = value.strip().lower()
+    if len(normalized) < MIN_SECRET_LENGTH:
+        return True
+    return "change-me" in normalized or "troque" in normalized
 
 
 class Settings(BaseSettings):
@@ -64,6 +86,36 @@ class Settings(BaseSettings):
     @property
     def cors_origins_list(self) -> list[str]:
         return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
+
+    @model_validator(mode="after")
+    def _reject_weak_secrets(self) -> "Settings":
+        if self.app_env.strip().lower() in DEV_ENVIRONMENTS:
+            return self
+
+        weak = [
+            name
+            for name, value in (
+                ("API_SECRET_KEY", self.api_secret_key),
+                ("PROFESSIONAL_SESSION_SECRET_KEY", self.professional_session_secret_key),
+            )
+            if is_weak_secret(value)
+        ]
+        if weak:
+            raise ValueError(
+                f"APP_ENV={self.app_env!r} exige segredos reais, mas {', '.join(weak)} "
+                f"ainda está com valor de exemplo, vazio, ou com menos de "
+                f"{MIN_SECRET_LENGTH} caracteres. Gere cada segredo com "
+                f"{GENERATE_SECRET_HINT} e defina no .env."
+            )
+
+        if self.api_secret_key == self.professional_session_secret_key:
+            raise ValueError(
+                "API_SECRET_KEY e PROFESSIONAL_SESSION_SECRET_KEY não podem ter o mesmo "
+                "valor: a autenticação do paciente e a do profissional são independentes "
+                "de propósito (RN19), e reaproveitar o segredo anula essa separação."
+            )
+
+        return self
 
 
 @lru_cache

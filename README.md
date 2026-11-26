@@ -155,8 +155,17 @@ cp .env.example .env
 Edite o `.env` e preencha ao menos `TELEGRAM_BOT_TOKEN` e `API_SECRET_KEY` (veja a seção
 [Variáveis de ambiente](#variáveis-de-ambiente) abaixo).
 
-> ⚠️ Se for usar o portal, **troque também `PROFESSIONAL_SESSION_SECRET_KEY`**, que vem com o
-> valor padrão `change-me-professional-session`.
+Gere os dois segredos — **valores diferentes entre si** — com:
+
+```bash
+python -c "import secrets; print(secrets.token_urlsafe(48))"
+```
+
+> Com `APP_ENV` diferente de `development`/`dev`/`local`/`test`/`testing`, a aplicação
+> **se recusa a iniciar** enquanto `API_SECRET_KEY` ou `PROFESSIONAL_SESSION_SECRET_KEY`
+> estiver com valor de exemplo, vazio, com menos de 32 caracteres — ou se os dois forem
+> iguais, o que anularia a separação entre as duas autenticações (RN19). Em
+> desenvolvimento, os valores de exemplo continuam funcionando.
 
 ### Criar o bot pelo BotFather
 
@@ -403,7 +412,7 @@ As específicas do portal:
 
 | Variável | Padrão | O que faz |
 |---|---|---|
-| `PROFESSIONAL_SESSION_SECRET_KEY` | `change-me-...` | **Troque.** Segredo da sessão do profissional, independente do JWT do paciente (RN19). |
+| `PROFESSIONAL_SESSION_SECRET_KEY` | `change-me-...` | **Troque.** Segredo da sessão do profissional, independente do JWT do paciente (RN19) e diferente de `API_SECRET_KEY`. |
 | `PROFESSIONAL_SESSION_COOKIE_NAME` | `hdr_professional_session` | Nome do cookie `httpOnly`. |
 | `PROFESSIONAL_SESSION_EXPIRE_MINUTES` | `480` | Validade da sessão (8 h). |
 | `PROFESSIONAL_MFA_PRE_AUTH_EXPIRE_MINUTES` | `5` | Janela para concluir o MFA depois da senha. |
@@ -562,9 +571,9 @@ No portal (detalhes em
 - **Recuperação de acesso do portal:** o token é gerado corretamente, mas **o ambiente não
   envia e-mails reais** — a própria tela avisa que o token deve ser obtido com o administrador
   ([#29](https://github.com/marluceqa-source/hora-do-remedio/issues/29)).
-- **Segredo padrão do portal:** `PROFESSIONAL_SESSION_SECRET_KEY` vem como
-  `change-me-professional-session` e **precisa ser trocado** antes de qualquer uso real
-  ([#30](https://github.com/marluceqa-source/hora-do-remedio/issues/30)).
+- **Segredos em desenvolvimento:** os valores de exemplo continuam aceitos quando `APP_ENV` é
+  um ambiente de desenvolvimento — é só fora dele que a aplicação recusa iniciar. Ou seja, a
+  proteção **não** impede que alguém rode com segredo fraco marcando o ambiente como `dev`.
 - **RN29 e RN31:** sem correspondência no código; é preciso conferir a especificação do portal
   e então documentar ou descartar
   ([#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23)).
