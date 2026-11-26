@@ -25,7 +25,7 @@ Esta tabela é o RMP do Hora do Remédio, com o estado honesto de cada item:
 | Cenário de requisitos | [Engenharia de Requisitos §2](Engenharia-de-Requisitos#2-os-produtos-de-trabalho-de-requisitos-deste-projeto) | definido |
 | Atributos e visualizações | [§2](#2-esquema-de-atributos) e [§3](#3-visualizações) desta página | definido |
 | Critérios e métodos de priorização | [Priorização e Backlog](Priorizacao-e-Backlog) | definido |
-| Versionamento e processo de mudança | [§4](#4-versionamento) e [§5](#5-processo-de-mudança) desta página | **parcial** — sem baseline formal |
+| Versionamento e processo de mudança | [§4](#4-versionamento) e [§5](#5-processo-de-mudança) desta página | **parcial** — baseline 1.0.0 existe; falta versão por requisito |
 | Rastreabilidade | [Matriz de Rastreabilidade](Matriz-de-Rastreabilidade) | definido |
 | Gerenciamento de variantes | — | **não se aplica hoje** (ver [§7](#7-o-que-este-projeto-não-gerencia)) |
 | Relatórios | [§6](#6-relatórios) desta página | **parcial** |
@@ -119,14 +119,21 @@ O handbook distingue o nível em que se versiona (§5.1.1, p. 88):
 > **Baseline:** "Uma configuração estável, com mudança controlada, de produtos de trabalho."
 > — Glossário, verbete *Baseline, linha de base*, p. 3
 
-**Não existe baseline formal.** O repositório não tem tags nem releases, e a wiki não tem
-marcação de versão. O handbook aponta que baselines servem ao planejamento e à definição de
-releases (Glossário, p. 3; §5.1, p. 85) — sem elas, não é possível dizer "esta é a especificação
-da versão X" com precisão.
+**A primeira baseline existe desde o card [#38](https://github.com/marluceqa-source/hora-do-remedio/issues/38):**
+**1.0.0**, de 25 de novembro de 2026, marcada pela tag anotada
+[`v1.0.0`](https://github.com/marluceqa-source/hora-do-remedio/releases/tag/v1.0.0) no
+repositório e declarada na [Home](Home#baseline-da-especificação) da wiki, com o escopo coberto
+e — igualmente importante — o escopo **não** coberto.
 
-> **Recomendação registrada no card [#38](https://github.com/marluceqa-source/hora-do-remedio/issues/38):** criar uma tag no repositório e uma seção de versão na
-> [Home](Home) da wiki, formando a primeira baseline — a especificação como ela está no
-> encerramento do projeto final.
+O handbook aponta que baselines servem ao planejamento e à definição de releases (Glossário,
+p. 3; §5.1, p. 85). Com a 1.0.0 é possível dizer "esta é a especificação da versão X" com
+precisão: a tag congela o código e a documentação de requisitos no mesmo ponto.
+
+> **O que continua faltando:** a baseline é de **documento**, não de **item**. Ela congela o
+> conjunto, mas cada requisito ainda não carrega a sua própria versão — então continua
+> impossível responder "em que versão RN12 mudou?" sem ler o histórico do Git. É a limitação
+> registrada logo acima, e o handbook a trata como controle de versão em nível de item
+> (§5.1, p. 85).
 
 ### Ciclo de vida que o projeto **de fato** versiona bem
 

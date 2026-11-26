@@ -61,6 +61,12 @@ def list_active_access(db: Session, owner: User) -> list[CaregiverAccess]:
 
 
 def find_patient_access_for_caregiver(db: Session, patient_user_id: int, caregiver: User) -> CaregiverAccess | None:
+    """Autorização ativa do cuidador para aquele paciente, ou None.
+
+    RN14: o filtro `revoked_at.is_(None)` é a regra. Sem essa condição, o cuidador
+    manteria acesso vitalício aos dados do paciente mesmo depois de ter sido revogado —
+    e a revogação é uma garantia que o paciente exerce sozinho.
+    """
     return (
         db.query(CaregiverAccess)
         .filter(

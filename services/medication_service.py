@@ -36,6 +36,12 @@ def list_medications(db: Session, user: User, active: bool | None = None) -> lis
 
 
 def create_medication(db: Session, user: User, payload: MedicationCreate) -> Medication:
+    """Cria um medicamento com seus horários.
+
+    RN01: não existe limite de medicamentos por usuário, e a regra é garantida pela
+    *ausência* de qualquer contagem aqui. Introduzir um limite quebraria uma regra
+    documentada sem que nenhum teste de limite falhe.
+    """
     medication = Medication(
         user_id=user.id,
         name=payload.name,
