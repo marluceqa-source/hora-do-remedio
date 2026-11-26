@@ -20,6 +20,10 @@ _STATUS_LABELS = {
     "expired": "⌛ expirado",
 }
 
+# CT17 — botão antigo. O texto evita culpar a pessoa e diz o que NÃO aconteceu, porque o
+# risco aqui é ela achar que registrou a dose quando não registrou.
+_EXPIRED_ALERT = "Esse lembrete é antigo e já foi encerrado. Nada foi registrado."
+
 
 async def today(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     db = SessionLocal()
@@ -93,6 +97,10 @@ async def confirm_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         except reminder_service.ReminderAlreadyConfirmedError:
             await query.answer("Essa dose já havia sido confirmada.", show_alert=True)
             return
+        except reminder_service.ReminderExpiredError:
+            await query.answer(_EXPIRED_ALERT, show_alert=True)
+            await query.edit_message_reply_markup(reply_markup=None)
+            return
         medication_name = reminder.medication.name
         await query.answer("✅ Confirmado!")
         await query.edit_message_reply_markup(reply_markup=None)
@@ -124,6 +132,10 @@ async def snooze_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
         except reminder_service.ReminderAlreadyConfirmedError:
             await query.answer("Essa dose já havia sido confirmada.", show_alert=True)
             return
+        except reminder_service.ReminderExpiredError:
+            await query.answer(_EXPIRED_ALERT, show_alert=True)
+            await query.edit_message_reply_markup(reply_markup=None)
+            return
         scheduler = context.bot_data.get("scheduler_service")
         if scheduler is not None:
             scheduler.schedule_snooze(reminder_id, minutes)
@@ -147,6 +159,10 @@ async def not_taken_callback(update: Update, context: ContextTypes.DEFAULT_TYPE)
             reminder_service.mark_not_taken(db, reminder)
         except reminder_service.ReminderAlreadyConfirmedError:
             await query.answer("Essa dose já havia sido confirmada.", show_alert=True)
+            return
+        except reminder_service.ReminderExpiredError:
+            await query.answer(_EXPIRED_ALERT, show_alert=True)
+            await query.edit_message_reply_markup(reply_markup=None)
             return
         medication_name = reminder.medication.name
         await query.answer("Registrado.")

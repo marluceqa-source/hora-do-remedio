@@ -8,6 +8,10 @@ from services import reminder_service
 
 router = APIRouter(prefix="/api/v1/reminders", tags=["Lembretes"])
 
+# CT17 — a janela de resposta fechou. O lembrete fica `expired`, que conta como "sem
+# confirmação" e nunca como dose não tomada (RN12/RN29).
+_EXPIRED_DETAIL = "Este lembrete expirou e não aceita mais resposta (CT17)"
+
 
 def _get_owned_reminder(db: Session, reminder_id: int, user: User) -> ReminderEvent:
     reminder = reminder_service.get_owned_reminder(db, reminder_id, user)
@@ -42,6 +46,8 @@ def confirm_reminder(
             status_code=status.HTTP_409_CONFLICT,
             detail="Esta dose já foi confirmada anteriormente (RN05)",
         ) from exc
+    except reminder_service.ReminderExpiredError as exc:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=_EXPIRED_DETAIL) from exc
 
 
 @router.post(
@@ -60,3 +66,5 @@ def snooze_reminder(
         return reminder_service.snooze(db, reminder)
     except reminder_service.ReminderAlreadyConfirmedError as exc:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Esta dose já foi confirmada") from exc
+    except reminder_service.ReminderExpiredError as exc:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=_EXPIRED_DETAIL) from exc

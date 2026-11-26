@@ -19,11 +19,13 @@ from sqlalchemy.orm import sessionmaker
 
 from database.connection import SessionLocal
 from database.models import Medication, ReminderEvent, Schedule
+from services import reminder_service
 
 logger = logging.getLogger(__name__)
 
 NotifyCallback = Callable[[int], None]
 _RESYNC_INTERVAL_MINUTES = 5
+_EXPIRE_SWEEP_INTERVAL_MINUTES = 15
 
 
 def _build_trigger(schedule: Schedule):
@@ -60,7 +62,25 @@ class SchedulerService:
             id="resync-jobs",
             replace_existing=True,
         )
+        # Fecha a janela de resposta dos lembretes antigos (CT17). Job próprio, e não um
+        # trecho do resync, porque não tem nada a ver com reconstruir agendamentos: aqui se
+        # escreve no histórico de doses.
+        self._scheduler.add_job(
+            self.expire_stale_reminders,
+            trigger=IntervalTrigger(minutes=_EXPIRE_SWEEP_INTERVAL_MINUTES),
+            id="expire-reminders",
+            replace_existing=True,
+        )
         logger.info("SchedulerService iniciado")
+
+    def expire_stale_reminders(self) -> None:
+        db = self._session_factory()
+        try:
+            total = reminder_service.expire_stale_reminders(db)
+            if total:
+                logger.info("Lembretes expirados por falta de resposta: %s", total)
+        finally:
+            db.close()
 
     def shutdown(self) -> None:
         self._scheduler.shutdown(wait=False)

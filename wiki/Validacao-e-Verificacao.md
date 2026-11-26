@@ -23,7 +23,7 @@ especificados?** (validação) e **os requisitos foram especificados corretament
 
 | | Estado |
 |---|---|
-| **Verificação** | **Forte.** 185 testes automatizados, 41 dos 42 cenários do prompt master rastreados, contrato OpenAPI testado, CI a cada push. |
+| **Verificação** | **Forte.** 201 testes automatizados, **os 42** cenários do prompt master rastreados, contrato OpenAPI testado, CI a cada push. |
 | **Validação** | **Ausente.** Nenhum stakeholder confirmou que os requisitos correspondem às suas necessidades. Nenhum paciente, cuidador ou profissional de saúde foi consultado. |
 
 Essa assimetria é o fato mais importante desta página. Um sistema pode cumprir perfeitamente uma
@@ -44,8 +44,8 @@ problemas encontrados, não suposições — estão abaixo, cada um com o card q
 
 | # | Achado | Tipo | Onde |
 |---|---|---|---|
-| 1 | O status `expired` de `ReminderEvent` **nunca é atribuído** por nenhum código, mas é tratado em relatórios e tem rótulo no bot. | Inconsistência entre especificação e implementação | [Modelagem](Modelagem-de-Requisitos#52-evento-de-lembrete-reminderevent-status) · [#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35) |
-| 2 | **CT17** não tem teste nem implementação. ~~CT28 sem identificador~~ — **resolvido** em [#36](https://github.com/marluceqa-source/hora-do-remedio/issues/36). | Lacuna de cobertura | [Matriz](Matriz-de-Rastreabilidade#4-análise-de-cobertura) · [#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35) |
+| 1 | ~~Status `expired` nunca atribuído~~ — **resolvido** em [#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35): job `expire-reminders` fecha a janela de resposta, e expirado continua contando como sem confirmação. | Inconsistência entre especificação e implementação | [Modelagem](Modelagem-de-Requisitos) |
+| 2 | ~~CT17 e CT28 sem cobertura~~ — **resolvidos** em [#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35) e [#36](https://github.com/marluceqa-source/hora-do-remedio/issues/36): os **42** cenários do prompt master estão rastreáveis. | Lacuna de cobertura | [Matriz](Matriz-de-Rastreabilidade#4-análise-de-cobertura) |
 | 3 | O diretório `tests/accessibility/` existe e contém **apenas `__init__.py`** — a categoria de teste pedida no prompt master (§11) está vazia. Os testes de acessibilidade reais vivem em `tests/unit/`. | Estrutura prometida e não preenchida | `tests/accessibility/` · [#41](https://github.com/marluceqa-source/hora-do-remedio/issues/41) |
 | 4 | ~~RN01, RN08 e RN14 sem marcação no código~~ — **resolvido** em [#37](https://github.com/marluceqa-source/hora-do-remedio/issues/37): 29 das 32 regras marcadas. Resta RN17, que não tem implementação a marcar. | Rastreabilidade implícita incompleta | [Matriz](Matriz-de-Rastreabilidade#3-matriz-principal--regras-de-negócio) · [#22](https://github.com/marluceqa-source/hora-do-remedio/issues/22) |
 | 5 | ~~RN29 e RN31 sem origem~~ — **resolvido** em [#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23): as duas existem na especificação e já estavam implementadas; RN30 estava com o texto trocado. Resta alinhar a redação de RN21, RN26 e RN27 ([#46](https://github.com/marluceqa-source/hora-do-remedio/issues/46)). | Requisito órfão | [Limitações](Limitacoes-Conhecidas) · [#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23) |

@@ -42,6 +42,10 @@ testada, para que a wiki não vire uma promessa sem lastro no código.
 **Status possíveis de um `ReminderEvent`:**
 `pending` · `delivered` · `confirmed` · `not_taken` · `snoozed` · `expired`
 
+`expired` é atribuído pelo job `expire-reminders` quando a janela de resposta
+(`REMINDER_EXPIRE_HOURS`, padrão 24 h) fecha sem resposta. Conta como **sem confirmação**,
+nunca como dose não tomada (RN12).
+
 **Opções de adiamento permitidas:** 5, 10, 15 ou 30 minutos.
 
 ## Entrada de dados por foto e por voz

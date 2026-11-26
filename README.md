@@ -480,7 +480,7 @@ Todas as integrações externas (Telegram, OCR, STT, TTS) são mockadas nos test
 — nada chama de verdade a API do Telegram, o binário do Tesseract ou os modelos de
 voz/transcrição durante `pytest`.
 
-Estado atual: **185 testes passando, 86% de cobertura.**
+Estado atual: **201 testes passando, 86% de cobertura.**
 
 No portal, a verificação hoje é só de tipos:
 
@@ -580,5 +580,7 @@ No portal (detalhes em
 - **Sem testes de carga:** a aplicação não foi avaliada sob concorrência real de múltiplos
   usuários; SQLite é adequado para desenvolvimento/demonstração, não para produção em escala
   (ver recomendação de PostgreSQL em [`docs/architecture.md`](docs/architecture.md)).
-- **CT17** ("botões antigos ou expirados") do checklist de testes do prompt master não tem
-  teste automatizado dedicado.
+- **Janela de resposta em fuso único:** o lembrete expira usando o fuso da aplicação
+  (`TIMEZONE`). Usuários em outro fuso têm a janela deslocada pela diferença — `ReminderEvent`
+  não guarda o `Schedule` que o originou, então não há como recuperar o fuso exato de cada
+  lembrete sem mudar o modelo.

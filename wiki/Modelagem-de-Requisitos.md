@@ -262,7 +262,9 @@ stateDiagram-v2
     delivered --> snoozed : paciente adia - RN06
     snoozed --> confirmed : confirma depois
     snoozed --> not_taken : declara que nao tomou
-    delivered --> expired : NAO IMPLEMENTADO
+    delivered --> expired : janela fecha sem resposta - CT17
+    snoozed --> expired : janela fecha sem resposta - CT17
+    expired --> expired : resposta recusada - CT17
     confirmed --> confirmed : nova confirmacao recusada - RN05
     confirmed --> [*]
     not_taken --> [*]
@@ -277,12 +279,20 @@ stateDiagram-v2
 Os estados vêm da `CheckConstraint` em `ReminderEvent`:
 `pending`, `delivered`, `confirmed`, `not_taken`, `snoozed`, `expired`.
 
-> ⚠️ **Achado desta modelagem: `expired` é um estado inalcançável.** Ele existe na
-> `CheckConstraint`, é tratado como "sem confirmação" em `services/report_service.py` e
-> `services/dashboard_service.py`, e tem rótulo no bot (`⌛ expirado`) — mas **nenhum código
-> atribui esse status**. As únicas atribuições existentes são `pending`, `delivered`,
-> `confirmed`, `snoozed` e `not_taken`. Isso explica por que o cenário **CT17** ("botões antigos
-> ou expirados") é um dos dois cenários do prompt master sem teste. Registrado no card [#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35).
+> ✅ **`expired` deixou de ser inalcançável** no card [#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35).
+> Um job periódico (`expire-reminders`, a cada 15 min) move para `expired` todo lembrete que
+> passou da janela de resposta sem ser respondido — `REMINDER_EXPIRE_HOURS`, padrão 24 h. Com
+> isso o cenário **CT17** ("botões antigos ou expirados") passou a ter implementação e teste,
+> e os 42 cenários do prompt master estão cobertos.
+>
+> **A transição respeita a regra mais importante do sistema.** `expired` significa *"a janela
+> fechou sem resposta"*, e continua contado entre os **sem confirmação** em
+> `report_service.py` e `dashboard_service.py` — nunca entre as doses não tomadas. Não existe,
+> e não deve existir, caminho de `expired` para `not_taken`: a passagem do tempo não produz um
+> fato clínico (RN12 / RN29).
+>
+> Um lembrete expirado **não aceita mais resposta**: tocar num botão antigo recebe um aviso e
+> os botões somem, para que um toque acidental não vire registro.
 
 ---
 

@@ -4,6 +4,7 @@ from zoneinfo import ZoneInfo
 
 from sqlalchemy.orm import Session
 
+from core.config import get_settings
 from database.models import Medication, ReminderEvent, User
 
 
@@ -11,8 +12,21 @@ class ReminderAlreadyConfirmedError(Exception):
     """Levantada ao tentar confirmar, adiar ou marcar como não tomada uma dose já confirmada (RN05)."""
 
 
+class ReminderExpiredError(Exception):
+    """Levantada ao responder um lembrete já expirado (CT17 — botões antigos ou expirados)."""
+
+
+# Status de um lembrete que ainda aguarda resposta: são estes que podem expirar.
+_AWAITING_RESPONSE_STATUSES = ("pending", "delivered", "snoozed")
+
+
 def _utcnow_naive() -> datetime:
     return datetime.now(timezone.utc).replace(tzinfo=None)
+
+
+def _now_in_app_timezone() -> datetime:
+    """Mesmo relógio com que `SchedulerService._fire` grava `scheduled_datetime`."""
+    return datetime.now(ZoneInfo(get_settings().timezone)).replace(tzinfo=None)
 
 
 def list_today(db: Session, user: User) -> list[ReminderEvent]:
@@ -67,9 +81,52 @@ def get_owned_reminder(db: Session, reminder_id: int, user: User) -> ReminderEve
     return reminder
 
 
-def confirm(db: Session, reminder: ReminderEvent) -> ReminderEvent:
+def expire_stale_reminders(db: Session, *, now: datetime | None = None) -> int:
+    """Marca como `expired` os lembretes sem resposta além da janela (CT17). Devolve quantos.
+
+    **`expired` não é `not_taken`** (RN12/RN29). Esta transição registra que a janela de
+    resposta fechou sem resposta — nunca que a pessoa deixou de tomar o medicamento. Por isso
+    os relatórios e o painel contam `expired` junto dos "sem confirmação", e não das doses não
+    tomadas.
+
+    Só alcança quem ainda aguardava resposta: uma dose confirmada ou explicitamente marcada
+    como não tomada já tem a declaração da pessoa e não é tocada aqui.
+
+    O relógio usado é o do **fuso da aplicação**, não UTC, porque `scheduled_datetime` é
+    gravado por `SchedulerService._fire` no fuso local do agendamento
+    (`datetime.now(tz).replace(tzinfo=None)`). Comparar com UTC expiraria os lembretes com
+    uma diferença igual ao deslocamento do fuso — três horas mais cedo em São Paulo.
+
+    Limitação: usuários em fusos diferentes do fuso da aplicação têm a janela deslocada pela
+    diferença entre os dois. `ReminderEvent` não guarda o `Schedule` que o originou, então não
+    há como recuperar o fuso exato de cada lembrete sem mudar o modelo.
+    """
+    momento = now or _now_in_app_timezone()
+    limite = momento - timedelta(hours=get_settings().reminder_expire_hours)
+    atingidos = (
+        db.query(ReminderEvent)
+        .filter(
+            ReminderEvent.status.in_(_AWAITING_RESPONSE_STATUSES),
+            ReminderEvent.scheduled_datetime < limite,
+        )
+        .all()
+    )
+    for reminder in atingidos:
+        reminder.status = "expired"
+    if atingidos:
+        db.commit()
+    return len(atingidos)
+
+
+def _reject_if_unanswerable(reminder: ReminderEvent) -> None:
     if reminder.status == "confirmed":
         raise ReminderAlreadyConfirmedError()
+    if reminder.status == "expired":
+        raise ReminderExpiredError()
+
+
+def confirm(db: Session, reminder: ReminderEvent) -> ReminderEvent:
+    _reject_if_unanswerable(reminder)
     reminder.status = "confirmed"
     reminder.confirmed_datetime = _utcnow_naive()
     db.commit()
@@ -78,8 +135,7 @@ def confirm(db: Session, reminder: ReminderEvent) -> ReminderEvent:
 
 
 def snooze(db: Session, reminder: ReminderEvent) -> ReminderEvent:
-    if reminder.status == "confirmed":
-        raise ReminderAlreadyConfirmedError()
+    _reject_if_unanswerable(reminder)
     reminder.status = "snoozed"
     reminder.snooze_count += 1
     db.commit()
@@ -88,8 +144,7 @@ def snooze(db: Session, reminder: ReminderEvent) -> ReminderEvent:
 
 
 def mark_not_taken(db: Session, reminder: ReminderEvent) -> ReminderEvent:
-    if reminder.status == "confirmed":
-        raise ReminderAlreadyConfirmedError()
+    _reject_if_unanswerable(reminder)
     reminder.status = "not_taken"
     db.commit()
     db.refresh(reminder)

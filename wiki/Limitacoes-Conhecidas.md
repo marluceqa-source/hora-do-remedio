@@ -66,7 +66,6 @@ completa está em [Validação e Verificação](Validacao-e-Verificacao#2-verifi
 
 | Achado | Situação |
 |---|---|
-| **Status `expired` inalcançável** | `ReminderEvent.status` admite `expired`, os relatórios o tratam como "sem confirmação" e o bot tem o rótulo `⌛ expirado` — mas **nenhum código atribui esse status**. Por isso o cenário **CT17** ("botões antigos ou expirados") não tem teste nem implementação. Card: [#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35). |
 | **`tests/accessibility/` está vazio** | O diretório existe com apenas `__init__.py`. A categoria de teste pedida no prompt master (§11) não foi preenchida; os testes de acessibilidade reais estão em `tests/unit/`. Card: [#41](https://github.com/marluceqa-source/hora-do-remedio/issues/41). |
 | **RN17 sem marcação no código** | Única regra implementável sem o comentário `RNxx` — porque não há expurgo implementado para marcar. As outras 29 das 32 estão marcadas. Card: [#22](https://github.com/marluceqa-source/hora-do-remedio/issues/22). |
 | **Critérios de aceite sem conferência registrada** | Os 19 critérios da seção 15 do prompt master não têm registro de verificação item a item em nenhum lugar do repositório. Card: [#39](https://github.com/marluceqa-source/hora-do-remedio/issues/39). |

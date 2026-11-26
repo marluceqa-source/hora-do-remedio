@@ -46,6 +46,11 @@ class Settings(BaseSettings):
 
     rate_limit_per_minute: int = 60
 
+    # Depois desta janela sem resposta, o lembrete passa a `expired` (RN12/RN29: "expirado"
+    # é "não sabemos", nunca "não tomou"). 24 h deixa a pessoa responder o dia inteiro e só
+    # descarta o botão quando o lembrete seguinte do mesmo horário já chegou.
+    reminder_expire_hours: int = 24
+
     data_retention_days: int = 365
 
     ocr_engine: str = "tesseract"

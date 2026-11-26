@@ -33,8 +33,8 @@ mesma camada `services/`.
 | Requisitos não funcionais | RNF01–RNF23 e restrições RES01–RES07 |
 | Regras de negócio | **RN01–RN32**, com 29 marcadas no código |
 | Histórias de usuário | HU01–HU16 com critérios em Gherkin |
-| Cenários de teste | 41 dos 42 CT rastreáveis por busca nos testes |
-| Suíte automatizada | 185 testes, 86% de cobertura |
+| Cenários de teste | **42 dos 42** CT rastreáveis por busca nos testes |
+| Suíte automatizada | 201 testes, 86% de cobertura |
 
 ### O que esta baseline **não** cobre
 
@@ -43,7 +43,6 @@ As 20 pendências abertas, estimadas em **155,2 ± 15,7 h** — ver
 **fora** desta baseline, e não devem ser lidas como atendidas:
 
 - **RN17** — a política de retenção é configurável, mas não há expurgo automático ([#22](https://github.com/marluceqa-source/hora-do-remedio/issues/22)).
-- **CT17** — o status `expired` de um lembrete nunca é atribuído por nenhum código ([#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35)).
 
 A lista completa está em [Limitações Conhecidas](Limitacoes-Conhecidas).
 

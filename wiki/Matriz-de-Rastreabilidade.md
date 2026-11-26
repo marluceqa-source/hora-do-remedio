@@ -127,23 +127,23 @@ Os 42 cenários CT do prompt master (§11) rastreados até o arquivo de teste. A
 | `tests/integration/test_seed_and_persistence.py` | CT39, CT40 |
 | `tests/contract/test_openapi_contract.py` | CT31, CT32, CT33, CT34, CT35, CT36, CT37, CT38 |
 
-### O buraco que restou
+### Os buracos, fechados
 
 | Cenário | Situação |
 |---|---|
-| **CT17** — "Botões antigos ou expirados" ([#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35)) | **Sem teste e sem implementação.** O status `expired` existe na `CheckConstraint` de `ReminderEvent`, é tratado como "sem confirmação" nos relatórios e tem rótulo no bot, mas **nenhum código atribui esse status**. Ver [Modelagem de Requisitos](Modelagem-de-Requisitos#52-evento-de-lembrete-reminderevent-status). |
+| **CT17** — "Botões antigos ou expirados" ([#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35)) | ✅ **Coberto.** `tests/unit/test_ct17_expired_reminders.py` — 16 testes sobre a transição para `expired`, a recusa de resposta em botão antigo e a garantia de que expirado nunca vira `not_taken`. |
 
 > ✅ **CT28** — "Acesso autorizado de cuidador" ([#36](https://github.com/marluceqa-source/hora-do-remedio/issues/36))
 > era o segundo buraco e foi fechado: `test_ct28_caregiver_can_view_authorized_patient_medications`
 > em `tests/api/test_caregivers.py` leva o identificador e cobre o caminho ponta a ponta, do
 > convite à leitura dos medicamentos.
 
-> **Cobertura rastreável: 41 de 42 cenários (98%).** A suíte tem 185 testes e 86% de cobertura
+> **Cobertura rastreável: 42 de 42 cenários (100%).** A suíte tem 201 testes e 86% de cobertura
 > de linhas — número que vem da execução registrada no card
 > [#21](https://github.com/marluceqa-source/hora-do-remedio/issues/21), não desta página.
 >
-> O cenário que falta é **CT17**, e ele não é dívida de anotação: não há o que anotar enquanto
-> nenhum código atribuir o status `expired`. Os 41 rastreáveis são exatamente os 41 que existem.
+> **Não falta nenhum.** CT17 era o último, e foi implementado e testado em
+> [#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35).
 
 ---
 
