@@ -23,7 +23,7 @@ especificados?** (validação) e **os requisitos foram especificados corretament
 
 | | Estado |
 |---|---|
-| **Verificação** | **Forte.** 201 testes automatizados, **os 42** cenários do prompt master rastreados, contrato OpenAPI testado, CI a cada push. |
+| **Verificação** | **Forte.** 217 testes automatizados, **os 42** cenários do prompt master rastreados, contrato OpenAPI testado, CI a cada push. |
 | **Validação** | **Ausente.** Nenhum stakeholder confirmou que os requisitos correspondem às suas necessidades. Nenhum paciente, cuidador ou profissional de saúde foi consultado. |
 
 Essa assimetria é o fato mais importante desta página. Um sistema pode cumprir perfeitamente uma
@@ -55,7 +55,7 @@ problemas encontrados, não suposições — estão abaixo, cada um com o card q
 | 9 | Vários RNF são verificáveis mas **não quantificados** (sem valor-alvo nem forma de medição). | Qualidade do requisito | [Requisitos Não Funcionais](Requisitos-Nao-Funcionais#ponto-de-atenção-mensurabilidade) · [#43](https://github.com/marluceqa-source/hora-do-remedio/issues/43) |
 | 10 | Não existe **baseline** da especificação: sem tags, sem releases, sem versão na wiki. | Gerenciamento de requisitos | [Gerenciamento](Gerenciamento-de-Requisitos#baseline) · [#38](https://github.com/marluceqa-source/hora-do-remedio/issues/38) |
 
-| 11 | O **token do bot é gravado em texto claro no log** — 26.482 linhas. O `httpx` registra a URL de cada chamada ao Telegram e o token vai na URL. Fora do Git, mas em disco. | Segurança | [Conferência](Conferencia-dos-Criterios-de-Aceite#achado-a--o-token-do-bot-é-gravado-em-texto-claro-no-log) · [#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47) |
+| 11 | ~~O **token do bot é gravado em texto claro no log** — 26.482 linhas~~ — **mascaramento resolvido** em [#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47) (filtro de handler, 16 testes, verificado ao vivo). Resta **revogar o token exposto**, que ainda é válido ([#49](https://github.com/marluceqa-source/hora-do-remedio/issues/49)). | Segurança | [Segredos no log](Seguranca-e-Privacidade#segredos-no-log) |
 | 12 | Os **16 critérios de aceite do portal** (§22 da especificação do portal) não têm registro de conferência — a mesma dívida que o achado 6 fechou para o bot/API, ainda aberta para o portal. | Verificação não documentada | [Conferência](Conferencia-dos-Criterios-de-Aceite#4-o-que-esta-conferência-não-cobre) · [#48](https://github.com/marluceqa-source/hora-do-remedio/issues/48) |
 
 > **Os achados 11 e 12 não vieram da revisão de 20/11.** Eles foram descobertos ao conferir os

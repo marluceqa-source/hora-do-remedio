@@ -126,6 +126,7 @@ Os 42 cenários CT do prompt master (§11) rastreados até o arquivo de teste. A
 | `tests/integration/test_cadastro_flow.py` | CT30 |
 | `tests/integration/test_seed_and_persistence.py` | CT39, CT40 |
 | `tests/contract/test_openapi_contract.py` | CT31, CT32, CT33, CT34, CT35, CT36, CT37, CT38 |
+| `tests/unit/test_log_redaction.py` | — (não é CT do prompt master; cobre o [#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47), segredo em log) |
 
 ### Os buracos, fechados
 
@@ -138,7 +139,7 @@ Os 42 cenários CT do prompt master (§11) rastreados até o arquivo de teste. A
 > em `tests/api/test_caregivers.py` leva o identificador e cobre o caminho ponta a ponta, do
 > convite à leitura dos medicamentos.
 
-> **Cobertura rastreável: 42 de 42 cenários (100%).** A suíte tem 201 testes e 86% de cobertura
+> **Cobertura rastreável: 42 de 42 cenários (100%).** A suíte tem 217 testes e 87% de cobertura
 > de linhas — número que vem da execução registrada no card
 > [#21](https://github.com/marluceqa-source/hora-do-remedio/issues/21), não desta página.
 >

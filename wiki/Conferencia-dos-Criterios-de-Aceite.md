@@ -15,7 +15,7 @@ item**, com a evidência de cada verdito.
 | | Critérios |
 |---|---|
 | ✅ **Atendidos** | **17** |
-| ⚠️ **Atendido com ressalva** | **1** — nº 19 (configurações sensíveis) |
+| ⚠️ **Atendido com ressalva** | **1** — nº 19 (configurações sensíveis) · *ressalva tratada em 26/11, ver [achado A](#achado-a--o-token-do-bot-é-gravado-em-texto-claro-no-log)* |
 | ❌ **Não verificado** | **1** — nº 18 (Docker) |
 
 **Nenhum critério foi reprovado por comportamento errado do sistema.** As duas exceções são de
@@ -24,8 +24,10 @@ natureza diferente entre si e nenhuma delas é um defeito de funcionalidade:
 - o **nº 18** não pôde ser verificado porque **não há Docker instalado na máquina** onde a
   conferência foi feita — é uma verificação pendente, não uma falha conhecida;
 - o **nº 19** está atendido no que diz respeito ao versionamento, mas a conferência
-  **descobriu um vazamento novo**: o token do bot é gravado em texto claro no arquivo de log
-  (ver [achado A](#5-achados-da-conferência)).
+  **descobriu um vazamento novo**: o token do bot era gravado em texto claro no arquivo de log.
+  O mascaramento foi implementado e verificado no mesmo dia ([#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47)); **a revogação do
+  token exposto continua pendente** ([#49](https://github.com/marluceqa-source/hora-do-remedio/issues/49)), e é ela que fecha a ressalva — ver
+  [achado A](#achado-a--o-token-do-bot-é-gravado-em-texto-claro-no-log).
 
 ---
 
@@ -81,9 +83,9 @@ somados):
 | 14 | O README possuir todas as seções obrigatórias. | ✅ | As 7 seções de §10.1–10.6 existem e as **10 seções adicionais de §10.7** também (estrutura, variáveis, exemplos de requisição, exemplos de mensagens, fluxos acessíveis, testes, validação do contrato, segurança, solução de problemas, limitações). §10.2 traz comandos para **Windows, macOS e Linux**; a tabela de §10.6 tem as 7 URLs exigidas. Ver [achado C](#5-achados-da-conferência). |
 | 15 | Os dados de teste forem **fictícios e reproduzíveis**. | ✅ | `scripts/seed_test_data.py` executado **duas vezes seguidas** nesta conferência: mesmo usuário (`111222333`), mesmos medicamentos (ids 10, 11) e mesmos lembretes (ids 47–49) — é idempotente, não acumulativo. Cobre os 7 itens de §10.4, inclusive registro `confirmed`, `delivered` e `not_taken`. Imprime "não usar como orientação médica". CT40. |
 | 16 | As regras de negócio estiverem documentadas. | ✅ | `docs/business_rules.md` (RN01–RN18) e esta wiki: [Bot e API](Regras-de-Negocio-Bot-e-API) e [Portal](Regras-de-Negocio-Portal) (RN19–RN32). **29 das 32 regras têm marcador no código** — ver [Matriz de Rastreabilidade](Matriz-de-Rastreabilidade). |
-| 17 | Os testes automatizados forem executáveis. | ✅ | Execução ao vivo nesta conferência: **201 testes, 201 aprovados, 86% de cobertura**, 34,3 s. Relatório HTML e `htmlcov/` gerados pelo `pytest-cov`, como pede §11. |
+| 17 | Os testes automatizados forem executáveis. | ✅ | Execução ao vivo nesta conferência: **201 testes, 201 aprovados, 86% de cobertura**, 34,3 s. *(No mesmo dia, o [#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47) levou a suíte a 217 testes e 87%.)* Relatório HTML e `htmlcov/` gerados pelo `pytest-cov`, como pede §11. |
 | 18 | A solução puder ser iniciada com Docker. | ❌ **Não verificado** | `Dockerfile` (17 linhas) e `docker-compose.yml` (43 linhas) existem e cobrem os 7 itens de §13. **Mas não há Docker instalado nesta máquina** (`which docker` → não encontrado), então `docker compose up` nunca foi executado. Permanece como validação sintática apenas, exatamente como o README já declara. Card: [#26](https://github.com/marluceqa-source/hora-do-remedio/issues/26). |
-| 19 | As configurações sensíveis estiverem protegidas. | ⚠️ **Com ressalva** | **Atendido no versionamento:** `.env` está no `.gitignore`, não está rastreado, e `git log -S` confirma que o token **nunca entrou no histórico**; `.env.example` só tem *placeholders*; `core/config.py` se recusa a iniciar fora de desenvolvimento com segredo fraco ou com os dois segredos iguais ([#30](https://github.com/marluceqa-source/hora-do-remedio/issues/30), 25 testes). **Ressalva:** o token do bot é gravado em texto claro no log — ver [achado A](#5-achados-da-conferência). |
+| 19 | As configurações sensíveis estiverem protegidas. | ⚠️ **Com ressalva** — mascaramento feito, revogação pendente | **Atendido no versionamento:** `.env` está no `.gitignore`, não está rastreado, e `git log -S` confirma que o token **nunca entrou no histórico**; `.env.example` só tem *placeholders*; `core/config.py` se recusa a iniciar fora de desenvolvimento com segredo fraco ou com os dois segredos iguais ([#30](https://github.com/marluceqa-source/hora-do-remedio/issues/30), 25 testes). **Ressalva:** o token do bot *era* gravado em texto claro no log. Corrigido no mesmo dia por um filtro de handler ([#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47), 16 testes, verificado ao vivo com `LOG_LEVEL=DEBUG`), e os 26.482 registros antigos foram mascarados no lugar. **Mas o token exposto segue válido** — só a revogação ([#49](https://github.com/marluceqa-source/hora-do-remedio/issues/49)) fecha esta ressalva. Ver [achado A](#achado-a--o-token-do-bot-é-gravado-em-texto-claro-no-log). |
 
 ---
 
@@ -109,6 +111,10 @@ depende de contato com o público-alvo real —
 
 ### Achado A — o token do bot é gravado em texto claro no log
 
+> **Estado em 26/11/2026, mesmo dia.** O mascaramento foi implementado e verificado
+> ([#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47)) e os logs antigos foram mascarados no lugar. **A revogação do token exposto
+> continua pendente** ([#49](https://github.com/marluceqa-source/hora-do-remedio/issues/49)) — e é ela, não o filtro, que encerra a exposição.
+
 **Severidade: alta.** `core/logging_config.py` ajusta o nível do logger **raiz**, então o
 logger do `httpx` (usado internamente pelo `python-telegram-bot`) passa a emitir em `INFO` uma
 linha `HTTP Request: POST https://api.telegram.org/bot<TOKEN>/sendMessage` para **cada**
@@ -119,6 +125,7 @@ chamada. O token aparece na URL.
 | Linhas de log com o token | **26.482** (8.922 + 17.560 nos dois arquivos) |
 | Onde | `logs/hora_do_remedio.log` e `.log.1`, ~7,2 MB em texto claro |
 | No Git? | **Não.** `logs/` está no `.gitignore` e o token nunca entrou no histórico. |
+| Corrigido em | 26/11/2026 — filtro de handler, 16 testes, e os 26.482 registros mascarados no lugar. |
 
 Por que isso importa mesmo com o `logs/` ignorado: §12 do prompt master manda implementar logs
 estruturados e **não registrar o que não é necessário**; um segredo de longa duração em texto
@@ -128,7 +135,45 @@ leitura ao arquivo — backup, log shipper, suporte — controla o bot por compl
 **Duas ações, não uma:** filtrar o log *e* **revogar o token atual pelo BotFather**, porque ele
 já está exposto nesses arquivos. Filtrar sem revogar não desfaz a exposição.
 
-Card: [#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47).
+#### O que foi feito na primeira ação ([#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47))
+
+Um `logging.Filter` instalado **nos handlers**, não nos loggers — e essa distinção é a correção
+em si. Filtro em logger só vê o que é emitido *nele*; registro que sobe por propagação dos
+filhos passa intocado. Como o token vinha de `httpx`, um logger filho, um filtro no logger raiz
+não teria alcançado nada.
+
+A alternativa óbvia — `logging.getLogger("httpx").setLevel(WARNING)` — foi descartada por
+resolver só este caso: qualquer outra biblioteca que registre a URL volta a vazar, e §12 do
+prompt master pede justamente o registro de "falhas de comunicação", que seria perdido junto com
+o código de status das chamadas bem-sucedidas. O filtro conserva a linha e tira só o segredo:
+
+```
+HTTP Request: POST https://api.telegram.org/bot9031798481:***/getMe "HTTP/1.1 200 OK"
+```
+
+O id numérico do bot fica — ele não é secreto e é o que diz *qual* bot falhou.
+
+Dois detalhes que uma implementação apressada erra, e que têm teste de regressão próprio:
+
+1. **`record.args` precisa ser zerado.** `getMessage()` junta `msg % args`; quem reescreve só
+   `record.msg` faz o handler interpolar de novo, e o token volta pelos argumentos.
+2. **O filtro nunca descarta registro.** Devolve sempre `True`: um log que desaparece é tão
+   ruim quanto um log que vaza.
+
+Verificação: `tests/unit/test_log_redaction.py` (16 testes, os dois casos acima incluídos, ambos
+confirmados como falhando sem a correção) e uma chamada real ao Telegram com `LOG_LEVEL=DEBUG` —
+o nível mais verboso — sem o token no arquivo.
+
+#### O que falta: a segunda ação ([#49](https://github.com/marluceqa-source/hora-do-remedio/issues/49))
+
+O token exposto **continua válido**: um `getMe` com ele respondeu HTTP 200 nesta mesma
+conferência. O filtro impede novos vazamentos e os arquivos foram limpos, mas o segredo
+circulou em texto claro por nove dias, e qualquer cópia feita nesse período — backup, pasta
+sincronizada, janela de terminal — continua com ele. Só o `/revoke` no BotFather encerra isso.
+
+Separar as duas ações em cards distintos não é burocracia: a primeira é trabalho de código, a
+segunda é do operador do bot, e fechar o [#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47) inteiro teria apagado do quadro justamente
+a parte que ainda importa.
 
 ### Achado B — o portal tem 16 critérios de aceite e nenhum registro de conferência
 
@@ -151,13 +196,16 @@ o que reflete a especificação em vez de contrariá-la. As 4 âncoras internas 
 
 ## 6. O que muda na baseline
 
-A baseline **1.0.0** declarava "42 dos 42 CT rastreáveis" e "201 testes" — ambos continuam
-verdadeiros e agora têm esta página como registro de conferência dos critérios. O que muda:
+A baseline **1.0.0** declarava "42 dos 42 CT rastreáveis" e "201 testes" — o primeiro continua
+verdadeiro e o segundo subiu para **217 testes, 87% de cobertura**, pelos 16 testes que o
+[#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47) acrescentou. A conferência
+dos critérios agora tem esta página como registro. O que muda:
 
 - a lacuna "**critérios de aceite sem conferência registrada**" sai de
   [Limitações Conhecidas](Limitacoes-Conhecidas) e de
   [Validação e Verificação](Validacao-e-Verificacao) — ela foi fechada por esta página;
-- entra uma lacuna nova e mais séria no lugar: o **achado A** (token em log);
+- entra uma lacuna nova e mais séria no lugar: o **achado A** (token em log) — com a parte de
+  código já fechada no mesmo dia e a revogação do token pendente;
 - entra a lacuna do **achado B** (critérios do portal).
 
 Fechar uma dívida de verificação e descobrir uma de segurança no mesmo trabalho é o resultado

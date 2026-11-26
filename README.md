@@ -484,7 +484,7 @@ Todas as integrações externas (Telegram, OCR, STT, TTS) são mockadas nos test
 — nada chama de verdade a API do Telegram, o binário do Tesseract ou os modelos de
 voz/transcrição durante `pytest`.
 
-Estado atual: **201 testes passando, 86% de cobertura.**
+Estado atual: **217 testes passando, 87% de cobertura.**
 
 No portal, a verificação hoje é só de tipos:
 
@@ -578,10 +578,12 @@ No portal (detalhes em
 - **Segredos em desenvolvimento:** os valores de exemplo continuam aceitos quando `APP_ENV` é
   um ambiente de desenvolvimento — é só fora dele que a aplicação recusa iniciar. Ou seja, a
   proteção **não** impede que alguém rode com segredo fraco marcando o ambiente como `dev`.
-- **Token do bot em texto claro no log:** o `httpx` registra a URL de cada chamada ao Telegram,
-  e o token vai na URL — hoje são **26.482 linhas** nos arquivos de `logs/`. Os logs **não**
-  estão no Git, mas o segredo fica em disco. É preciso mascarar o registro **e revogar o token
-  atual** pelo BotFather ([#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47)).
+- **Token do bot exposto no log (parcialmente resolvido):** o `httpx` registrava a URL de cada
+  chamada ao Telegram, e o token ia na URL — foram **26.482 linhas**. O mascaramento está
+  implementado (`core/log_redaction.py`, filtro de handler, 16 testes) e os logs antigos foram
+  mascarados no lugar ([#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47)). **Mas o token exposto continua válido:** é preciso
+  revogá-lo pelo BotFather, porque filtrar não desfaz a exposição que já houve
+  ([#49](https://github.com/marluceqa-source/hora-do-remedio/issues/49)).
 - **Sem testes de carga:** a aplicação não foi avaliada sob concorrência real de múltiplos
   usuários; SQLite é adequado para desenvolvimento/demonstração, não para produção em escala
   (ver recomendação de PostgreSQL em [`docs/architecture.md`](docs/architecture.md)).

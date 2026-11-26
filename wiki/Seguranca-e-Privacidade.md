@@ -118,6 +118,43 @@ usuário final.
 
 ---
 
+## Segredos no log
+
+§12 do prompt master pede logs estruturados e **proíbe registrar o que não é necessário**. Um
+segredo de longa duração em texto claro em disco é o caso mais claro disso — e foi exatamente o
+que aconteceu aqui, sem que nenhum teste percebesse.
+
+O `httpx`, usado internamente pelo `python-telegram-bot`, registra em `INFO` a URL de cada
+chamada — e o token do bot vai na URL. Com o logger raiz em `INFO`, isso gravou **26.482 linhas**
+com o token antes de ser notado, na [conferência dos critérios de aceite](Conferencia-dos-Criterios-de-Aceite#achado-a--o-token-do-bot-é-gravado-em-texto-claro-no-log).
+
+**A proteção hoje:** `core/log_redaction.py` instala um `logging.Filter` **nos handlers** de
+`configure_logging()`. Ele mascara o token do Telegram (mantendo o id numérico do bot, que não é
+secreto e diz qual bot falhou), o mesmo token solto sem o prefixo `bot`, e os valores literais de
+`API_SECRET_KEY` e `PROFESSIONAL_SESSION_SECRET_KEY`:
+
+```
+HTTP Request: POST https://api.telegram.org/bot9031798481:***/getMe "HTTP/1.1 200 OK"
+```
+
+| Decisão | Por quê |
+|---|---|
+| Filtro em **handler**, não em logger | Filtro de logger só vê o que é emitido nele; registro que sobe por propagação dos filhos passa intocado. O token vinha de `httpx`, um logger filho. |
+| Filtro, não `httpx` em `WARNING` | Silenciar o `httpx` resolveria só este caso, perderia o código de status das chamadas bem-sucedidas e deixaria qualquer outra biblioteca vazar a URL. |
+| `record.args` zerado ao reescrever | `getMessage()` junta `msg` com `args` por interpolação. Reescrever só `record.msg` faz o handler interpolar de novo — e o token volta pelos argumentos. |
+| O filtro nunca descarta registro | Devolve sempre `True`. Um log que desaparece é tão ruim quanto um log que vaza. |
+
+Verificado por `tests/unit/test_log_redaction.py` (16 testes, os dois últimos casos com
+regressão confirmada) e por uma chamada real ao Telegram com `LOG_LEVEL=DEBUG`, o nível mais
+verboso.
+
+> ⚠️ **O que o filtro não faz:** desfazer a exposição que já houve. O token que circulou em
+> texto claro continua válido até ser revogado no BotFather —
+> [#49](https://github.com/marluceqa-source/hora-do-remedio/issues/49). Mascarar protege o
+> futuro; revogar encerra o passado.
+
+---
+
 ## Próximo
 
 - [Papéis e Permissões](Papeis-e-Permissoes)

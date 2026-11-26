@@ -36,7 +36,7 @@ verificada. Card: [#46](https://github.com/marluceqa-source/hora-do-remedio/issu
 | **Testes do frontend** | Não existem. Não há nenhum teste em `frontend/`. |
 | **Validação de formulário sem teste automatizado** | Todos os formulários do portal foram verificados **ao vivo no navegador** ([#32](https://github.com/marluceqa-source/hora-do-remedio/issues/32)), mas essa verificação é **manual e não se repete sozinha**: uma regressão nas mensagens não quebraria nenhum teste. É o que [#24](https://github.com/marluceqa-source/hora-do-remedio/issues/24) (Playwright) cobriria. |
 
-A suíte de backend está verde: **185 testes passando**, 86% de cobertura.
+A suíte de backend está verde: **217 testes passando**, 87% de cobertura.
 
 ---
 
@@ -55,7 +55,7 @@ A suíte de backend está verde: **185 testes passando**, 86% de cobertura.
 |---|---|
 | **Envio de e-mail** | A recuperação de acesso do profissional **gera** o token, mas o ambiente **não envia e-mails reais**. A própria tela avisa que o token deve ser obtido com o administrador. |
 | **Agendador em instância única** | O APScheduler roda no processo do bot. Rodar mais de uma instância do bot produziria lembretes duplicados — não há coordenação (lock distribuído) entre instâncias. |
-| **Token do bot em texto claro no log** | O `httpx` registra a URL de cada chamada ao Telegram em nível `INFO`, e o token do bot vai na URL: **26.482 linhas** nos arquivos de `logs/`, ~7,2 MB. Os logs **não** estão no Git e o token nunca entrou no histórico — a exposição é em disco. Exige duas ações: mascarar o registro **e revogar o token atual** pelo BotFather, porque o atual já está exposto. Descoberto na [conferência dos critérios de aceite](Conferencia-dos-Criterios-de-Aceite#achado-a--o-token-do-bot-é-gravado-em-texto-claro-no-log). Card: [#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47). |
+| **Token do bot exposto no log** — *mascaramento feito, revogação pendente* | O `httpx` registrava a URL de cada chamada ao Telegram em nível `INFO`, e o token do bot ia na URL: **26.482 linhas** nos arquivos de `logs/`. **Resolvido no código** em 26/11 ([#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47)): filtro de handler em `core/log_redaction.py`, 16 testes, verificado ao vivo com `LOG_LEVEL=DEBUG`, e os registros antigos mascarados no lugar. **Não resolvido:** o token que ficou exposto continua válido e precisa ser revogado no BotFather — mascarar protege o futuro, não desfaz o passado ([#49](https://github.com/marluceqa-source/hora-do-remedio/issues/49)). Ver [Segredos no log](Seguranca-e-Privacidade#segredos-no-log). |
 | **Segredo fraco em ambiente marcado como dev** | Desde o card [#30](https://github.com/marluceqa-source/hora-do-remedio/issues/30), a aplicação **recusa iniciar** com segredo de exemplo quando `APP_ENV` não é um ambiente de desenvolvimento. A proteção é por configuração, não por inspeção: quem marcar o ambiente como `dev` continua rodando com segredo fraco. |
 
 ---

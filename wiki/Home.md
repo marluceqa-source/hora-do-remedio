@@ -34,17 +34,17 @@ mesma camada `services/`.
 | Regras de negócio | **RN01–RN32**, com 29 marcadas no código |
 | Histórias de usuário | HU01–HU16 com critérios em Gherkin |
 | Cenários de teste | **42 dos 42** CT rastreáveis por busca nos testes |
-| Suíte automatizada | 201 testes, 86% de cobertura |
+| Suíte automatizada | **217 testes, 87% de cobertura** |
 | Critérios de aceite (§15) | **17 de 19 atendidos**, 1 com ressalva, 1 não verificado — [conferência](Conferencia-dos-Criterios-de-Aceite) |
 
 ### O que esta baseline **não** cobre
 
-As **16 pendências abertas**, estimadas em **145,6 ± 15,5 h** — ver
+As **16 pendências abertas**, estimadas em **143,5 ± 15,5 h** — ver
 [Priorização e Backlog](Priorizacao-e-Backlog). Duas lacunas ficam explicitamente **fora** desta
 baseline, e não devem ser lidas como atendidas:
 
 - **RN17** — a política de retenção é configurável, mas não há expurgo automático ([#22](https://github.com/marluceqa-source/hora-do-remedio/issues/22)).
-- **Token do bot em texto claro no log** — descoberto na [conferência dos critérios de aceite](Conferencia-dos-Criterios-de-Aceite#achado-a--o-token-do-bot-é-gravado-em-texto-claro-no-log); exige mascarar o registro **e revogar o token atual** ([#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47)).
+- **Token do bot exposto no log** — o mascaramento está feito e verificado ([#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47)), mas o token exposto **continua válido** e precisa ser revogado no BotFather ([#49](https://github.com/marluceqa-source/hora-do-remedio/issues/49)). Ver [Segredos no log](Seguranca-e-Privacidade#segredos-no-log).
 
 A lista completa está em [Limitações Conhecidas](Limitacoes-Conhecidas).
 
