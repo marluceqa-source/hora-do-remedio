@@ -7,8 +7,8 @@ urgente".
 > uma **estimativa de três pontos** em horas, com desvio declarado, seguindo o material do
 > BSTQB® (§5, pp. 13–14). Isso mudou a ordem do backlog — a seção 6 mostra o que mudou e por quê.
 >
-> **Concluídos desde então**, conforme a regra 6 da seção 9 — os seis primeiros colocados,
-> que somavam 9,8 h estimadas:
+> **Concluídos desde então**, conforme a regra 6 da seção 9 — os sete primeiros colocados,
+> que somavam 15,5 h estimadas:
 > [#30](https://github.com/marluceqa-source/hora-do-remedio/issues/30) (segredos padrão),
 > [#36](https://github.com/marluceqa-source/hora-do-remedio/issues/36) (CT28),
 > [#37](https://github.com/marluceqa-source/hora-do-remedio/issues/37) (RN01/RN08/RN14) e
@@ -100,7 +100,6 @@ Unidade usada aqui: **horas** de trabalho de uma pessoa — o material chama de 
 |---|---|---|---|---|---|---|---|
 | Alinhar RN21, RN26 e RN27 com a especificação | [#46](https://github.com/marluceqa-source/hora-do-remedio/issues/46) | 1,5 | 3 | 8 | **3,58** | ±1,08 | S |
 | Diretório `tests/accessibility/` vazio | [#41](https://github.com/marluceqa-source/hora-do-remedio/issues/41) | 1 | 3 | 8 | **3,50** | ±1,17 | S |
-| Status `expired` nunca atribuído (CT17) | [#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35) | 2 | 5 | 12 | **5,67** | ±1,67 | M |
 | Envio real de e-mail na recuperação | [#29](https://github.com/marluceqa-source/hora-do-remedio/issues/29) | 2 | 5 | 12 | **5,67** | ±1,67 | M |
 | Docker: empacotar o portal | [#26](https://github.com/marluceqa-source/hora-do-remedio/issues/26) | 2 | 5 | 14 | **6,00** | ±2,00 | M |
 | Relatório do estado dos requisitos | [#44](https://github.com/marluceqa-source/hora-do-remedio/issues/44) | 2 | 5 | 14 | **6,00** | ±2,00 | M |
@@ -129,23 +128,23 @@ XL > 20 h.
 
 ## 4. O total do backlog
 
-Somando as 16 estimativas, e combinando os desvios pela raiz da soma dos quadrados:
+Somando as 15 estimativas, e combinando os desvios pela raiz da soma dos quadrados:
 
 ```
-E_total  = 150,3 h
-SD_total = √(Σ SDᵢ²) = √245,8 = 15,7 h
+E_total  = 144,6 h
+SD_total = √(Σ SDᵢ²) = √243,2 = 15,6 h
 ```
 
 | Faixa | Intervalo | Leitura |
 |---|---|---|
-| E ± 1·SD | **135 – 166 h** | cenário provável |
-| E ± 2·SD | **119 – 182 h** | cenário conservador |
+| E ± 1·SD | **129 – 160 h** | cenário provável |
+| E ± 2·SD | **113 – 176 h** | cenário conservador |
 
-> Seis cards concluídos tiraram 9,8 h do total, e a entrada de
+> Sete cards concluídos tiraram 15,5 h do total, e a entrada de
 > [#46](https://github.com/marluceqa-source/hora-do-remedio/issues/46) devolveu 3,6 h. O desvio
-> **não se mexeu em nenhuma das quatro versões desta página** (±15,7 h sempre): tudo que saiu
-> e entrou é tarefa de SD baixo. Fechar e abrir trabalho previsível muda o tamanho do backlog,
-> não a sua incerteza.
+> saiu de ±15,7 h para **±15,6 h** — praticamente parado ao longo de cinco versões desta
+> página, apesar de o backlog ter encolhido 7%. Tudo que saiu era tarefa de SD baixo, e a
+> incerteza continua onde sempre esteve: concentrada em quatro itens que ninguém fechou ainda.
 
 > **Ressalva do método.** Somar desvios pela raiz da soma dos quadrados pressupõe que as
 > atividades são **independentes**. Aqui elas não são totalmente: [#24](https://github.com/marluceqa-source/hora-do-remedio/issues/24)
@@ -158,22 +157,22 @@ SD_total = √(Σ SDᵢ²) = √245,8 = 15,7 h
 
 ### Onde está a incerteza
 
-O desvio não está distribuído: **quatro itens concentram 78% de toda a variância** do backlog.
+O desvio não está distribuído: **quatro itens concentram 79% de toda a variância** do backlog.
 
 | Item | SD | Fatia da variância |
 |---|---|---|
-| [#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40) — elicitação com usuários | ±12,00 | **58,3%** |
+| [#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40) — elicitação com usuários | ±12,00 | **59,2%** |
 | [#42](https://github.com/marluceqa-source/hora-do-remedio/issues/42) — LGPD | ±4,17 | 7,1% |
-| [#33](https://github.com/marluceqa-source/hora-do-remedio/issues/33) — agendador | ±4,00 | 6,5% |
+| [#33](https://github.com/marluceqa-source/hora-do-remedio/issues/33) — agendador | ±4,00 | 6,6% |
 | [#24](https://github.com/marluceqa-source/hora-do-remedio/issues/24) — Playwright | ±3,83 | 6,0% |
-| *12 itens restantes* | — | 21,9% |
+| *11 itens restantes* | — | 21,0% |
 
 **O que isso revela, e que a nota de custo 1–9 escondia:** a elicitação com usuários sozinha
 responde por quase **três quintos** de toda a imprevisibilidade do projeto. Seu `p` é 80 h
 contra `m` de 24 h, porque depende de recrutar pessoas, agendar sessões e lidar com ausências —
 nada disso está sob controle de quem executa.
 
-Tirando esse item, o backlog seria **119,6 ± 10,1 h**: a incerteza cai um terço.
+Tirando esse item, o backlog seria **113,9 ± 10,0 h**: a incerteza cai um terço.
 
 **Consequência prática: [#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40)
 deve ser dividido.** O `p` alto é quase todo da **execução** (recrutar, conduzir, transcrever),
@@ -233,7 +232,6 @@ conteúdo), que tinha a maior nota de risco da lista: seu `m` é 6 h e seu `p` �
 | Item | Card | Ben. | Dano | E (h) | Pontuação |
 |---|---|---|---|---|---|
 | Alinhar RN21, RN26 e RN27 com a especificação | [#46](https://github.com/marluceqa-source/hora-do-remedio/issues/46) | 4 | 4 | 3,58 | **3,4** |
-| Status `expired` nunca atribuído | [#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35) | 6 | 6 | 5,67 | **3,2** |
 | Diretório `tests/accessibility/` vazio | [#41](https://github.com/marluceqa-source/hora-do-remedio/issues/41) | 4 | 3 | 3,50 | **3,1** |
 | RN17: expurgo automático | [#22](https://github.com/marluceqa-source/hora-do-remedio/issues/22) | 6 | 7 | 7,17 | **2,7** |
 | Conferir os 19 critérios de aceite | [#39](https://github.com/marluceqa-source/hora-do-remedio/issues/39) | 6 | 6 | 6,83 | **2,6** |
@@ -297,7 +295,7 @@ Distribuição no momento da repriorização: **P0 = 9 cards · P1 = 5 · P2 = 7
 [#37](https://github.com/marluceqa-source/hora-do-remedio/issues/37) e
 [#38](https://github.com/marluceqa-source/hora-do-remedio/issues/38) e
 [#32](https://github.com/marluceqa-source/hora-do-remedio/issues/32) concluídos, o quadro está
-hoje em **P0 = 3 · P1 = 6 · P2 = 7**.
+hoje em **P0 = 2 · P1 = 6 · P2 = 7**.
 
 ---
 
@@ -309,9 +307,9 @@ Duas distorções permanecem, e a seção existe para não fingir o contrário.
 primeiras posições somavam **4,8 h** e três delas eram dívidas de documentação — boas de fazer,
 mas ninguém diria que eram as mais importantes do projeto.
 
-E foi exatamente o que aconteceu: **os seis primeiros colocados foram os seis primeiros a
+E foi exatamente o que aconteceu: **os sete primeiros colocados foram os sete primeiros a
 sair.** A distorção não é teórica, ela dirige a execução. Hoje as quatro primeiras posições
-somam **18,0 h**, porque o barato acabou — **não há mais nenhum item abaixo de 2 h**. A fila
+somam **18,8 h**, porque o barato acabou — **não há mais nenhum item abaixo de 2 h**. A fila
 agora é de trabalho de verdade, e a pontuação deixa de dar atalhos.
 
 **Segunda: ela afunda o item mais importante.** A elicitação com o público-alvo real tem
@@ -337,18 +335,17 @@ entram divididos**, quando a divisão separa uma fatia previsível de uma imprev
 > campo **Size** traduz E pela faixa da seção 3. Usar a mesma escala nos dois lugares evita o
 > tipo de homônimo registrado no [Glossário](Glossario#1-homônimos--leia-esta-seção-primeiro).
 
-### P0 — fazer primeiro · **E ≈ 16,8 h** (±2,7 h) · 3 cards
+### P0 — fazer primeiro · **E ≈ 11,2 h** (±2,1 h) · 2 cards
 
 | # | Item | Justificativa da posição |
 |---|---|---|
 | 1 | **Planejar a elicitação** ([#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40), fatia de planejamento) · 4,33 h | Promovido pela matriz de risco, e **dividido** pela análise de variância: entra o roteiro, não a execução. |
-| 2 | **Corrigir o status `expired`** ([#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35)) · 5,67 h | O sistema **declara** um estado que nunca atribui — relatórios tratam `expired`, o bot tem rótulo, nada o produz. Único caso de comportamento documentado e inexistente, e o último CT sem rastreabilidade. |
-| 3 | **Conferir os 19 critérios de aceite** ([#39](https://github.com/marluceqa-source/hora-do-remedio/issues/39)) · 6,83 h | **Mantido no P0 contra a pontuação** (é o 5º colocado). É o critério de parada do escopo original: sem essa conferência, não há como afirmar que o projeto está pronto. |
+| 2 | **Conferir os 19 critérios de aceite** ([#39](https://github.com/marluceqa-source/hora-do-remedio/issues/39)) · 6,83 h | **Mantido no P0 contra a pontuação** (é o 4º colocado). É o critério de parada do escopo original: sem essa conferência, não há como afirmar que o projeto está pronto. |
 
 > **Não há mais item abaixo de 2 h no backlog.** O mais barato agora é
 > [#41](https://github.com/marluceqa-source/hora-do-remedio/issues/41), com 3,50 h.
 
-> ✅ **Concluídos** — os seis primeiros colocados da matriz, 9,8 h estimadas:
+> ✅ **Concluídos** — os sete primeiros colocados da matriz, 15,5 h estimadas:
 >
 > | Card | O que ficou pronto |
 > |---|---|
@@ -358,6 +355,7 @@ entram divididos**, quando a divisão separa uma fatia previsível de uma imprev
 > | [#38](https://github.com/marluceqa-source/hora-do-remedio/issues/38) | Baseline **1.0.0** (tag `v1.0.0`) declarada na [Home](Home#baseline-da-especificação). |
 > | [#32](https://github.com/marluceqa-source/hora-do-remedio/issues/32) | Formulários de paciente e de medicamento verificados ao vivo, campo a campo, em português. |
 > | [#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23) | RN29 e RN31 achadas na especificação e documentadas — e RN30, que estava com o texto trocado, corrigida. 31 das 32 regras marcadas. |
+> | [#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35) | Status `expired` deixou de ser inalcançável: job `expire-reminders`, botão antigo recusado, e **os 42 cenários** passam a ser rastreáveis. |
 
 ### P1 — próxima rodada · **E ≈ 49,3 h** (±7,0 h)
 
@@ -387,12 +385,12 @@ entram divididos**, quando a divisão separa uma fatia previsível de uma imprev
 
 | Faixa | Itens | E | SD | Intervalo provável |
 |---|---|---|---|---|
-| **P0** | 3 | 16,8 h | ±2,7 h | 14 – 20 h |
+| **P0** | 2 | 11,2 h | ±2,1 h | 9 – 13 h |
 | **P1** | 6 | 49,3 h | ±7,0 h | 42 – 56 h |
 | **P2** | 8 | 84,2 h | ±13,0 h | 71 – 97 h |
-| **Total** | 17 | **150,3 h** | **±15,0 h** | **135 – 165 h** |
+| **Total** | 16 | **144,6 h** | **±14,9 h** | **130 – 159 h** |
 
-> O total do plano tem **17 itens**, e não 16, porque
+> O total do plano tem **16 itens**, e não 15, porque
 > [#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40) entra dividido. E o SD cai
 > de ±15,7 h (seção 4) para **±15,0 h** sem que nenhuma estimativa mude: dividir uma atividade de
 > faixa muito larga em duas mais estreitas reduz a soma dos quadrados. Não é truque de
