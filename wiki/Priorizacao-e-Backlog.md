@@ -6,6 +6,10 @@ urgente".
 > **Mudança nesta versão.** A coluna "Custo" era uma nota subjetiva de 1 a 9. Foi substituída por
 > uma **estimativa de três pontos** em horas, com desvio declarado, seguindo o material do
 > BSTQB® (§5, pp. 13–14). Isso mudou a ordem do backlog — a seção 6 mostra o que mudou e por quê.
+>
+> **Item concluído desde então:** [#30](https://github.com/marluceqa-source/hora-do-remedio/issues/30)
+> (trocar os segredos padrão) saiu da matriz, conforme a regra 6 da seção 9. Era o 1º colocado,
+> estimado em 1,25 h. Os totais abaixo já refletem os **20 cards** restantes.
 
 ---
 
@@ -89,7 +93,6 @@ Unidade usada aqui: **horas** de trabalho de uma pessoa — o material chama de 
 |---|---|---|---|---|---|---|---|
 | Anotar CT28 nos testes de cuidador | [#36](https://github.com/marluceqa-source/hora-do-remedio/issues/36) | 0,25 | 0,5 | 1,5 | **0,63** | ±0,21 | XS |
 | Marcar RN01, RN08 e RN14 no código | [#37](https://github.com/marluceqa-source/hora-do-remedio/issues/37) | 0,5 | 1 | 2,5 | **1,17** | ±0,33 | XS |
-| Trocar os segredos padrão | [#30](https://github.com/marluceqa-source/hora-do-remedio/issues/30) | 0,5 | 1 | 3 | **1,25** | ±0,42 | XS |
 | Criar a primeira baseline da especificação | [#38](https://github.com/marluceqa-source/hora-do-remedio/issues/38) | 0,5 | 1,5 | 4 | **1,75** | ±0,58 | XS |
 | Validar ao vivo os dois formulários | [#32](https://github.com/marluceqa-source/hora-do-remedio/issues/32) | 0,75 | 1,5 | 4 | **1,79** | ±0,54 | XS |
 | RN29 e RN31: documentar ou descartar | [#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23) | 1 | 2,5 | 8 | **3,17** | ±1,17 | S |
@@ -109,11 +112,11 @@ Unidade usada aqui: **horas** de trabalho de uma pessoa — o material chama de 
 | Exportação e exclusão de dados (LGPD) | [#42](https://github.com/marluceqa-source/hora-do-remedio/issues/42) | 5 | 12 | 30 | **13,83** | ±4,17 | L |
 | **Elicitação com o público-alvo real** | [#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40) | 8 | 24 | 80 | **30,67** | ±12,00 | XL |
 
-Conferência de uma linha, para o cálculo ser reproduzível à mão — [#30](https://github.com/marluceqa-source/hora-do-remedio/issues/30):
+Conferência de uma linha, para o cálculo ser reproduzível à mão — [#36](https://github.com/marluceqa-source/hora-do-remedio/issues/36):
 
 ```
-E  = (0,5 + 4×1 + 3) / 6 = 7,5 / 6 = 1,25 h
-SD = (3 − 0,5) / 6       = 2,5 / 6 = 0,42 h      →  1,25 ± 0,42 h
+E  = (0,25 + 4×0,5 + 1,5) / 6 = 3,75 / 6 = 0,63 h
+SD = (1,5 − 0,25) / 6         = 1,25 / 6 = 0,21 h      →  0,63 ± 0,21 h
 ```
 
 **Tamanho** traduz E para o campo *Size* do quadro: XS < 2 h · S 2–5 h · M 5–10 h · L 10–20 h ·
@@ -123,17 +126,17 @@ XL > 20 h.
 
 ## 4. O total do backlog
 
-Somando as 21 estimativas, e combinando os desvios pela raiz da soma dos quadrados:
+Somando as 20 estimativas, e combinando os desvios pela raiz da soma dos quadrados:
 
 ```
-E_total  = 156,4 h
-SD_total = √(Σ SDᵢ²) = √247,1 = 15,7 h
+E_total  = 155,2 h
+SD_total = √(Σ SDᵢ²) = √246,9 = 15,7 h
 ```
 
 | Faixa | Intervalo | Leitura |
 |---|---|---|
-| E ± 1·SD | **141 – 172 h** | cenário provável |
-| E ± 2·SD | **125 – 188 h** | cenário conservador |
+| E ± 1·SD | **139 – 171 h** | cenário provável |
+| E ± 2·SD | **124 – 187 h** | cenário conservador |
 
 > **Ressalva do método.** Somar desvios pela raiz da soma dos quadrados pressupõe que as
 > atividades são **independentes**. Aqui elas não são totalmente: [#24](https://github.com/marluceqa-source/hora-do-remedio/issues/24)
@@ -153,15 +156,15 @@ O desvio não está distribuído: **quatro itens concentram 78% de toda a variâ
 | [#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40) — elicitação com usuários | ±12,00 | **58,3%** |
 | [#42](https://github.com/marluceqa-source/hora-do-remedio/issues/42) — LGPD | ±4,17 | 7,0% |
 | [#33](https://github.com/marluceqa-source/hora-do-remedio/issues/33) — agendador | ±4,00 | 6,5% |
-| [#24](https://github.com/marluceqa-source/hora-do-remedio/issues/24) — Playwright | ±3,83 | 5,9% |
-| *17 itens restantes* | — | 22,3% |
+| [#24](https://github.com/marluceqa-source/hora-do-remedio/issues/24) — Playwright | ±3,83 | 6,0% |
+| *16 itens restantes* | — | 22,2% |
 
 **O que isso revela, e que a nota de custo 1–9 escondia:** a elicitação com usuários sozinha
 responde por quase **três quintos** de toda a imprevisibilidade do projeto. Seu `p` é 80 h
 contra `m` de 24 h, porque depende de recrutar pessoas, agendar sessões e lidar com ausências —
 nada disso está sob controle de quem executa.
 
-Tirando esse item, o backlog seria **125,8 ± 10,2 h**: a incerteza cai um terço.
+Tirando esse item, o backlog seria **124,5 ± 10,2 h**: a incerteza cai um terço.
 
 **Consequência prática: [#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40)
 deve ser dividido.** O `p` alto é quase todo da **execução** (recrutar, conduzir, transcrever),
@@ -220,7 +223,6 @@ conteúdo), que tinha a maior nota de risco da lista: seu `m` é 6 h e seu `p` �
 
 | Item | Card | Ben. | Dano | E (h) | Pontuação |
 |---|---|---|---|---|---|
-| Trocar os segredos padrão | [#30](https://github.com/marluceqa-source/hora-do-remedio/issues/30) | 7 | 9 | 1,25 | **18,4** |
 | Anotar CT28 nos testes de cuidador | [#36](https://github.com/marluceqa-source/hora-do-remedio/issues/36) | 3 | 2 | 0,63 | **12,8** |
 | Marcar RN01, RN08 e RN14 no código | [#37](https://github.com/marluceqa-source/hora-do-remedio/issues/37) | 4 | 3 | 1,17 | **9,4** |
 | Criar a primeira baseline da especificação | [#38](https://github.com/marluceqa-source/hora-do-remedio/issues/38) | 5 | 4 | 1,75 | **8,0** |
@@ -247,6 +249,11 @@ conteúdo), que tinha a maior nota de risco da lista: seu `m` é 6 h e seu `p` �
 ## 6. O que a estimativa mudou na ordem
 
 Trocar a nota de custo 1–9 por horas estimadas **reordenou o backlog**. As mudanças que importam:
+
+> As posições desta seção são as dos **21 cards** no momento da repriorização, antes de
+> [#30](https://github.com/marluceqa-source/hora-do-remedio/issues/30) ser concluído. É o
+> registro da comparação entre os dois métodos — recalculá-lo depois apagaria justamente o que
+> ele documenta.
 
 | Item | Antes | Agora | Por que mudou |
 |---|---|---|---|
@@ -279,7 +286,9 @@ matriz de risco já faziam o trabalho que a pontuação sozinha errava. O que a 
 pontos corrigiu de fato foi o **dimensionamento**: quatro cards marcados como "S" eram de
 5 a 7 horas, e um "M" era de 11.
 
-Distribuição final: **P0 = 9 cards · P1 = 5 · P2 = 7.**
+Distribuição no momento da repriorização: **P0 = 9 cards · P1 = 5 · P2 = 7.** Com
+[#30](https://github.com/marluceqa-source/hora-do-remedio/issues/30) concluído, o quadro está
+hoje em **P0 = 8 · P1 = 5 · P2 = 7**.
 
 ---
 
@@ -287,7 +296,7 @@ Distribuição final: **P0 = 9 cards · P1 = 5 · P2 = 7.**
 
 Duas distorções permanecem, e a seção existe para não fingir o contrário.
 
-**Primeira: benefício por hora favorece o barato.** As quatro primeiras posições somam **4,8 h**,
+**Primeira: benefício por hora favorece o barato.** As quatro primeiras posições somam **5,3 h**,
 e três delas são dívidas de documentação. São boas de fazer — mas ninguém diria que são as mais
 importantes do projeto.
 
@@ -314,17 +323,21 @@ entram divididos**, quando a divisão separa uma fatia previsível de uma imprev
 > campo **Size** traduz E pela faixa da seção 3. Usar a mesma escala nos dois lugares evita o
 > tipo de homônimo registrado no [Glossário](Glossario#1-homônimos--leia-esta-seção-primeiro).
 
-### P0 — fazer primeiro · **E ≈ 26,6 h** (±3,1 h) · 9 cards em 7 frentes
+### P0 — fazer primeiro · **E ≈ 25,3 h** (±3,1 h) · 8 cards em 6 frentes
 
 | # | Item | Justificativa da posição |
 |---|---|---|
-| 1 | **Trocar os segredos padrão** ([#30](https://github.com/marluceqa-source/hora-do-remedio/issues/30)) · 1,25 h | Maior pontuação da lista e risco de segurança real, por 1 h de trabalho. |
-| 2 | **Dívidas de rastreabilidade** ([#36](https://github.com/marluceqa-source/hora-do-remedio/issues/36), [#37](https://github.com/marluceqa-source/hora-do-remedio/issues/37), [#38](https://github.com/marluceqa-source/hora-do-remedio/issues/38)) · 3,55 h | As três mais baratas do backlog, juntas. São o que mantém esta wiki confiável. |
-| 3 | **Validar ao vivo os dois formulários** ([#32](https://github.com/marluceqa-source/hora-do-remedio/issues/32)) · 1,79 h | Fecha uma lacuna de verificação conhecida por menos de 2 h. |
-| 4 | **RN29 e RN31** ([#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23)) · 3,17 h | Duas regras sem origem localizável: ou existem e faltam, ou não existem e poluem a numeração. |
-| 5 | **Planejar a elicitação** ([#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40), fatia de planejamento) · 4,33 h | Promovido pela matriz de risco, e **dividido** pela análise de variância: entra o roteiro, não a execução. |
-| 6 | **Corrigir o status `expired`** ([#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35)) · 5,67 h | O sistema **declara** um estado que nunca atribui — relatórios tratam `expired`, o bot tem rótulo, nada o produz. Único caso de comportamento documentado e inexistente. |
-| 7 | **Conferir os 19 critérios de aceite** ([#39](https://github.com/marluceqa-source/hora-do-remedio/issues/39)) · 6,83 h | **Mantido no P0 contra a pontuação** (caiu para 10º). É o critério de parada do escopo original: sem essa conferência, não há como afirmar que o projeto está pronto. |
+| 1 | **Dívidas de rastreabilidade** ([#36](https://github.com/marluceqa-source/hora-do-remedio/issues/36), [#37](https://github.com/marluceqa-source/hora-do-remedio/issues/37), [#38](https://github.com/marluceqa-source/hora-do-remedio/issues/38)) · 3,55 h | As três mais baratas do backlog, juntas. São o que mantém esta wiki confiável. |
+| 2 | **Validar ao vivo os dois formulários** ([#32](https://github.com/marluceqa-source/hora-do-remedio/issues/32)) · 1,79 h | Fecha uma lacuna de verificação conhecida por menos de 2 h. |
+| 3 | **RN29 e RN31** ([#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23)) · 3,17 h | Duas regras sem origem localizável: ou existem e faltam, ou não existem e poluem a numeração. |
+| 4 | **Planejar a elicitação** ([#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40), fatia de planejamento) · 4,33 h | Promovido pela matriz de risco, e **dividido** pela análise de variância: entra o roteiro, não a execução. |
+| 5 | **Corrigir o status `expired`** ([#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35)) · 5,67 h | O sistema **declara** um estado que nunca atribui — relatórios tratam `expired`, o bot tem rótulo, nada o produz. Único caso de comportamento documentado e inexistente. |
+| 6 | **Conferir os 19 critérios de aceite** ([#39](https://github.com/marluceqa-source/hora-do-remedio/issues/39)) · 6,83 h | **Mantido no P0 contra a pontuação** (é o 9º colocado). É o critério de parada do escopo original: sem essa conferência, não há como afirmar que o projeto está pronto. |
+
+> ✅ **Concluído:** *Trocar os segredos padrão*
+> ([#30](https://github.com/marluceqa-source/hora-do-remedio/issues/30), estimado em 1,25 h) era
+> o 1º colocado. A aplicação passou a recusar iniciar com segredo de exemplo fora de
+> desenvolvimento, e os segredos locais foram regerados.
 
 ### P1 — próxima rodada · **E ≈ 45,7 h** (±6,9 h)
 
@@ -353,12 +366,12 @@ entram divididos**, quando a divisão separa uma fatia previsível de uma imprev
 
 | Faixa | Itens | E | SD | Intervalo provável |
 |---|---|---|---|---|
-| **P0** | 9 | 26,6 h | ±3,1 h | 24 – 30 h |
+| **P0** | 8 | 25,3 h | ±3,1 h | 22 – 28 h |
 | **P1** | 5 | 45,7 h | ±6,9 h | 39 – 53 h |
 | **P2** | 8 | 84,2 h | ±13,0 h | 71 – 97 h |
-| **Total** | 22 | **156,5 h** | **±15,0 h** | **141 – 171 h** |
+| **Total** | 21 | **155,2 h** | **±15,0 h** | **140 – 170 h** |
 
-> O total do plano tem **22 itens**, e não 21, porque
+> O total do plano tem **21 itens**, e não 20, porque
 > [#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40) entra dividido. E o SD cai
 > de ±15,7 h (seção 4) para **±15,0 h** sem que nenhuma estimativa mude: dividir uma atividade de
 > faixa muito larga em duas mais estreitas reduz a soma dos quadrados. Não é truque de

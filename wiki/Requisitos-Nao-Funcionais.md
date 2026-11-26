@@ -60,17 +60,22 @@ requisito de qualidade **ou** uma restrição" (p. 27) — ou seja, o guarda-chu
 | **RNF10** | A autenticação da API deve ser **independente** do token do bot, e a do portal independente da do paciente. | Prompt master §8; RN19 | `core/security.py` vs `core/professional_security.py` | garantido |
 | **RNF11** | Cada usuário deve acessar **apenas os próprios dados**; cuidador e profissional apenas o que foi autorizado e não revogado. | Prompt master §8; RN09, RN14, RN22 | `tests/api/test_isolation.py` (CT41); `tests/api/test_medications.py` (CT12) | garantido |
 | **RNF12** | O portal deve exigir **MFA (TOTP)**, manter sessão revogável no servidor e bloquear após tentativas sucessivas de login. | Especificação do portal; RN30 | `services/professional_auth_service.py`; `tests/api/test_professional_auth.py` | garantido |
-| **RNF13** | Segredos e tokens devem vir de **variáveis de ambiente**; nada sensível no repositório. | Prompt master §8 | `core/config.py` + `.env.example`; `.gitignore` | parcial |
+| **RNF13** | Segredos e tokens devem vir de **variáveis de ambiente**; nada sensível no repositório. | Prompt master §8 | `core/config.py` (`_reject_weak_secrets`) + `.env.example`; `.gitignore`; `tests/unit/test_config_secrets.py` | garantido |
 | **RNF14** | OCR, STT e TTS devem rodar **localmente**, sem enviar imagem ou áudio do paciente a terceiros. | Prompt master §2 (justificar privacidade) | `services/ocr_service.py`, `services/speech_to_text_service.py`, `services/text_to_speech_service.py` | garantido |
 | **RNF15** | Os logs **não devem** registrar conteúdo médico sensível desnecessário. | Prompt master §12 | `core/logging_config.py` (declarado no próprio módulo) | declarado |
 | **RNF16** | A API deve limitar requisições por origem. Padrão: **60 por minuto**. | Prompt master §8 | `api/main.py` (`slowapi`, `rate_limit_per_minute`) | garantido |
 | **RNF17** | Os registros devem seguir uma **política de retenção configurável**. Padrão: **365 dias**. | Prompt master §8; RN17 | `data_retention_days` em `core/config.py` | **parcial — sem expurgo** |
 | **RNF18** | Toda operação sensível do portal deve ser **auditável** (ator, papel, ação, momento). | Especificação do portal; RN32 | `services/audit_service.py`, tabela `AuditLog` | garantido |
 
-> **RNF13 é parcial** porque `PROFESSIONAL_SESSION_SECRET_KEY` tem valor padrão
-> (`change-me-professional-session`) e **precisa ser trocado** antes de qualquer uso real (card [#30](https://github.com/marluceqa-source/hora-do-remedio/issues/30)).
-> **RNF17 é parcial** porque o parâmetro existe mas nenhum job apaga registros antigos (card [#22](https://github.com/marluceqa-source/hora-do-remedio/issues/22)).
-> Os dois estão em [Limitações Conhecidas](Limitacoes-Conhecidas).
+> **RNF13 passou de parcial a garantido** no card [#30](https://github.com/marluceqa-source/hora-do-remedio/issues/30):
+> fora de um ambiente de desenvolvimento, a aplicação **recusa iniciar** se `API_SECRET_KEY` ou
+> `PROFESSIONAL_SESSION_SECRET_KEY` estiver com valor de exemplo, vazio, com menos de 32
+> caracteres, ou se os dois forem iguais (o que anularia a separação exigida por RN30/RNF12).
+> O que resta é por configuração e não por inspeção: quem marcar `APP_ENV` como `dev` continua
+> rodando com segredo fraco — registrado em [Limitações Conhecidas](Limitacoes-Conhecidas).
+>
+> **RNF17 é parcial** porque o parâmetro existe mas nenhum job apaga registros antigos (card [#22](https://github.com/marluceqa-source/hora-do-remedio/issues/22)),
+> também em [Limitações Conhecidas](Limitacoes-Conhecidas).
 
 ---
 

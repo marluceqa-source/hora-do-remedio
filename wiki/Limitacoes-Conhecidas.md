@@ -54,7 +54,7 @@ A suíte de backend está verde: **160 testes passando**, 86% de cobertura.
 |---|---|
 | **Envio de e-mail** | A recuperação de acesso do profissional **gera** o token, mas o ambiente **não envia e-mails reais**. A própria tela avisa que o token deve ser obtido com o administrador. |
 | **Agendador em instância única** | O APScheduler roda no processo do bot. Rodar mais de uma instância do bot produziria lembretes duplicados — não há coordenação (lock distribuído) entre instâncias. |
-| **Segredos padrão** | `PROFESSIONAL_SESSION_SECRET_KEY` tem o valor padrão `change-me-professional-session`. **Precisa ser trocado** antes de qualquer uso real. |
+| **Segredo fraco em ambiente marcado como dev** | Desde o card [#30](https://github.com/marluceqa-source/hora-do-remedio/issues/30), a aplicação **recusa iniciar** com segredo de exemplo quando `APP_ENV` não é um ambiente de desenvolvimento. A proteção é por configuração, não por inspeção: quem marcar o ambiente como `dev` continua rodando com segredo fraco. |
 
 ---
 
