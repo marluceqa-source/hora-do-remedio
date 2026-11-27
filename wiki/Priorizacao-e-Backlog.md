@@ -565,6 +565,16 @@ custou minutos, nem o primeiro caso do bot, que custou o `conftest.py` inteiro.
 | Scripts do board | 1,5 | 3 | 8 | **3,58** | ±1,08 |
 | | | | | **64,58** | **±6,01** |
 
+> **O que o campo `Estimate` do quadro mostra.** O quadro pede um número por card, e a
+> coluna Done somava zero. Cada caso de teste recebeu então a **fatia** que lhe cabe: o custo
+> da sua suíte dividido pelos casos dela, mais o rateio da infraestrutura da ferramenta e do
+> que é comum aos três projetos (evidências, relatório, documentação, scripts do board). Dá
+> 0,47 h por caso de API, 0,62 h por caso de web e 0,51 h por caso do bot.
+>
+> **Esses números não medem o caso individual** — medem a fatia dele no conjunto. O que tem
+> significado é a soma: 109,25 h na coluna, contra as 109,0 h desta seção; a diferença de
+> 0,25 h é o arredondamento de 126 valores para duas casas.
+
 ### 10.3 A única comparação que vale
 
 [#24](https://github.com/marluceqa-source/hora-do-remedio/issues/24) é o único card concluído que permite confrontar estimativa com entrega, porque foi
