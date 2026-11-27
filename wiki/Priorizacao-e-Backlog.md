@@ -179,6 +179,9 @@ SD_total = √(Σ SDᵢ²) = √245,9 = 15,7 h
 > agregação de desvios; a fórmula usada aqui é conhecimento geral de gerenciamento de projetos,
 > não citação do BSTQB®.
 
+> **O outro lado da conta.** Estas são as horas que **faltam**. As que já **saíram** estão na
+> [seção 10](#10-o-que-já-foi-entregue): 139 itens em Done, 109,0 ± 7,8 h.
+
 ### Onde está a incerteza
 
 O desvio não está distribuído: **quatro itens concentram 75,9% de toda a variância** do backlog.
@@ -485,9 +488,10 @@ entram divididos**, quando a divisão separa uma fatia previsível de uma imprev
    itens 5 e 7 do P0.
 5. Quando o `SD` de um item passa de **um terço do seu `E`**, considere **dividi-lo**: costuma
    haver dentro dele uma fatia previsível presa a uma imprevisível (seção 4).
-6. Item concluído sai da matriz e vira label `concluído`. Se o tempo real for registrado, ele
-   alimenta a comparação com `E` — é assim que se constrói o histórico que hoje não existe e que
-   permitiria, no futuro, usar as técnicas de **índice** ou **extrapolação** (§2 e §3 do material).
+6. Item concluído sai da matriz e vira label `concluído`, e sua estimativa é preservada na
+   **seção 10**. Se o tempo real for registrado, ele alimenta a comparação com `E` — é assim que
+   se constrói o histórico que hoje não existe e que permitiria, no futuro, usar as técnicas de
+   **índice** ou **extrapolação** (§2 e §3 do material).
 7. A prioridade e o tamanho vão também para os campos **Priority** e **Size** do
    [quadro do projeto](https://github.com/users/marluceqa-source/projects/9) — o quadro mostra a
    ordem, esta página explica o porquê dela.
@@ -501,6 +505,90 @@ entram divididos**, quando a divisão separa uma fatia previsível de uma imprev
 > são justamente o que a conferência deixou em aberto: [#49](https://github.com/marluceqa-source/hora-do-remedio/issues/49) (o que falta da ressalva do
 > nº 19, depois de o [#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47) ter mascarado o log), [#26](https://github.com/marluceqa-source/hora-do-remedio/issues/26) (o nº 18, que depende de
 > haver Docker na máquina) e [#48](https://github.com/marluceqa-source/hora-do-remedio/issues/48) (os 16 critérios do portal, que §15 não cobre).
+
+---
+
+## 10. O que já foi entregue
+
+A regra 6 da seção anterior pede que o item concluído alimente a comparação com `E`. Esta
+seção é esse registro: os **139 itens em Done** no
+[quadro do projeto](https://github.com/users/marluceqa-source/projects/9), somando
+**109,0 ± 7,8 h** — 101 a 117 h na faixa provável.
+
+São 13 cards do projeto e 126 casos de teste, e os dois grupos se registram de formas
+diferentes, pelo motivo explicado abaixo.
+
+### 10.1 Os 13 cards do projeto — 44,4 ± 5,0 h
+
+Dez deles tinham estimativa de quando estavam abertos. **Os números abaixo são aqueles**,
+recuperados do histórico desta página — não foram reestimados. Reestimar trabalho concluído
+sabendo como ele terminou enviesa o resultado e destruiria justamente o valor da comparação.
+
+| Card | o | m | p | **E** | **SD** |
+|---|---|---|---|---|---|
+| [#36](https://github.com/marluceqa-source/hora-do-remedio/issues/36) Anotar CT28 | 0,25 | 0,5 | 1,5 | **0,62** | ±0,21 |
+| [#37](https://github.com/marluceqa-source/hora-do-remedio/issues/37) Marcar RN01, RN08 e RN14 | 0,5 | 1 | 2,5 | **1,17** | ±0,33 |
+| [#30](https://github.com/marluceqa-source/hora-do-remedio/issues/30) Trocar os segredos padrão | 0,5 | 1 | 3 | **1,25** | ±0,42 |
+| [#38](https://github.com/marluceqa-source/hora-do-remedio/issues/38) Primeira baseline da especificação | 0,5 | 1,5 | 4 | **1,75** | ±0,58 |
+| [#32](https://github.com/marluceqa-source/hora-do-remedio/issues/32) Validar os formulários ao vivo | 0,75 | 1,5 | 4 | **1,79** | ±0,54 |
+| [#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47) Token do bot em texto claro no log | 1 | 2 | 5 | **2,33** | ±0,67 |
+| [#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23) RN29 e RN31 | 1 | 2,5 | 8 | **3,17** | ±1,17 |
+| [#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35) Status `expired` nunca atribuído (CT17) | 2 | 5 | 12 | **5,67** | ±1,67 |
+| [#39](https://github.com/marluceqa-source/hora-do-remedio/issues/39) Conferir os 19 critérios de aceite | 3 | 6 | 14 | **6,83** | ±1,83 |
+| [#24](https://github.com/marluceqa-source/hora-do-remedio/issues/24) Testes E2E do portal com Playwright | 5 | 12 | 28 | **13,50** | ±3,83 |
+| | | | | **38,08** | **±4,86** |
+
+Três são anteriores à adoção dos três pontos e nunca foram estimados. Estes são **estimativa
+retrospectiva**, e valem menos que os de cima: [#28](https://github.com/marluceqa-source/hora-do-remedio/issues/28) publicar a wiki (**1,75** ±0,58),
+[#31](https://github.com/marluceqa-source/hora-do-remedio/issues/31) reexecutar a suíte de backend (**1,00** ±0,37) e [#27](https://github.com/marluceqa-source/hora-do-remedio/issues/27) README do portal
+(**3,58** ±1,08) — 6,33 ± 1,28 h.
+
+### 10.2 Os 126 casos de teste — 64,6 ± 6,0 h
+
+**Aqui a unidade não é o card, e isso é deliberado.** Os 126 casos não foram produzidos um a
+um: foram produzidos em suítes, e boa parte do esforço está em infraestrutura que nenhum card
+individual carrega — fixtures, dublês de `Update` e `Context`, o condutor da conversa de 16
+estados do bot, a geração de código TOTP. Estimar card a card produziria **falsa precisão**:
+dividir 64,6 h por 126 dá 0,51 h por caso, número que não descreve nem o CT-API-A01, que
+custou minutos, nem o primeiro caso do bot, que custou o `conftest.py` inteiro.
+
+| Unidade de trabalho | o | m | p | **E** | **SD** |
+|---|---|---|---|---|---|
+| 5 suítes de API — 58 casos (VADER) | 5 | 10 | 22 | **11,17** | ±2,83 |
+| Infraestrutura da suíte de Playwright | 4 | 8 | 18 | **9,00** | ±2,33 |
+| 4 suítes de web — 26 casos (Gherkin) | 4 | 8 | 18 | **9,00** | ±2,33 |
+| 5 suítes do bot — 43 casos (heurísticas) | 3 | 7 | 16 | **7,83** | ±2,17 |
+| Infraestrutura da suíte do bot | 3 | 6 | 14 | **6,83** | ±1,83 |
+| Documentação dos casos | 3 | 6 | 14 | **6,83** | ±1,83 |
+| Evidências em vídeo | 2 | 5 | 12 | **5,67** | ±1,67 |
+| Relatório em HTML | 2 | 4 | 10 | **4,67** | ±1,33 |
+| Scripts do board | 1,5 | 3 | 8 | **3,58** | ±1,08 |
+| | | | | **64,58** | **±6,01** |
+
+### 10.3 A única comparação que vale
+
+[#24](https://github.com/marluceqa-source/hora-do-remedio/issues/24) é o único card concluído que permite confrontar estimativa com entrega, porque foi
+estimado antes e executado depois:
+
+```
+estimado   13,50 ± 3,83 h   →  faixa provável 9,7 – 17,3 h
+entregue   4 suítes de web (9,00 h) + infraestrutura de Playwright (9,00 h)
+           →  entre 13 e 18 h, conforme quanto da infraestrutura se atribua a ele
+```
+
+**A estimativa acertou a faixa, encostando no teto.** O resto da automação — API, bot,
+evidências, relatório — não estava no card: é escopo que cresceu durante a execução. Comparar
+os 64,6 h com os 13,50 h seria comparar coisas diferentes, e a seção existe para não fazer isso.
+
+### 10.4 O que este registro ainda não é
+
+A regra 6 fala em **tempo real registrado**. Não é o caso: nenhuma hora aqui foi cronometrada.
+O que a seção 10.1 oferece é uma estimativa feita às cegas, antes da execução, o que tem valor;
+o que a 10.2 e a 10.3 oferecem é reconstrução depois do fato, que tem bem menos.
+
+Para as técnicas de **índice** e **extrapolação** (§2 e §3 do material) ficarem disponíveis, o
+que falta é medir — anotar as horas de cada card à medida que sai. Enquanto isso não acontece,
+três pontos continua sendo a única técnica aplicável aqui, pelo mesmo motivo da seção 2.
 
 ---
 
