@@ -1,0 +1,22 @@
+{
+  "name": "testes-playwright-hora-do-remedio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Automacao de testes de WEB e API do Hora do Remedio com Playwright (JavaScript)",
+  "scripts": {
+    "test": "NOME_EXECUCAO=suite playwright test --project=api --project=web",
+    "test:all": "playwright test",
+    "test:api": "playwright test --project=api",
+    "test:web": "playwright test --project=web",
+    "test:headed": "playwright test --project=web --headed",
+    "test:ui": "playwright test --ui",
+    "evidencias": "NOME_EXECUCAO=evidencias playwright test --project=evidencias && node scripts/indice-evidencias.js",
+    "relatorio": "node scripts/gerar-relatorio.js",
+    "report": "playwright show-report",
+    "db:reset": "node scripts/reset-db.js",
+    "install:browsers": "playwright install chromium"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1"
+  }
+}

@@ -1,0 +1,20 @@
+node_modules/
+playwright-report/
+test-results/
+blob-report/
+.auth/
+*.log
+.env
+
+# manifestos intermediários do índice de evidências
+/evidencias/_itens/
+
+# resultados em JSON de cada execução (matéria-prima do relatório)
+resultados/
+
+# Artefatos gerados: não entram no versionamento, são reproduzidos por comando.
+# Evidências (vídeos e telas):  npm run evidencias
+# Relatório em HTML:            npm run relatorio
+/evidencias/
+/relatorio.html
+/relatorio-completo.html
