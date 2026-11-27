@@ -16,7 +16,12 @@ urgente".
 > [#32](https://github.com/marluceqa-source/hora-do-remedio/issues/32) (validação dos
 > formulários ao vivo) e [#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23)
 > (RN29 e RN31). Entrou [#46](https://github.com/marluceqa-source/hora-do-remedio/issues/46),
-> aberto pelo que o #23 descobriu. Os totais abaixo refletem os **16 cards** atuais.
+> aberto pelo que o #23 descobriu.
+>
+> **Mudança desta versão.** Entrou a sessão de teste de 26/11: [#24](https://github.com/marluceqa-source/hora-do-remedio/issues/24) saiu entregue (13,50 h) e
+> entraram **oito cards** vindos dos achados — sete riscos (R1 a R7) e um caso de teste que ficou
+> fora da execução padrão, somando 34,0 h. Um deles, [#177](https://github.com/marluceqa-source/hora-do-remedio/issues/177), entrou direto em **P0**. Os totais
+> abaixo refletem os **23 cards** atuais.
 
 ---
 
@@ -111,9 +116,22 @@ Unidade usada aqui: **horas** de trabalho de uma pessoa — o material chama de 
 | Testes de acessibilidade com axe-core | [#25](https://github.com/marluceqa-source/hora-do-remedio/issues/25) | 3 | 8 | 20 | **9,17** | ±2,83 | M |
 | Especificar os casos de uso em texto | [#45](https://github.com/marluceqa-source/hora-do-remedio/issues/45) | 5 | 10 | 22 | **11,17** | ±2,83 | L |
 | Agendador: evitar lembretes duplicados | [#33](https://github.com/marluceqa-source/hora-do-remedio/issues/33) | 4 | 10 | 28 | **12,00** | ±4,00 | L |
-| Testes E2E do portal com Playwright | [#24](https://github.com/marluceqa-source/hora-do-remedio/issues/24) | 5 | 12 | 28 | **13,50** | ±3,83 | L |
 | Exportação e exclusão de dados (LGPD) | [#42](https://github.com/marluceqa-source/hora-do-remedio/issues/42) | 5 | 12 | 30 | **13,83** | ±4,17 | L |
+| **R5** · venv da aplicação com shebang quebrado | [#181](https://github.com/marluceqa-source/hora-do-remedio/issues/181) | 0,2 | 0,5 | 2 | **0,70** | ±0,30 | XS |
+| Habilitar CT-API-R08 (rate limit) na execução | [#97](https://github.com/marluceqa-source/hora-do-remedio/issues/97) | 0,5 | 1,5 | 4 | **1,75** | ±0,58 | XS |
+| **R2** · Campo obrigatório aceita apenas espaços | [#178](https://github.com/marluceqa-source/hora-do-remedio/issues/178) | 1 | 3 | 8 | **3,50** | ±1,17 | S |
+| **R6** · Bot aceita medicamento duplicado sem aviso | [#182](https://github.com/marluceqa-source/hora-do-remedio/issues/182) | 1 | 4 | 10 | **4,50** | ±1,50 | S |
+| **R7** · Erro no último passo descarta o cadastro | [#183](https://github.com/marluceqa-source/hora-do-remedio/issues/183) | 1,5 | 4 | 12 | **4,92** | ±1,75 | S |
+| **R3** · Normalização depende da porta de entrada | [#179](https://github.com/marluceqa-source/hora-do-remedio/issues/179) | 2 | 5 | 12 | **5,67** | ±1,67 | M |
+| **R4** · Limite de requisições por IP, não por usuário | [#180](https://github.com/marluceqa-source/hora-do-remedio/issues/180) | 2 | 5 | 14 | **6,00** | ±2,00 | M |
+| **R1** · Profissional não verificado com acesso clínico | [#177](https://github.com/marluceqa-source/hora-do-remedio/issues/177) | 2 | 6 | 16 | **7,00** | ±2,33 | M |
 | **Elicitação com o público-alvo real** | [#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40) | 8 | 24 | 80 | **30,67** | ±12,00 | XL |
+
+> **De onde vêm os oito últimos.** São os achados da sessão de teste de 26/11 — sete riscos
+> (R1 a R7) e um caso de teste que ficou fora da execução padrão. Os três pontos aqui têm uma
+> vantagem que os demais não têm: **a causa já está localizada no código**, porque veio de um
+> teste que reproduz o problema. O `o` é o conserto se a decisão for a mais simples; o `p` é o
+> conserto se for a mais ampla.
 
 Conferência de uma linha, para o cálculo ser reproduzível à mão — [#41](https://github.com/marluceqa-source/hora-do-remedio/issues/41):
 
@@ -129,55 +147,56 @@ XL > 20 h.
 
 ## 4. O total do backlog
 
-Somando as 16 estimativas, e combinando os desvios pela raiz da soma dos quadrados:
+Somando as 23 estimativas, e combinando os desvios pela raiz da soma dos quadrados:
 
 ```
-E_total  = 143,5 h
-SD_total = √(Σ SDᵢ²) = √241,2 = 15,5 h
+E_total  = 164,0 h
+SD_total = √(Σ SDᵢ²) = √245,9 = 15,7 h
 ```
 
 | Faixa | Intervalo | Leitura |
 |---|---|---|
-| E ± 1·SD | **128 – 159 h** | cenário provável |
-| E ± 2·SD | **112 – 175 h** | cenário conservador |
+| E ± 1·SD | **148 – 180 h** | cenário provável |
+| E ± 2·SD | **133 – 195 h** | cenário conservador |
 
-> Nove cards concluídos tiraram 24,6 h do total. O que entrou no lugar devolveu 9,3 h:
-> [#46](https://github.com/marluceqa-source/hora-do-remedio/issues/46) (3,6 h), [#48](https://github.com/marluceqa-source/hora-do-remedio/issues/48) (5,5 h) e [#49](https://github.com/marluceqa-source/hora-do-remedio/issues/49) (0,23 h) — os dois últimos saídos da
-> própria conferência dos critérios de aceite.
+> **O que mudou nesta versão.** Saiu [#24](https://github.com/marluceqa-source/hora-do-remedio/issues/24) (13,50 h), entregue: a suíte de testes E2E do
+> portal existe e está passando. Entraram os **oito achados da sessão de teste** (34,0 h) — os
+> sete riscos e o caso de rate limit. Saldo: **+20,5 h** e o backlog vai de 16 para **23 cards**.
 >
-> O desvio saiu de ±15,7 h para **±15,5 h** — praticamente parado ao longo de seis versões
-> desta página. Vale dizer por que: **fechar um card reduz o total, não a incerteza.** Tudo que
-> saiu era tarefa de SD baixo, e tudo que entrou também. A incerteza continua onde sempre
-> esteve, concentrada em quatro itens que ninguém encostou ainda — e o conforto de ver o total
-> cair 3% não deve ser lido como o projeto ficando mais previsível.
+> O desvio foi de ±15,5 h para **±15,7 h**: entraram oito cards e a incerteza do projeto quase
+> não se mexeu. Vale dizer por quê, porque é o contrário do que a intuição sugere. **Testar
+> encontrou trabalho, não incerteza.** Cada um desses oito tem causa localizada no código e
+> um teste que reproduz o problema — o maior SD da leva é ±2,33 h, menor que o de cinco cards
+> que já estavam na lista. A imprevisibilidade do projeto continua onde sempre esteve, em
+> [#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40).
 
 > **Ressalva do método.** Somar desvios pela raiz da soma dos quadrados pressupõe que as
-> atividades são **independentes**. Aqui elas não são totalmente: [#24](https://github.com/marluceqa-source/hora-do-remedio/issues/24)
-> e [#25](https://github.com/marluceqa-source/hora-do-remedio/issues/25) compartilham a montagem
-> do ambiente de testes de navegador, e [#43](https://github.com/marluceqa-source/hora-do-remedio/issues/43)
+> atividades são **independentes**. Aqui elas não são totalmente: [#178](https://github.com/marluceqa-source/hora-do-remedio/issues/178)
+> e [#179](https://github.com/marluceqa-source/hora-do-remedio/issues/179) são o mesmo conserto visto de dois ângulos — centralizar a normalização no schema
+> da API resolve os dois —, e [#43](https://github.com/marluceqa-source/hora-do-remedio/issues/43)
 > e [#44](https://github.com/marluceqa-source/hora-do-remedio/issues/44) dependem da mesma
-> estrutura de requisitos. Então o SD real é **maior** que 15,5 h. O material não trata de
+> estrutura de requisitos. Então o SD real é **maior** que 15,7 h. O material não trata de
 > agregação de desvios; a fórmula usada aqui é conhecimento geral de gerenciamento de projetos,
 > não citação do BSTQB®.
 
 ### Onde está a incerteza
 
-O desvio não está distribuído: **quatro itens concentram 79,6% de toda a variância** do backlog.
+O desvio não está distribuído: **quatro itens concentram 75,9% de toda a variância** do backlog.
 
 | Item | SD | Fatia da variância |
 |---|---|---|
-| [#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40) — elicitação com usuários | ±12,00 | **59,7%** |
-| [#42](https://github.com/marluceqa-source/hora-do-remedio/issues/42) — LGPD | ±4,17 | 7,2% |
-| [#33](https://github.com/marluceqa-source/hora-do-remedio/issues/33) — agendador | ±4,00 | 6,6% |
-| [#24](https://github.com/marluceqa-source/hora-do-remedio/issues/24) — Playwright | ±3,83 | 6,1% |
-| *12 itens restantes* | — | 20,4% |
+| [#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40) — elicitação com usuários | ±12,00 | **58,6%** |
+| [#42](https://github.com/marluceqa-source/hora-do-remedio/issues/42) — LGPD | ±4,17 | 7,1% |
+| [#33](https://github.com/marluceqa-source/hora-do-remedio/issues/33) — agendador | ±4,00 | 6,5% |
+| [#34](https://github.com/marluceqa-source/hora-do-remedio/issues/34) — RN13 | ±3,00 | 3,7% |
+| *19 itens restantes* | — | 24,1% |
 
 **O que isso revela, e que a nota de custo 1–9 escondia:** a elicitação com usuários sozinha
 responde por quase **três quintos** de toda a imprevisibilidade do projeto. Seu `p` é 80 h
 contra `m` de 24 h, porque depende de recrutar pessoas, agendar sessões e lidar com ausências —
 nada disso está sob controle de quem executa.
 
-Tirando esse item, o backlog seria **112,8 ± 9,9 h**: a incerteza cai um terço.
+Tirando esse item, o backlog seria **133,3 ± 10,1 h**: a incerteza cai um terço.
 
 **Consequência prática: [#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40)
 deve ser dividido.** O `p` alto é quase todo da **execução** (recrutar, conduzir, transcrever),
@@ -223,6 +242,12 @@ A leitura é direta: **benefício por hora de trabalho**.
 > ativo — não pela aritmética. É o caso-limite da distorção descrita na seção 7, e fica
 > registrado em vez de escondido com um piso artificial no denominador.
 
+> **De onde vêm o benefício e o dano dos oito últimos.** Da sessão de teste, não de intuição
+> sobre o backlog: cada um foi reproduzido por um teste automatizado, e o dano é o que o teste
+> mostrou acontecer. [#177](https://github.com/marluceqa-source/hora-do-remedio/issues/177) leva 8/8 porque uma conta que a própria tela diz não estar
+> verificada cadastra paciente e abre o painel clínico. [#183](https://github.com/marluceqa-source/hora-do-remedio/issues/183) leva dano 5 porque obriga
+> alguém de 70 anos a refazer dezesseis passos.
+
 ### Por que o risco saiu do denominador
 
 A fórmula anterior era `(2B + D) ÷ (C + 0,5 × Risco)`. O risco técnico virava um acréscimo
@@ -243,19 +268,26 @@ conteúdo), que tinha a maior nota de risco da lista: seu `m` é 6 h e seu `p` �
 | Item | Card | Ben. | Dano | E (h) | Pontuação |
 |---|---|---|---|---|---|
 | **Revogar o token exposto** | [#49](https://github.com/marluceqa-source/hora-do-remedio/issues/49) | 9 | 9 | 0,23 | **115,7** ⚠️ |
+| **R5** · venv com shebang quebrado | [#181](https://github.com/marluceqa-source/hora-do-remedio/issues/181) | 4 | 3 | 0,70 | **15,7** ⚠️ |
+| Habilitar CT-API-R08 (rate limit) | [#97](https://github.com/marluceqa-source/hora-do-remedio/issues/97) | 3 | 2 | 1,75 | **4,6** |
+| **R7** · Erro no último passo descarta o cadastro | [#183](https://github.com/marluceqa-source/hora-do-remedio/issues/183) | 6 | 5 | 4,92 | **3,5** |
 | Alinhar RN21, RN26 e RN27 com a especificação | [#46](https://github.com/marluceqa-source/hora-do-remedio/issues/46) | 4 | 4 | 3,58 | **3,4** |
+| **R1** · Profissional não verificado com acesso clínico | [#177](https://github.com/marluceqa-source/hora-do-remedio/issues/177) | 8 | 8 | 7,00 | **3,4** |
+| **R6** · Bot aceita medicamento duplicado | [#182](https://github.com/marluceqa-source/hora-do-remedio/issues/182) | 5 | 5 | 4,50 | **3,3** |
 | Conferir os 16 critérios de aceite do portal | [#48](https://github.com/marluceqa-source/hora-do-remedio/issues/48) | 6 | 6 | 5,50 | **3,3** |
 | Diretório `tests/accessibility/` vazio | [#41](https://github.com/marluceqa-source/hora-do-remedio/issues/41) | 4 | 3 | 3,50 | **3,1** |
+| **R4** · Limite de requisições por IP | [#180](https://github.com/marluceqa-source/hora-do-remedio/issues/180) | 5 | 6 | 6,00 | **2,7** |
 | RN17: expurgo automático | [#22](https://github.com/marluceqa-source/hora-do-remedio/issues/22) | 6 | 7 | 7,17 | **2,7** |
+| **R2** · Campo obrigatório aceita apenas espaços | [#178](https://github.com/marluceqa-source/hora-do-remedio/issues/178) | 3 | 3 | 3,50 | **2,6** |
 | Docker: empacotar o portal | [#26](https://github.com/marluceqa-source/hora-do-remedio/issues/26) | 5 | 4 | 6,00 | **2,3** |
 | Envio real de e-mail na recuperação | [#29](https://github.com/marluceqa-source/hora-do-remedio/issues/29) | 4 | 5 | 5,67 | **2,3** |
 | Testes de acessibilidade com axe-core | [#25](https://github.com/marluceqa-source/hora-do-remedio/issues/25) | 7 | 6 | 9,17 | **2,2** |
+| **R3** · Normalização depende da porta de entrada | [#179](https://github.com/marluceqa-source/hora-do-remedio/issues/179) | 4 | 4 | 5,67 | **2,1** |
 | Relatório do estado dos requisitos | [#44](https://github.com/marluceqa-source/hora-do-remedio/issues/44) | 4 | 3 | 6,00 | **1,8** |
 | Quantificar os requisitos não funcionais | [#43](https://github.com/marluceqa-source/hora-do-remedio/issues/43) | 5 | 4 | 7,83 | **1,8** |
 | RN13: validação ativa de conteúdo | [#34](https://github.com/marluceqa-source/hora-do-remedio/issues/34) | 4 | 5 | 7,67 | **1,7** |
 | Exportação e exclusão de dados (LGPD) | [#42](https://github.com/marluceqa-source/hora-do-remedio/issues/42) | 7 | 8 | 13,83 | **1,6** |
 | Agendador: evitar lembretes duplicados | [#33](https://github.com/marluceqa-source/hora-do-remedio/issues/33) | 5 | 8 | 12,00 | **1,5** |
-| Testes E2E do portal com Playwright | [#24](https://github.com/marluceqa-source/hora-do-remedio/issues/24) | 6 | 5 | 13,50 | **1,3** |
 | Especificar os casos de uso em texto | [#45](https://github.com/marluceqa-source/hora-do-remedio/issues/45) | 4 | 3 | 11,17 | **1,0** |
 | **Elicitação com o público-alvo real** | [#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40) | 9 | 9 | 30,67 | **0,9** |
 
@@ -308,7 +340,7 @@ Distribuição no momento da repriorização: **P0 = 9 cards · P1 = 5 · P2 = 7
 [#38](https://github.com/marluceqa-source/hora-do-remedio/issues/38),
 [#32](https://github.com/marluceqa-source/hora-do-remedio/issues/32), [#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23), [#35](https://github.com/marluceqa-source/hora-do-remedio/issues/35), [#39](https://github.com/marluceqa-source/hora-do-remedio/issues/39) e [#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47) concluídos — e com a
 entrada de [#46](https://github.com/marluceqa-source/hora-do-remedio/issues/46), [#48](https://github.com/marluceqa-source/hora-do-remedio/issues/48) e [#49](https://github.com/marluceqa-source/hora-do-remedio/issues/49) — o quadro está hoje em
-**P0 = 2 · P1 = 7 · P2 = 7**, 16 cards abertos.
+**P0 = 3 · P1 = 10 · P2 = 11**, 23 cards abertos.
 
 ---
 
@@ -323,6 +355,13 @@ mas ninguém diria que eram as mais importantes do projeto.
 E foi exatamente o que aconteceu: **os sete primeiros colocados foram os sete primeiros a
 sair.** A distorção não é teórica, ela dirige a execução. Hoje as quatro primeiras posições
 somam **12,8 h**.
+
+**A distorção se repetiu com os achados da sessão de teste.** [#181](https://github.com/marluceqa-source/hora-do-remedio/issues/181) — recriar o venv da
+aplicação — pontua **15,7**, à frente de tudo menos do token exposto, porque custa 42 minutos.
+É uma tarefa de ambiente, não de produto. Já [#177](https://github.com/marluceqa-source/hora-do-remedio/issues/177), o único achado que envolve acesso a
+dado clínico, pontua **3,4** e aparece em quarto. A fórmula ordena por benefício/hora e, de
+novo, **a matriz de risco é que corrige**: o [#177](https://github.com/marluceqa-source/hora-do-remedio/issues/177) vai para P0 e o [#181](https://github.com/marluceqa-source/hora-do-remedio/issues/181) fica em P1, por
+mais que a aritmética diga o contrário. Registrar isso é o ponto desta seção.
 
 E o primeiro colocado atual é a distorção em estado puro: o [#49](https://github.com/marluceqa-source/hora-do-remedio/issues/49) — revogar o token
 exposto — pontua **115,7**, trinta vezes o segundo, só porque custa 14 minutos. O item é de
@@ -356,12 +395,13 @@ entram divididos**, quando a divisão separa uma fatia previsível de uma imprev
 > campo **Size** traduz E pela faixa da seção 3. Usar a mesma escala nos dois lugares evita o
 > tipo de homônimo registrado no [Glossário](Glossario#1-homônimos--leia-esta-seção-primeiro).
 
-### P0 — fazer primeiro · **E ≈ 4,6 h** (±1,0 h) · 2 cards
+### P0 — fazer primeiro · **E ≈ 11,6 h** (±2,5 h) · 3 cards
 
 | # | Item | Justificativa da posição |
 |---|---|---|
 | 1 | **Revogar o token exposto** ([#49](https://github.com/marluceqa-source/hora-do-remedio/issues/49)) · 0,23 h | **Bloqueado em quem opera o bot, não em quem escreve código** — é a única coisa no backlog que não depende de trabalho técnico. O mascaramento já está feito ([#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47)), mas o token que circulou em 26.482 linhas de log continua autenticando: um `getMe` com ele respondeu HTTP 200 em 26/11. Mascarar protege o futuro; revogar encerra o passado. |
 | 2 | **Planejar a elicitação** ([#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40), fatia de planejamento) · 4,33 h | Promovido pela matriz de risco, e **dividido** pela análise de variância: entra o roteiro, não a execução. |
+| 3 | **R1 · Profissional não verificado com acesso clínico** ([#177](https://github.com/marluceqa-source/hora-do-remedio/issues/177)) · 7,00 h | A tela de cadastro diz que a conta "ainda precisa ser verificada por um administrador antes de ter acesso clínico pleno"; na prática ela cadastra paciente, gera convite de vínculo e abre o painel. O controle de acesso olha só o papel — `verification_status` não é verificado em endpoint nenhum. **Vai para P0 pela matriz de risco, não pela pontuação** (3,4, quarto lugar): é o único achado que envolve acesso a dado clínico. O que o destrava é uma decisão barata — bloquear o acesso ou corrigir a promessa da tela —, e é a decisão que separa o `o` de 2 h do `p` de 16 h. |
 
 > **Voltou a haver item abaixo de 2 h** — e pela primeira vez não é dívida de documentação:
 > [#49](https://github.com/marluceqa-source/hora-do-remedio/issues/49), com 0,23 h, é uma ação de operação. O mais barato dos itens técnicos continua
@@ -381,24 +421,30 @@ entram divididos**, quando a divisão separa uma fatia previsível de uma imprev
 > | [#39](https://github.com/marluceqa-source/hora-do-remedio/issues/39) | Os 19 critérios de aceite de §15 conferidos item a item: **17 atendidos, 1 com ressalva, 1 não verificado** — [Conferência dos Critérios de Aceite](Conferencia-dos-Criterios-de-Aceite). Abriu o [#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47) e o [#48](https://github.com/marluceqa-source/hora-do-remedio/issues/48). |
 > | [#47](https://github.com/marluceqa-source/hora-do-remedio/issues/47) | Segredos mascarados no log: filtro de handler em `core/log_redaction.py`, 16 testes, verificado ao vivo com `LOG_LEVEL=DEBUG`, e os 26.482 registros antigos mascarados no lugar. A revogação do token saiu para o [#49](https://github.com/marluceqa-source/hora-do-remedio/issues/49). |
 
-### P1 — próxima rodada · **E ≈ 54,8 h** (±7,1 h)
+### P1 — próxima rodada · **E ≈ 64,9 h** (±7,4 h) · 10 cards
 
 | # | Item | Justificativa |
 |---|---|---|
-| 3 | Conferir os 16 critérios de aceite do portal ([#48](https://github.com/marluceqa-source/hora-do-remedio/issues/48)) · 5,50 h | A dívida que o [#39](https://github.com/marluceqa-source/hora-do-remedio/issues/39) fechou para o bot/API, ainda aberta para o portal: §22 da especificação do portal tem 16 critérios próprios e nenhum registro de conferência. O card é hoje a **única cópia versionada** desses critérios. Fica no P1, e não no P0, porque o portal já está coberto pela suíte de backend — o que falta é o registro, não o comportamento. |
-| 4 | Alinhar RN21, RN26 e RN27 com a especificação ([#46](https://github.com/marluceqa-source/hora-do-remedio/issues/46)) · 3,58 h | Aberto pelo que o [#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23) descobriu: as três estão implementadas, mas enunciadas com o texto da solução. `p` alto porque RN27 pode virar implementação, se a parte de auditoria não estiver coberta. |
-| 5 | Testes de acessibilidade com axe-core ([#25](https://github.com/marluceqa-source/hora-do-remedio/issues/25)) · 9,17 h | Acessibilidade é o propósito do produto e hoje nenhuma verificação automática a cobre. |
-| 6 | RN17 — expurgo automático ([#22](https://github.com/marluceqa-source/hora-do-remedio/issues/22)) · 7,17 h | Regra declarada e não vigente, com implicação legal. |
-| 7 | Diretório `tests/accessibility/` vazio ([#41](https://github.com/marluceqa-source/hora-do-remedio/issues/41)) · 3,50 h | Estrutura prometida no prompt master (§11) e nunca preenchida. |
-| 8 | Agendador: lembretes duplicados ([#33](https://github.com/marluceqa-source/hora-do-remedio/issues/33)) · 12,00 h | Dano 8: duplicar lembrete de remédio é dano ao paciente. SD ±4 h — terceira maior incerteza. |
-| 9 | Exportação e exclusão de dados (LGPD) ([#42](https://github.com/marluceqa-source/hora-do-remedio/issues/42)) · 13,83 h | RES06/LGPD está apenas declarada; não há rota alguma. SD ±4,2 h, a segunda maior. |
+| 4 | **R5 · venv com shebang quebrado** ([#181](https://github.com/marluceqa-source/hora-do-remedio/issues/181)) · 0,70 h | Os executáveis de console do `.venv` apontam para o caminho antigo da pasta e falham com `bad interpreter`. Quarenta e dois minutos que destravam qualquer pessoa que clonar o projeto — e a automação de testes já convive com isso usando `python -m`. Pontua 15,7, mas é tarefa de ambiente: fica em P1, não em P0. |
+| 5 | **R7 · Erro no último passo descarta o cadastro** ([#183](https://github.com/marluceqa-source/hora-do-remedio/issues/183)) · 4,92 h | O bot valida o tamanho do nome só ao salvar, no fim de dezesseis passos: a conversa é encerrada e o rascunho inteiro some. O tratamento do erro está correto; o momento é que é caro para o público-alvo. Validar na digitação, como já é feito com data e horário, resolve. |
+| 6 | **R6 · Bot aceita medicamento duplicado** ([#182](https://github.com/marluceqa-source/hora-do-remedio/issues/182)) · 4,50 h | Cadastrar o mesmo remédio duas vezes gera dois conjuntos de lembretes no mesmo horário — exatamente a confusão que o produto existe para evitar. |
+| 7 | Conferir os 16 critérios de aceite do portal ([#48](https://github.com/marluceqa-source/hora-do-remedio/issues/48)) · 5,50 h | A dívida que o [#39](https://github.com/marluceqa-source/hora-do-remedio/issues/39) fechou para o bot/API, ainda aberta para o portal: §22 da especificação do portal tem 16 critérios próprios e nenhum registro de conferência. O card é hoje a **única cópia versionada** desses critérios. Fica no P1, e não no P0, porque o portal já está coberto pela suíte de backend — o que falta é o registro, não o comportamento. |
+| 8 | Alinhar RN21, RN26 e RN27 com a especificação ([#46](https://github.com/marluceqa-source/hora-do-remedio/issues/46)) · 3,58 h | Aberto pelo que o [#23](https://github.com/marluceqa-source/hora-do-remedio/issues/23) descobriu: as três estão implementadas, mas enunciadas com o texto da solução. `p` alto porque RN27 pode virar implementação, se a parte de auditoria não estiver coberta. |
+| 9 | Testes de acessibilidade com axe-core ([#25](https://github.com/marluceqa-source/hora-do-remedio/issues/25)) · 9,17 h | Acessibilidade é o propósito do produto e hoje nenhuma verificação automática a cobre. |
+| 10 | RN17 — expurgo automático ([#22](https://github.com/marluceqa-source/hora-do-remedio/issues/22)) · 7,17 h | Regra declarada e não vigente, com implicação legal. |
+| 11 | Diretório `tests/accessibility/` vazio ([#41](https://github.com/marluceqa-source/hora-do-remedio/issues/41)) · 3,50 h | Estrutura prometida no prompt master (§11) e nunca preenchida. |
+| 12 | Agendador: lembretes duplicados ([#33](https://github.com/marluceqa-source/hora-do-remedio/issues/33)) · 12,00 h | Dano 8: duplicar lembrete de remédio é dano ao paciente. SD ±4 h — terceira maior incerteza. |
+| 13 | Exportação e exclusão de dados (LGPD) ([#42](https://github.com/marluceqa-source/hora-do-remedio/issues/42)) · 13,83 h | RES06/LGPD está apenas declarada; não há rota alguma. SD ±4,2 h, a segunda maior. |
 
-### P2 — quando houver folga · **E ≈ 84,2 h** (±13,0 h)
+### P2 — quando houver folga · **E ≈ 87,6 h** (±12,7 h) · 11 cards
 
 | Item | Justificativa |
 |---|---|
 | Executar a elicitação ([#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40), fatia de execução) · 26,33 h | Maior valor do backlog, maior incerteza (±11 h) e dependente de pessoas. Fica aqui por **capacidade**, não por importância — o plano (P0 item 5) é o que o destrava. |
-| Testes E2E do portal ([#24](https://github.com/marluceqa-source/hora-do-remedio/issues/24)) · 13,50 h | A suíte de backend já cobre as regras. Compartilha montagem com [#25](https://github.com/marluceqa-source/hora-do-remedio/issues/25) — fazer depois reduz o custo real. |
+| **R4 · Limite de requisições por IP** ([#180](https://github.com/marluceqa-source/hora-do-remedio/issues/180)) · 6,00 h | A cota é do IP, não de quem está autenticado: bot e portal atrás do mesmo endereço dividem a mesma, e um pode derrubar o outro. Hoje não há tráfego que chegue perto do limite — por isso P2, e não por não importar. |
+| **R3 · Normalização depende da porta de entrada** ([#179](https://github.com/marluceqa-source/hora-do-remedio/issues/179)) · 5,67 h | O bot limpa os espaços do texto; a API e o portal não. O mesmo nome entra diferente conforme o caminho usado. |
+| **R2 · Campo obrigatório aceita apenas espaços** ([#178](https://github.com/marluceqa-source/hora-do-remedio/issues/178)) · 3,50 h | Faz par com o [#179](https://github.com/marluceqa-source/hora-do-remedio/issues/179): um validador no schema da API resolve os dois, e por isso os dois deveriam ser pegos na mesma vez. |
+| Habilitar CT-API-R08 na execução ([#97](https://github.com/marluceqa-source/hora-do-remedio/issues/97)) · 1,75 h | O único dos 127 casos de teste que ficou fora da execução padrão: exige a API no ar com limite de requisições baixo. |
 | Especificar os casos de uso em texto ([#45](https://github.com/marluceqa-source/hora-do-remedio/issues/45)) · 11,17 h | Completa a modelagem; conteúdo já existe disperso. |
 | Quantificar os RNF ([#43](https://github.com/marluceqa-source/hora-do-remedio/issues/43)) · 7,83 h | Melhora a especificação; nenhum risco imediato. |
 | RN13 — validação ativa de conteúdo ([#34](https://github.com/marluceqa-source/hora-do-remedio/issues/34)) · 7,67 h | `p` de 20 h contra `m` de 6 h: um filtro mal calibrado bloquearia observações legítimas do paciente. Exige desenho cuidadoso, não pressa. |
@@ -410,21 +456,21 @@ entram divididos**, quando a divisão separa uma fatia previsível de uma imprev
 
 | Faixa | Itens | E | SD | Intervalo provável |
 |---|---|---|---|---|
-| **P0** | 2 | 4,6 h | ±1,0 h | 4 – 6 h |
-| **P1** | 7 | 54,8 h | ±7,1 h | 48 – 62 h |
-| **P2** | 8 | 84,2 h | ±13,0 h | 71 – 97 h |
-| **Total** | 17 | **143,5 h** | **±14,8 h** | **129 – 158 h** |
+| **P0** | 3 | 11,6 h | ±2,5 h | 9 – 14 h |
+| **P1** | 10 | 64,9 h | ±7,4 h | 57 – 72 h |
+| **P2** | 11 | 87,6 h | ±12,7 h | 75 – 100 h |
+| **Total** | 24 | **164,0 h** | **±15,0 h** | **149 – 179 h** |
 
-> O total do plano tem **17 itens**, e não 16, porque
+> O total do plano tem **24 itens**, e não 23, porque
 > [#40](https://github.com/marluceqa-source/hora-do-remedio/issues/40) entra dividido. E o SD cai
-> de ±15,5 h (seção 4) para **±14,8 h** sem que nenhuma estimativa mude: dividir uma atividade de
+> de ±15,7 h (seção 4) para **±15,0 h** sem que nenhuma estimativa mude: dividir uma atividade de
 > faixa muito larga em duas mais estreitas reduz a soma dos quadrados. Não é truque de
 > contabilidade — é o efeito real de tirar a parte imprevisível do caminho crítico.
 
-> **O P0 ficou mais barato que nunca: 4,6 h**, e 0,23 h disso é a revogação do token. Não
-> porque o trabalho diminuiu, mas porque o que sobrou no topo da fila quase não é trabalho — é
-> uma decisão de alguém. O backlog nunca esteve tão curto no P0, e o item mais urgente dele não
-> depende de nenhuma hora de desenvolvimento.
+> **O P0 triplicou de tamanho: de 4,6 h para 11,6 h**, e a causa é uma só — a sessão de teste
+> encontrou, em [#177](https://github.com/marluceqa-source/hora-do-remedio/issues/177), um problema de acesso a dado clínico que não estava no radar de
+> ninguém. Não é o backlog piorando: é o backlog sabendo de algo que antes não sabia. O item
+> mais urgente continua sendo uma decisão de alguém, e agora são duas.
 
 ---
 
