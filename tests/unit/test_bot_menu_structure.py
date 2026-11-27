@@ -5,7 +5,10 @@ import os
 import re
 from unittest.mock import patch
 
+import pytest
 from telegram.ext import MessageHandler
+
+from core.config import get_settings
 
 from bot.keyboards.menus import (
     MENU_AJUDA,
@@ -20,6 +23,17 @@ from bot.keyboards.menus import (
 
 def _registered_regex_patterns() -> set[str]:
     os.environ.setdefault("TELEGRAM_BOT_TOKEN", "123456:TEST-TOKEN")
+
+    # Este é o único teste que monta a Application de verdade, e o python-telegram-bot
+    # exige um token para isso. O setdefault acima não basta: get_settings() tem lru_cache
+    # e já foi resolvido no import de outros módulos, então um token ausente (ou vazio) já
+    # está em memória — é o caso de quem roda sem .env, de CI, e de depois de revogar o
+    # token exposto (#49). A causa aí é ambiente, não produto: o teste é pulado em vez de
+    # falhar, e a estrutura do menu continua verificada em qualquer máquina com o .env
+    # completo.
+    if not get_settings().telegram_bot_token:
+        pytest.skip("TELEGRAM_BOT_TOKEN não configurado — ver .env.example (CT24 precisa montar a Application)")
+
     with patch("services.scheduler_service.SchedulerService.start"):
         from bot.main import build_application
 
