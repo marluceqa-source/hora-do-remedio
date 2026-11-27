@@ -18,7 +18,7 @@ frontend/.vite/
 *.tsbuildinfo
 
 # Permissões locais do Claude Code (específicas da máquina)
-.claude/settings.local.json
+.claude/
 
 # Banco de dados local
 database/*.db
