@@ -472,6 +472,17 @@ curl http://localhost:8000/api/v1/reminders/today -H "Authorization: Bearer $TOK
 
 ## Como executar testes
 
+O projeto tem **duas suítes**, com propósitos diferentes e em lugares diferentes:
+
+| Suíte | Onde fica | O que testa | Testes |
+|---|---|---|---|
+| **Desenvolvimento** | `tests/`, neste branch | A aplicação por dentro: serviços, API com TestClient, contrato OpenAPI | 217 |
+| **Automação de QA** | branch [`ci/automacao-testes`](https://github.com/marluceqa-source/hora-do-remedio/tree/ci/automacao-testes/automacao), pasta `automacao/` | A aplicação por fora: portal no navegador, API publicada e bot | 161 |
+
+A primeira está descrita abaixo; a segunda, em [Automação de testes de QA](#automação-de-testes-de-qa).
+
+### Suíte de desenvolvimento
+
 ```bash
 pytest                              # suíte completa, com cobertura e relatório HTML
 pytest tests/unit                   # só os testes unitários (serviços)
@@ -493,7 +504,54 @@ cd frontend && npx tsc -b      # type-check
 cd frontend && npm run build   # build de produção
 ```
 
-**Não há testes automatizados no `frontend/`** — ver [limitações](#limitações-conhecidas).
+**Não há testes automatizados dentro do `frontend/`** — ver
+[limitações](#limitações-conhecidas). O portal, porém, é exercitado de ponta a ponta pelo
+navegador na suíte de QA descrita a seguir.
+
+## Automação de testes de QA
+
+Suíte de caixa-preta que usa a aplicação pelas mesmas portas que uma pessoa usa — navegador,
+API publicada e bot. **Ela não fica neste branch**: vive no branch
+[`ci/automacao-testes`](https://github.com/marluceqa-source/hora-do-remedio/tree/ci/automacao-testes/automacao),
+que contém só os testes, sem o código da aplicação. São dois projetos:
+
+| Projeto | O que cobre | Ferramenta | Testes |
+|---|---|---|---|
+| `automacao/testes-playwright` | Portal web e API REST | Playwright (JavaScript) | 85 |
+| `automacao/testes-bot-telegram` | Bot do Telegram | pytest (Python) | 76 |
+
+As técnicas estão documentadas junto dos casos: heurística **VADER** para a API, cenários em
+**Gherkin** para o portal e as **heurísticas de Elisabeth Hendrickson** para o bot, além do
+relatório de sessão e das evidências em vídeo.
+
+Como são dois branches, o jeito mais simples é ter os dois lados lado a lado:
+
+```bash
+git clone git@github.com:marluceqa-source/hora-do-remedio.git aplicacao
+```
+
+```bash
+git clone -b ci/automacao-testes git@github.com:marluceqa-source/hora-do-remedio.git testes
+```
+
+Depois, com a aplicação já instalada conforme [Como instalar](#2-como-instalar), aponte a
+automação para ela:
+
+```bash
+cd testes/automacao/testes-playwright && npm install && npx playwright install chromium
+```
+
+```bash
+APP_DIR=../../../aplicacao npm test
+```
+
+```bash
+cd testes/automacao/testes-bot-telegram && APP_DIR=../../../aplicacao ../../../aplicacao/.venv/bin/python -m pytest
+```
+
+A automação sobe a API e o portal por conta própria e usa um banco SQLite exclusivo
+(`database/playwright_test.db`): **o banco de desenvolvimento não é tocado**, e nenhum teste
+fala com o Telegram de verdade. O `automacao/README.md` daquele branch tem o detalhamento.
 
 ## Como validar o contrato OpenAPI
 
